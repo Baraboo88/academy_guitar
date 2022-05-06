@@ -6,22 +6,31 @@ import { DataOperation} from '../../store/data/data-reducer';
 import {connect} from 'react-redux';
 import {GuitarModel} from '../../types/guitar-model';
 import GuitarCard from '../guitar-card/guitar-card';
+import {Link, RouteComponentProps} from 'react-router-dom';
 
+const ITEMS_ON_THE_PAGE = 9;
+
+
+interface MatchParams {
+  id?: string;
+}
 
 interface MainProps {
   guitars: GuitarModel [];
   onMount: () => void;
   isResponseReceived: boolean;
   errorMsg: string;
+  getCommentsCount: (guitars: GuitarModel []) => void;
 }
 
 
-function Main(props: MainProps) {
-  const {onMount, guitars, isResponseReceived, errorMsg} = props;
+function Main(props: MainProps & RouteComponentProps<MatchParams>) {
+  const {onMount, guitars, isResponseReceived, errorMsg, getCommentsCount} = props;
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [innerGuitars, setInnerGuitars] = useState<GuitarModel []>([]);
-
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoadingCommentsCount, setIsLoadingCommentsCount] = useState<boolean>(true);
   useEffect(() => {
     if (isResponseReceived && errorMsg) {
       setError(errorMsg);
@@ -31,8 +40,54 @@ function Main(props: MainProps) {
     } else {
       setIsLoading(false);
       setInnerGuitars(guitars);
+      if(isLoadingCommentsCount && guitars.length > 0){
+        getCommentsCount(guitars);
+        setIsLoadingCommentsCount(false);
+      }
     }
+
   }, [guitars, onMount, isResponseReceived, errorMsg]);
+
+
+  useEffect(() => {
+    if(props.match.params.id){
+      setCurrentPage(Number(props.match.params.id));
+    } else {
+      setCurrentPage(1);
+    }
+
+  }, [props.match.params.id]);
+
+
+  const getAllPages = () => {
+    let allPages = 0;
+    if (guitars) {
+      if (guitars.length % ITEMS_ON_THE_PAGE === 0) {
+        allPages = Math.floor(guitars.length / ITEMS_ON_THE_PAGE);
+      } else {
+        allPages = Math.floor(guitars.length / ITEMS_ON_THE_PAGE) + 1;
+      }
+    }
+    return allPages;
+  };
+
+
+  const renderPagination = () => {
+
+
+    const allPages = getAllPages();
+    const pages = [];
+    for (let i = 1; i <= allPages; i++) {
+      pages.push(i);
+    }
+    return pages.map((page) =>(
+      <li className={`pagination__page ${page === currentPage ? 'pagination__page--active' : ''}`} key={page}>
+        <Link to={`/catalog/page/${page}`} className="link pagination__page-link" href="#">
+          {page}
+        </Link>
+      </li>));
+  };
+
 
   return (
     <div className="wrapper">
@@ -42,7 +97,7 @@ function Main(props: MainProps) {
             <img className="logo__img"
               width="70"
               height="70"
-              src="img/svg/logo.svg"
+              src="/img/svg/logo.svg"
               alt="Логотип"
             />
           </a>
@@ -192,35 +247,23 @@ function Main(props: MainProps) {
             </div>
             <div className="cards catalog__cards">
               {error && <span style={{color: 'red', textAlign: 'center'}}>Something went wrong</span>}
-              {!isLoading && innerGuitars.map((guitar) => <GuitarCard key={guitar.id} card={guitar}/>)}
+              {!isLoading && innerGuitars.slice((currentPage - 1) * ITEMS_ON_THE_PAGE,  (currentPage - 1) * ITEMS_ON_THE_PAGE + ITEMS_ON_THE_PAGE).map((guitar) => <GuitarCard key={guitar.id} card={guitar}/>)}
             </div>
             <div className="pagination page-content__pagination">
               <ul className="pagination__list">
-                <li className="pagination__page pagination__page--active">
-                  <a
-                    className="link pagination__page-link"
-                    href="1"
-                  >1
-                  </a>
-                </li>
-                <li className="pagination__page">
-                  <a className="link pagination__page-link"
-                    href="2"
-                  >2
-                  </a>
-                </li>
-                <li className="pagination__page">
-                  <a className="link pagination__page-link"
-                    href="3"
-                  >3
-                  </a>
-                </li>
-                <li className="pagination__page pagination__page--next" id="next">
-                  <a
-                    className="link pagination__page-link" href="2"
-                  >Далее
-                  </a>
-                </li>
+                {currentPage > 1 ?
+                  <li className="pagination__page pagination__page--prev" id="prev">
+                    <Link to={`/catalog/page/${currentPage - 1}`} className="link pagination__page-link">
+                      Назад
+                    </Link>
+                  </li> : ''}
+                {renderPagination()}
+                { getAllPages() !== 0 && currentPage < getAllPages()  ?
+                  <li className="pagination__page pagination__page--next" id="next">
+                    <Link to={`/catalog/page/${currentPage + 1}`} className="link pagination__page-link">
+                     Далее
+                    </Link>
+                  </li> : ''}
               </ul>
             </div>
           </div>
@@ -328,6 +371,9 @@ const mapStateToProps = (state: StateModel) => ({
 const mapDispatchToProps = (dispatch: any) => ({
   onMount() {
     dispatch(DataOperation.getGuitars());
+  },
+  getCommentsCount(guitars: GuitarModel []){
+    dispatch(DataOperation.getCommentsCount(guitars));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

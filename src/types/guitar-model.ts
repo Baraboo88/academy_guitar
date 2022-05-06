@@ -6,8 +6,9 @@ export interface GuitarModel {
     description: string;
     previewImg: string;
     stringCount: GuitarStringCount,
-    rating: number,
-    price: number
+    rating: number;
+    price: number;
+    commentsCount?: number;
 }
 
 export enum GuitarType {

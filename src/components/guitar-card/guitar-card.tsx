@@ -17,8 +17,8 @@ function GuitarCard(props :GuitarCardProps) {
 
   return (
     <div className="product-card">
-      <img src={`img/content/catalog-product-${imageAdapter(card.previewImg)}.jpg`}
-        srcSet={`img/content/catalog-product-${imageAdapter(card.previewImg)}@2x.jpg 2x`}
+      <img src={`/img/content/catalog-product-${imageAdapter(card.previewImg)}.jpg`}
+        srcSet={`/img/content/catalog-product-${imageAdapter(card.previewImg)}@2x.jpg 2x`}
         width="75"
         height="190" alt={`${card.name}`}
       />
@@ -30,7 +30,7 @@ function GuitarCard(props :GuitarCardProps) {
             <span
               className="visually-hidden"
             >Всего оценок:
-            </span>0
+            </span> {card.commentsCount ? card.commentsCount : 0}
           </p>
         </div>
         <p className="product-card__title">{card.name}</p>

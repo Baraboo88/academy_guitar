@@ -1,10 +1,11 @@
 import {GuitarModel} from '../../types/guitar-model';
 import { DataStateModel, StateModel} from '../../types/redux-models';
 import {AppDispatch} from '../../index';
-import {AxiosInstance} from 'axios';
+import { AxiosStatic} from 'axios';
 
 export enum DataAction {
     SetGuitars = 'set-guitars',
+    SetGuitarsCommentsCount = 'set-guitars-comments-count',
     SetError = 'set-error',
     SetIsResponseReceived = 'set-is-response-received',
 }
@@ -23,6 +24,7 @@ export enum ErrorMsg {
 
 const initialState: DataStateModel = {
   guitars: [],
+  guitarsWithCommentsCount: [],
   isResponseReceived: false,
   errorMsg: '',
 };
@@ -36,7 +38,7 @@ const resetIsResponseReceivedAndError = (dispatch: AppDispatch) => {
 
 export const DataOperation = {
   getGuitars() {
-    return (dispatch: AppDispatch, state: StateModel, api: AxiosInstance) => {
+    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
       resetIsResponseReceivedAndError(dispatch);
       api.get<GuitarModel []>('/guitars')
         .then((response) => {
@@ -50,6 +52,36 @@ export const DataOperation = {
         });
     };
   },
+  getCommentsCount(guitars: GuitarModel []) {
+    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+      Promise.all(guitars.map((el) => api.get((`/guitars/${el.id}/comments`))))
+        .then((responses) =>{
+          const guitarsWithComments: GuitarModel [] = [];
+          guitars.forEach((guitar, index) => {
+            let guitarWithComment: GuitarModel;
+            if(responses[index].data && responses[index].data.length > 0){
+              guitarWithComment = Object.assign({}, guitar, {
+                commentsCount: responses[index].data.length,
+              });
+            } else {
+              guitarWithComment = Object.assign({}, guitar, {
+                commentsCount: 0,
+              });
+            }
+            guitarsWithComments.push(guitarWithComment);
+          });
+          dispatch(DataActionCreator.setGuitars(guitarsWithComments));
+
+        })
+        .catch((error) => {
+          if (error.response.status === ResponseStatus.BadRequest) {
+            dispatch(DataActionCreator.setError(ErrorMsg.Other));
+          }
+          dispatch(DataActionCreator.setError(error.message));
+        });
+    };
+  },
+
 };
 
 
