@@ -5,6 +5,7 @@ import { AxiosStatic} from 'axios';
 
 export enum DataAction {
     SetGuitars = 'set-guitars',
+    SetCurrentGuitar = 'set-current-guitar',
     SetGuitarsCommentsCount = 'set-guitars-comments-count',
     SetError = 'set-error',
     SetIsResponseReceived = 'set-is-response-received',
@@ -24,7 +25,7 @@ export enum ErrorMsg {
 
 const initialState: DataStateModel = {
   guitars: [],
-  guitarsWithCommentsCount: [],
+  currentGuitar: null,
   isResponseReceived: false,
   errorMsg: '',
 };
@@ -43,6 +44,21 @@ export const DataOperation = {
       api.get<GuitarModel []>('/guitars')
         .then((response) => {
           dispatch(DataActionCreator.setGuitars(response.data));
+        })
+        .catch((error) => {
+          if (error.response.status === ResponseStatus.BadRequest) {
+            dispatch(DataActionCreator.setError(ErrorMsg.Other));
+          }
+          dispatch(DataActionCreator.setError(error.message));
+        });
+    };
+  },
+  getGuitarById(id: number) {
+    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+      resetIsResponseReceivedAndError(dispatch);
+      api.get<GuitarModel>(`/guitars/${id}`)
+        .then((response) => {
+          dispatch(DataActionCreator.setCurrentGuitar(response.data));
         })
         .catch((error) => {
           if (error.response.status === ResponseStatus.BadRequest) {
@@ -89,6 +105,9 @@ export const DataActionCreator = {
   setGuitars(quests: GuitarModel[]) {
     return {type: DataAction.SetGuitars, payload: quests};
   },
+  setCurrentGuitar(quests: GuitarModel | null) {
+    return {type: DataAction.SetCurrentGuitar, payload: quests};
+  },
   setError(error: string) {
     return {type: DataAction.SetError, payload: error};
   },
@@ -103,6 +122,12 @@ export const dataReducer = (state: DataStateModel = initialState, action:any) =>
     case DataAction.SetGuitars:
       return Object.assign({}, state, {
         guitars: action.payload,
+        isResponseReceived: true,
+        errorMsg: '',
+      });
+    case DataAction.SetCurrentGuitar:
+      return Object.assign({}, state, {
+        currentGuitar: action.payload,
         isResponseReceived: true,
         errorMsg: '',
       });

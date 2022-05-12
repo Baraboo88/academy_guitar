@@ -1,3 +1,5 @@
+import {GuitarType} from '../types/guitar-model';
+
 const STARTS_AMOUNT = 5;
 
 export const imageAdapter = (img: string) => img.slice(img.length - 5, img.length - 4);
@@ -22,3 +24,18 @@ export const getCyrillicRating = (rating: number) => {
     return 'Отлично';
   }
 };
+
+export const getCyrillicType = (type: GuitarType) => {
+  switch (type){
+    case GuitarType.Electric:
+      return 'Электрогитара';
+    case GuitarType.Acoustic:
+      return 'Акустическая';
+    case GuitarType.Ukulele:
+      return 'Укулеле';
+    default:
+      return '';
+  }
+};
+
+export const getPriceWithSpaces = (price: number)  => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

@@ -1,10 +1,11 @@
 import React from 'react';
 import {GuitarModel} from '../../types/guitar-model';
-import {generateStarsArray, getCyrillicRating, imageAdapter} from '../../utils/utils';
+import {generateStarsArray, getCyrillicRating, getPriceWithSpaces, imageAdapter} from '../../utils/utils';
+import {Link} from 'react-router-dom';
 
 
-export const renderStars = (rating: number) => generateStarsArray().map((el, index) => (
-  <svg key={`${rating} - ${el}`} width="12" height="11" aria-hidden="true">
+export const renderStars = (rating: number, isFromCardDetails: boolean) => generateStarsArray().map((el, index) => (
+  <svg key={`${rating} - ${el}`} width={isFromCardDetails ? 14 : 12} height={isFromCardDetails ? 14 : 11} aria-hidden="true">
     <use xlinkHref={rating >= el ? '#icon-full-star' : '#icon-star'}></use>
   </svg>));
 
@@ -24,7 +25,7 @@ function GuitarCard(props :GuitarCardProps) {
       />
       <div className="product-card__info">
         <div className="rate product-card__rate">
-          {renderStars(card.rating)}
+          {renderStars(card.rating, false)}
           <p className="visually-hidden">Рейтинг: {getCyrillicRating(card.rating)}</p>
           <p className="rate__count">
             <span
@@ -36,14 +37,13 @@ function GuitarCard(props :GuitarCardProps) {
         <p className="product-card__title">{card.name}</p>
         <p className="product-card__price">
           <span className="visually-hidden">Цена:</span>
-          {card.price} ₽
+          {getPriceWithSpaces(card.price)} ₽
         </p>
       </div>
       <div className="product-card__buttons">
-        <a className="button button--mini"
-          href="#"
-        >Подробнее
-        </a>
+
+        <Link to={`/product/${card.id}`} className="button button--mini">Подробнее
+        </Link>
         <a
           className="button button--red button--mini button--add-to-cart" href="#"
         >Купить
