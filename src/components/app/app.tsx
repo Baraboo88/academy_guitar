@@ -8,14 +8,9 @@ function App() {
   return (
     <BrowserRouter >
       <Switch>
-
         <Route exact path="/product/:id" component={guitarCardDetails}/>
-
         <Route exact path="/catalog/page/:id" component={Main}/>
-
         <Route exact path="/" component={Main}/>
-
-
       </Switch>
     </BrowserRouter>
   );

@@ -1,4 +1,4 @@
-import {GuitarModel} from '../../types/guitar-model';
+import {AddCommentModel, GuitarCommentModel, GuitarModel} from '../../types/guitar-model';
 import { DataStateModel, StateModel} from '../../types/redux-models';
 import {AppDispatch} from '../../index';
 import { AxiosStatic} from 'axios';
@@ -68,6 +68,23 @@ export const DataOperation = {
         });
     };
   },
+  getCurrentGuitarComments(guitar: GuitarModel) {
+    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+      resetIsResponseReceivedAndError(dispatch);
+      api.get<GuitarCommentModel []>(`/guitars/${guitar.id}/comments`)
+        .then((response) => {
+          dispatch(DataActionCreator.setCurrentGuitar(Object.assign({}, guitar, {
+            comments: response.data,
+          })));
+        })
+        .catch((error) => {
+          if (error.response.status === ResponseStatus.BadRequest) {
+            dispatch(DataActionCreator.setError(ErrorMsg.Other));
+          }
+          dispatch(DataActionCreator.setError(error.message));
+        });
+    };
+  },
   getCommentsCount(guitars: GuitarModel []) {
     return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
       Promise.all(guitars.map((el) => api.get((`/guitars/${el.id}/comments`))))
@@ -77,11 +94,11 @@ export const DataOperation = {
             let guitarWithComment: GuitarModel;
             if(responses[index].data && responses[index].data.length > 0){
               guitarWithComment = Object.assign({}, guitar, {
-                commentsCount: responses[index].data.length,
+                comments: responses[index].data,
               });
             } else {
               guitarWithComment = Object.assign({}, guitar, {
-                commentsCount: 0,
+                comments: [],
               });
             }
             guitarsWithComments.push(guitarWithComment);
@@ -97,6 +114,26 @@ export const DataOperation = {
         });
     };
   },
+  addComment(guitar: GuitarModel, comment: AddCommentModel) {
+    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+      resetIsResponseReceivedAndError(dispatch);
+      api.post<GuitarCommentModel>('/guitars', comment)
+        .then((response) => {
+          const newComments= guitar.comments ? [...guitar.comments] : [];
+          newComments.unshift(response.data);
+          dispatch(DataActionCreator.setCurrentGuitar(Object.assign({}, guitar, {
+            comments: newComments,
+          })));
+        })
+        .catch((error) => {
+          if (error.response.status === ResponseStatus.BadRequest) {
+            dispatch(DataActionCreator.setError(ErrorMsg.Other));
+          }
+          dispatch(DataActionCreator.setError(error.message));
+        });
+    };
+  },
+
 
 };
 

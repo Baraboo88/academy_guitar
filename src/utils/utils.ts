@@ -14,19 +14,25 @@ export const generateStarsArray = () => {
 };
 
 export const getCyrillicRating = (rating: number) => {
-  if(rating> 0 && rating < 3){
-    return 'Плохо';
-  } else if (rating >= 3 && rating < 4){
-    return 'Удовлетворительно';
-  } else if(rating >= 4 && rating < 5){
-    return 'Хорошо';
-  } else {
-    return 'Отлично';
+  switch (rating) {
+    case 1:
+      return 'Ужасно';
+    case 2:
+      return 'Плохо';
+    case 3:
+      return 'Нормально';
+    case 4:
+      return 'Хорошо';
+    case 5:
+      return 'Отлично';
+    default:
+      return '';
   }
+
 };
 
 export const getCyrillicType = (type: GuitarType) => {
-  switch (type){
+  switch (type) {
     case GuitarType.Electric:
       return 'Электрогитара';
     case GuitarType.Acoustic:
@@ -38,4 +44,9 @@ export const getCyrillicType = (type: GuitarType) => {
   }
 };
 
-export const getPriceWithSpaces = (price: number)  => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+export const monthNames = ['января', 'февраля ', 'марта', 'апреля', 'майя', 'июня',
+  'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
+];
+
+
+export const getPriceWithSpaces = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');

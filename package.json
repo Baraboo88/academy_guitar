@@ -3,6 +3,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "1.5.0",
     "axios": "0.21.1",
+    "disable-scroll": "0.6.0",
+    "focus-trap-react": "8.11.1",
     "history": "4.10.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
@@ -19,6 +21,7 @@
     "@testing-library/react": "11.2.0",
     "@testing-library/react-hooks": "5.1.0",
     "@testing-library/user-event": "12.8.0",
+    "@types/body-scroll-lock": "^3.1.0",
     "@types/faker": "5.5.8",
     "@types/jest": "26.0.24",
     "@types/node": "12.20.37",

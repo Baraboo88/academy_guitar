@@ -8,7 +8,27 @@ export interface GuitarModel {
     stringCount: GuitarStringCount,
     rating: number;
     price: number;
-    commentsCount?: number;
+    comments?: GuitarCommentModel [];
+}
+
+export interface GuitarCommentModel{
+    id: string;
+    userName: string;
+    advantage: string;
+    disadvantage: string;
+    comment: string;
+    rating: number;
+    createAt: Date;
+    guitarId: number;
+}
+
+export interface AddCommentModel{
+    guitarId: number;
+    userName: string;
+    advantage: string;
+    disadvantage: string;
+    comment: string;
+    rating: number;
 }
 
 export enum GuitarType {
