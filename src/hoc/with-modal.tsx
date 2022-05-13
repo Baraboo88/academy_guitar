@@ -29,7 +29,7 @@ const withModal = (Component: React.ElementType) => (props: WithModalProps) => {
     if (event.key === ESC_KEY) {
       closeModalHandler();
     }
-  }, []);
+  }, [closeModalHandler]);
 
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const withModal = (Component: React.ElementType) => (props: WithModalProps) => {
       document.removeEventListener('keydown', escFunction, false);
       disableScroll.off();
     };
-  }, []);
+  }, [escFunction]);
 
   return <Component {...props}/>;
 };

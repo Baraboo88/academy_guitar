@@ -37,7 +37,7 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
     if (isResponseReceived && errorMsg) {
       setError(errorMsg);
     }
-    if (!isResponseReceived) {
+    if (!isResponseReceived && guitars.length === 0) {
       onMount();
     } else {
       setIsLoading(false);
@@ -98,7 +98,7 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>
           <ul className="breadcrumbs page-content__breadcrumbs">
-            <li className="breadcrumbs__item"><a className="link" href="./main.html">Главная</a>
+            <li className="breadcrumbs__item"><Link to={'/'} className="link">Главная</Link>
             </li>
             <li className="breadcrumbs__item"><a className="link">Каталог</a>
             </li>
