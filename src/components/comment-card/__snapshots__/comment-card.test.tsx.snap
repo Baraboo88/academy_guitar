@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CommentCard successfully rendered 1`] = `
+<div
+  className="review"
+>
+  <div
+    className="review__wrapper"
+  >
+    <h4
+      className="review__title review__title--author title title--lesser"
+    >
+      Никита
+    </h4>
+    <span
+      className="review__date"
+    >
+      10 марта
+    </span>
+  </div>
+  <div
+    className="rate review__rating-panel"
+  >
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="16"
+    >
+      <use
+        xlinkHref="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="16"
+    >
+      <use
+        xlinkHref="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="16"
+    >
+      <use
+        xlinkHref="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="16"
+    >
+      <use
+        xlinkHref="#icon-full-star"
+      />
+    </svg>
+    <svg
+      aria-hidden="true"
+      height="16"
+      width="16"
+    >
+      <use
+        xlinkHref="#icon-full-star"
+      />
+    </svg>
+    <p
+      className="visually-hidden"
+    >
+      Оценка: 
+      Отлично
+    </p>
+  </div>
+  <h4
+    className="review__title title title--lesser"
+  >
+    Достоинства:
+  </h4>
+  <p
+    className="review__value"
+  >
+    Цена.
+  </p>
+  <h4
+    className="review__title title title--lesser"
+  >
+    Недостатки:
+  </h4>
+  <p
+    className="review__value"
+  >
+    Быстро приходит в негодность покрытие краской.
+  </p>
+  <h4
+    className="review__title title title--lesser"
+  >
+    Комментарий:
+  </h4>
+  <p
+    className="review__value"
+  >
+    Хорошая гитара для начинающих, сделана качественно. Лучше за эти деньги не найти.
+  </p>
+</div>
+`;

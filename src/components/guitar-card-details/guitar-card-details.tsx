@@ -18,7 +18,7 @@ const COMMENTS_TO_SKIP = 3;
 
 interface MatchParams {
     id?: string;
-    cat?: string;
+    cat?: ActiveTab;
 }
 
 interface GuitarCardDetailsProps {
@@ -32,7 +32,7 @@ interface GuitarCardDetailsProps {
     error: string;
 }
 
-enum ActiveTab{
+export enum ActiveTab{
   Characteristics= 'characteristics',
   Description='description'
 }
@@ -102,9 +102,9 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
     resetIsResponseReceived();
   },[resetIsResponseReceived]);
 
-  const onSubmitHandler = () => {
-    if(userName && advantage && disadvantage && comment && rating&& currentGuitar){
-      addComment(currentGuitar,{userName, guitarId: currentGuitar?.id, advantage, disadvantage, comment, rating});
+  const onSubmitHandler = (commentAdded: AddCommentModel) => {
+    if(commentAdded.userName && commentAdded.advantage && commentAdded.disadvantage && commentAdded.comment && commentAdded.rating&& currentGuitar){
+      addComment(currentGuitar,commentAdded);
       setModalCommentIsSending(true);
     }
   };
@@ -188,18 +188,20 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                     </Link>
                     <div className="tabs__content" id="characteristics">
                       <table className={`tabs__table ${activeTab !== ActiveTab.Characteristics ? 'hidden' : ''}`}>
-                        <tr className="tabs__table-row">
-                          <td className="tabs__title">Артикул:</td>
-                          <td className="tabs__value">{currentGuitar.vendorCode}</td>
-                        </tr>
-                        <tr className="tabs__table-row">
-                          <td className="tabs__title">Тип:</td>
-                          <td className="tabs__value">{getCyrillicType(currentGuitar.type)}</td>
-                        </tr>
-                        <tr className="tabs__table-row">
-                          <td className="tabs__title">Количество струн:</td>
-                          <td className="tabs__value">{currentGuitar.stringCount} струнная</td>
-                        </tr>
+                        <tbody>
+                          <tr className="tabs__table-row">
+                            <td className="tabs__title">Артикул:</td>
+                            <td className="tabs__value">{currentGuitar.vendorCode}</td>
+                          </tr>
+                          <tr className="tabs__table-row">
+                            <td className="tabs__title">Тип:</td>
+                            <td className="tabs__value">{getCyrillicType(currentGuitar.type)}</td>
+                          </tr>
+                          <tr className="tabs__table-row">
+                            <td className="tabs__title">Количество струн:</td>
+                            <td className="tabs__value">{currentGuitar.stringCount} струнная</td>
+                          </tr>
+                        </tbody>
                       </table>
                       <p className={`tabs__product-description  ${activeTab !== ActiveTab.Description ? 'hidden' : ''}`}>{currentGuitar.description}
                       </p>
@@ -295,3 +297,4 @@ const mapDispatchToProps = (dispatch: any) => (
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuitarCardDetails);
+export {GuitarCardDetails};

@@ -36,6 +36,7 @@ export const renderStars = (rating: number, size: StarSize) => generateStarsArra
 interface GuitarCardProps{
   card: GuitarModel
 }
+
 function GuitarCard(props :GuitarCardProps) {
   const {card} = props;
 

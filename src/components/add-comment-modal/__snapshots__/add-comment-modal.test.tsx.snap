@@ -1,0 +1,191 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`OfferAddComment successfully rendered 1`] = `
+<div
+  className="modal is-active modal--review modal-for-ui-kit"
+>
+  <div
+    className="modal__wrapper"
+  >
+    <div
+      className="modal__overlay"
+      data-close-modal={true}
+      onClick={[MockFunction]}
+    />
+    <div
+      className="modal__content"
+    >
+      <h2
+        className="modal__header modal__header--review title title--medium"
+      >
+        Оставить отзыв
+      </h2>
+      <h3
+        className="modal__product-name title title--medium-20 title--uppercase"
+      />
+      <form
+        className="form-review"
+        onSubmit={[Function]}
+      >
+        <div
+          className="form-review__wrapper"
+        >
+          <div
+            className="form-review__name-wrapper"
+          >
+            <label
+              className="form-review__label form-review__label--required"
+              htmlFor="user-name"
+            >
+              Ваше Имя
+            </label>
+            <input
+              autoComplete="off"
+              autoFocus={true}
+              className="form-review__input form-review__input--name"
+              id="user-name"
+              onChange={[Function]}
+              type="text"
+              value="Some name"
+            />
+          </div>
+          <div>
+            <span
+              className="form-review__label form-review__label--required"
+            >
+              Ваша Оценка
+            </span>
+            <div
+              className="rate rate--reverse"
+            >
+              <input
+                className="visually-hidden"
+                id="star-6"
+                name="rate"
+                onChange={[Function]}
+                type="radio"
+                value={6}
+              />
+              <label
+                className="rate__label"
+                htmlFor="star-6"
+                title=""
+              />
+              <input
+                className="visually-hidden"
+                id="star-5"
+                name="rate"
+                onChange={[Function]}
+                type="radio"
+                value={5}
+              />
+              <label
+                className="rate__label"
+                htmlFor="star-5"
+                title="Отлично"
+              />
+              <input
+                className="visually-hidden"
+                id="star-4"
+                name="rate"
+                onChange={[Function]}
+                type="radio"
+                value={4}
+              />
+              <label
+                className="rate__label"
+                htmlFor="star-4"
+                title="Хорошо"
+              />
+              <input
+                className="visually-hidden"
+                id="star-3"
+                name="rate"
+                onChange={[Function]}
+                type="radio"
+                value={3}
+              />
+              <label
+                className="rate__label"
+                htmlFor="star-3"
+                title="Нормально"
+              />
+              <input
+                className="visually-hidden"
+                id="star-2"
+                name="rate"
+                onChange={[Function]}
+                type="radio"
+                value={2}
+              />
+              <label
+                className="rate__label"
+                htmlFor="star-2"
+                title="Плохо"
+              />
+            </div>
+          </div>
+        </div>
+        <label
+          className="form-review__label form-review__label--required"
+          htmlFor="adv"
+        >
+          Достоинства
+        </label>
+        <input
+          autoComplete="off"
+          className="form-review__input"
+          id="adv"
+          onChange={[Function]}
+          type="text"
+        />
+        <label
+          className="form-review__label form-review__label--required"
+          htmlFor="disadv"
+        >
+          Недостатки
+        </label>
+        <input
+          autoComplete="off"
+          className="form-review__input"
+          id="disadv"
+          onChange={[Function]}
+          type="text"
+        />
+        <label
+          className="form-review__label form-review__label--required"
+          htmlFor="comment"
+        >
+          Комментарий
+        </label>
+        <textarea
+          autoComplete="off"
+          className="form-review__input form-review__input--textarea"
+          id="comment"
+          onChange={[Function]}
+          rows={10}
+        />
+        <button
+          className="button button--medium-20 form-review__button"
+          type="submit"
+        >
+          Отправить отзыв
+        </button>
+      </form>
+      <button
+        aria-label="Закрыть"
+        className="modal__close-btn button-cross"
+        type="button"
+      >
+        <span
+          className="button-cross__icon"
+        />
+        <span
+          className="modal__close-btn-interactive-area"
+          onClick={[MockFunction]}
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;

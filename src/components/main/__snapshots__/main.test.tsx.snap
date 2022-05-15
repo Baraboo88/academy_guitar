@@ -1,0 +1,1541 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Main successfully rendered 1`] = `
+<div
+  className="wrapper"
+>
+  <header
+    className="header"
+    id="header"
+  >
+    <div
+      className="container header__wrapper"
+    >
+      <a
+        className="header__logo logo"
+      >
+        <img
+          alt="Логотип"
+          className="logo__img"
+          height="70"
+          src="/img/svg/logo.svg"
+          width="70"
+        />
+      </a>
+      <nav
+        className="main-nav"
+      >
+        <ul
+          className="main-nav__list"
+        >
+          <li>
+            <a
+              className="link main-nav__link link--current"
+              href="#"
+            >
+              Каталог
+            </a>
+          </li>
+          <li>
+            <a
+              className="link main-nav__link"
+              href="#"
+            >
+              Где купить?
+            </a>
+          </li>
+          <li>
+            <a
+              className="link main-nav__link"
+              href="#"
+            >
+              О компании
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <div
+        className="form-search"
+      >
+        <form
+          className="form-search__form"
+          id="form-search"
+        >
+          <button
+            className="form-search__submit"
+            type="submit"
+          >
+            <svg
+              aria-hidden="true"
+              className="form-search__icon"
+              height="15"
+              width="14"
+            >
+              <use
+                xlinkHref="#icon-search"
+              />
+            </svg>
+            <span
+              className="visually-hidden"
+            >
+              Начать поиск
+            </span>
+          </button>
+          <input
+            autoComplete="off"
+            className="form-search__input"
+            id="search"
+            placeholder="что вы ищите?"
+            type="text"
+          />
+          <label
+            className="visually-hidden"
+            htmlFor="search"
+          >
+            Поиск
+          </label>
+        </form>
+        <ul
+          className="form-search__select-list hidden"
+        >
+          <li
+            className="form-search__select-item"
+            tabIndex={0}
+          >
+            Четстер Plus
+          </li>
+          <li
+            className="form-search__select-item"
+            tabIndex={0}
+          >
+            Четстер UX
+          </li>
+          <li
+            className="form-search__select-item"
+            tabIndex={0}
+          >
+            Четстер UX2
+          </li>
+          <li
+            className="form-search__select-item"
+            tabIndex={0}
+          >
+            Четстер UX3
+          </li>
+          <li
+            className="form-search__select-item"
+            tabIndex={0}
+          >
+            Четстер UX4
+          </li>
+          <li
+            className="form-search__select-item"
+            tabIndex={0}
+          >
+            Четстер UX5
+          </li>
+        </ul>
+        <button
+          className="form-search__reset"
+          form="form-search"
+          type="reset"
+        >
+          <svg
+            aria-hidden="true"
+            className="form-search__icon"
+            height="15"
+            width="14"
+          >
+            <use
+              xlinkHref="#icon-close"
+            />
+          </svg>
+          <span
+            className="visually-hidden"
+          >
+            Сбросить поиск
+          </span>
+        </button>
+      </div>
+      <a
+        aria-label="Корзина"
+        className="header__cart-link"
+        href="#"
+      >
+        <svg
+          aria-hidden="true"
+          className="header__cart-icon"
+          height="14"
+          width="14"
+        >
+          <use
+            xlinkHref="#icon-basket"
+          />
+        </svg>
+        <span
+          className="visually-hidden"
+        >
+          Перейти в корзину
+        </span>
+        <span
+          className="header__cart-count"
+        >
+          2
+        </span>
+      </a>
+    </div>
+  </header>
+  <main
+    className="page-content"
+  >
+    <div
+      className="container"
+    >
+      <h1
+        className="page-content__title title title--bigger"
+      >
+        Каталог гитар
+      </h1>
+      <ul
+        className="breadcrumbs page-content__breadcrumbs"
+      >
+        <li
+          className="breadcrumbs__item"
+        >
+          <a
+            className="link"
+            href="/"
+            onClick={[Function]}
+          >
+            Главная
+          </a>
+        </li>
+        <li
+          className="breadcrumbs__item"
+        >
+          <a
+            className="link"
+          >
+            Каталог
+          </a>
+        </li>
+      </ul>
+      <div
+        className="catalog"
+      >
+        <form
+          className="catalog-filter"
+        >
+          <h2
+            className="title title--bigger catalog-filter__title"
+          >
+            Фильтр
+          </h2>
+          <fieldset
+            className="catalog-filter__block"
+          >
+            <legend
+              className="catalog-filter__block-title"
+            >
+              Цена, ₽
+            </legend>
+            <div
+              className="catalog-filter__price-range"
+            >
+              <div
+                className="form-input"
+              >
+                <label
+                  className="visually-hidden"
+                >
+                  Минимальная цена
+                </label>
+                <input
+                  id="priceMin"
+                  name="от"
+                  placeholder="1 000"
+                  type="number"
+                />
+              </div>
+              <div
+                className="form-input"
+              >
+                <label
+                  className="visually-hidden"
+                >
+                  Максимальная цена
+                </label>
+                <input
+                  id="priceMax"
+                  name="до"
+                  placeholder="30 000"
+                  type="number"
+                />
+              </div>
+            </div>
+          </fieldset>
+          <fieldset
+            className="catalog-filter__block"
+          >
+            <legend
+              className="catalog-filter__block-title"
+            >
+              Тип гитар
+            </legend>
+            <div
+              className="form-checkbox catalog-filter__block-item"
+            >
+              <input
+                className="visually-hidden"
+                id="acoustic"
+                name="acoustic"
+                type="checkbox"
+              />
+              <label
+                htmlFor="acoustic"
+              >
+                Акустические гитары
+              </label>
+            </div>
+            <div
+              className="form-checkbox catalog-filter__block-item"
+            >
+              <input
+                className="visually-hidden"
+                defaultChecked={true}
+                id="electric"
+                name="electric"
+                type="checkbox"
+              />
+              <label
+                htmlFor="electric"
+              >
+                Электрогитары
+              </label>
+            </div>
+            <div
+              className="form-checkbox catalog-filter__block-item"
+            >
+              <input
+                className="visually-hidden"
+                defaultChecked={true}
+                id="ukulele"
+                name="ukulele"
+                type="checkbox"
+              />
+              <label
+                htmlFor="ukulele"
+              >
+                Укулеле
+              </label>
+            </div>
+          </fieldset>
+          <fieldset
+            className="catalog-filter__block"
+          >
+            <legend
+              className="catalog-filter__block-title"
+            >
+              Количество струн
+            </legend>
+            <div
+              className="form-checkbox catalog-filter__block-item"
+            >
+              <input
+                className="visually-hidden"
+                defaultChecked={true}
+                id="4-strings"
+                name="4-strings"
+                type="checkbox"
+              />
+              <label
+                htmlFor="4-strings"
+              >
+                4
+              </label>
+            </div>
+            <div
+              className="form-checkbox catalog-filter__block-item"
+            >
+              <input
+                className="visually-hidden"
+                defaultChecked={true}
+                id="6-strings"
+                name="6-strings"
+                type="checkbox"
+              />
+              <label
+                htmlFor="6-strings"
+              >
+                6
+              </label>
+            </div>
+            <div
+              className="form-checkbox catalog-filter__block-item"
+            >
+              <input
+                className="visually-hidden"
+                id="7-strings"
+                name="7-strings"
+                type="checkbox"
+              />
+              <label
+                htmlFor="7-strings"
+              >
+                7
+              </label>
+            </div>
+            <div
+              className="form-checkbox catalog-filter__block-item"
+            >
+              <input
+                className="visually-hidden"
+                disabled={true}
+                id="12-strings"
+                name="12-strings"
+                type="checkbox"
+              />
+              <label
+                htmlFor="12-strings"
+              >
+                12
+              </label>
+            </div>
+          </fieldset>
+          <button
+            className="catalog-filter__reset-btn button button--black-border button--medium"
+            type="reset"
+          >
+            Очистить
+          </button>
+        </form>
+        <div
+          className="catalog-sort"
+        >
+          <h2
+            className="catalog-sort__title"
+          >
+            Сортировать:
+          </h2>
+          <div
+            className="catalog-sort__type"
+          >
+            <button
+              aria-label="по цене"
+              className="catalog-sort__type-button"
+            >
+              по цене
+            </button>
+            <button
+              aria-label="по популярности"
+              className="catalog-sort__type-button"
+            >
+              по популярности
+            </button>
+          </div>
+          <div
+            className="catalog-sort__order"
+          >
+            <button
+              aria-label="По возрастанию"
+              className="catalog-sort__order-button catalog-sort__order-button--up"
+            />
+            <button
+              aria-label="По убыванию"
+              className="catalog-sort__order-button catalog-sort__order-button--down"
+            />
+          </div>
+        </div>
+        <div
+          className="cards catalog__cards"
+        >
+          <div
+            className="product-card"
+          >
+            <img
+              alt="Честер Bass"
+              height="190"
+              src="/img/content/catalog-product-1.jpg"
+              srcSet="/img/content/catalog-product-1@2x.jpg 2x"
+              width="75"
+            />
+            <div
+              className="product-card__info"
+            >
+              <div
+                className="rate product-card__rate"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 1"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 2"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 3"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 4"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 5"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <p
+                  className="visually-hidden"
+                >
+                  Рейтинг: 
+                  Хорошо
+                </p>
+                <p
+                  className="rate__count"
+                >
+                  <span
+                    className="visually-hidden"
+                  >
+                    Всего оценок:
+                  </span>
+                   
+                  0
+                </p>
+              </div>
+              <p
+                className="product-card__title"
+              >
+                Честер Bass
+              </p>
+              <p
+                className="product-card__price"
+              >
+                <span
+                  className="visually-hidden"
+                >
+                  Цена:
+                </span>
+                17 500
+                 ₽
+              </p>
+            </div>
+            <div
+              className="product-card__buttons"
+            >
+              <a
+                className="button button--mini"
+                href="/product/1"
+                onClick={[Function]}
+              >
+                Подробнее
+              </a>
+              <a
+                className="button button--red button--mini button--add-to-cart"
+                href="#"
+              >
+                Купить
+              </a>
+            </div>
+          </div>
+          <div
+            className="product-card"
+          >
+            <img
+              alt="CURT Z300"
+              height="190"
+              src="/img/content/catalog-product-8.jpg"
+              srcSet="/img/content/catalog-product-8@2x.jpg 2x"
+              width="75"
+            />
+            <div
+              className="product-card__info"
+            >
+              <div
+                className="rate product-card__rate"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 1"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 2"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 3"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 4"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 5"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <p
+                  className="visually-hidden"
+                >
+                  Рейтинг: 
+                </p>
+                <p
+                  className="rate__count"
+                >
+                  <span
+                    className="visually-hidden"
+                  >
+                    Всего оценок:
+                  </span>
+                   
+                  0
+                </p>
+              </div>
+              <p
+                className="product-card__title"
+              >
+                CURT Z300
+              </p>
+              <p
+                className="product-card__price"
+              >
+                <span
+                  className="visually-hidden"
+                >
+                  Цена:
+                </span>
+                29 500
+                 ₽
+              </p>
+            </div>
+            <div
+              className="product-card__buttons"
+            >
+              <a
+                className="button button--mini"
+                href="/product/2"
+                onClick={[Function]}
+              >
+                Подробнее
+              </a>
+              <a
+                className="button button--red button--mini button--add-to-cart"
+                href="#"
+              >
+                Купить
+              </a>
+            </div>
+          </div>
+          <div
+            className="product-card"
+          >
+            <img
+              alt="Roman LX"
+              height="190"
+              src="/img/content/catalog-product-6.jpg"
+              srcSet="/img/content/catalog-product-6@2x.jpg 2x"
+              width="75"
+            />
+            <div
+              className="product-card__info"
+            >
+              <div
+                className="rate product-card__rate"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 1"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 2"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 3"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 4"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4 - 5"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <p
+                  className="visually-hidden"
+                >
+                  Рейтинг: 
+                  Хорошо
+                </p>
+                <p
+                  className="rate__count"
+                >
+                  <span
+                    className="visually-hidden"
+                  >
+                    Всего оценок:
+                  </span>
+                   
+                  0
+                </p>
+              </div>
+              <p
+                className="product-card__title"
+              >
+                Roman LX
+              </p>
+              <p
+                className="product-card__price"
+              >
+                <span
+                  className="visually-hidden"
+                >
+                  Цена:
+                </span>
+                6 800
+                 ₽
+              </p>
+            </div>
+            <div
+              className="product-card__buttons"
+            >
+              <a
+                className="button button--mini"
+                href="/product/3"
+                onClick={[Function]}
+              >
+                Подробнее
+              </a>
+              <a
+                className="button button--red button--mini button--add-to-cart"
+                href="#"
+              >
+                Купить
+              </a>
+            </div>
+          </div>
+          <div
+            className="product-card"
+          >
+            <img
+              alt="CURT T300"
+              height="190"
+              src="/img/content/catalog-product-3.jpg"
+              srcSet="/img/content/catalog-product-3@2x.jpg 2x"
+              width="75"
+            />
+            <div
+              className="product-card__info"
+            >
+              <div
+                className="rate product-card__rate"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="5 - 1"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="5 - 2"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="5 - 3"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="5 - 4"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="5 - 5"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <p
+                  className="visually-hidden"
+                >
+                  Рейтинг: 
+                  Отлично
+                </p>
+                <p
+                  className="rate__count"
+                >
+                  <span
+                    className="visually-hidden"
+                  >
+                    Всего оценок:
+                  </span>
+                   
+                  0
+                </p>
+              </div>
+              <p
+                className="product-card__title"
+              >
+                CURT T300
+              </p>
+              <p
+                className="product-card__price"
+              >
+                <span
+                  className="visually-hidden"
+                >
+                  Цена:
+                </span>
+                30 000
+                 ₽
+              </p>
+            </div>
+            <div
+              className="product-card__buttons"
+            >
+              <a
+                className="button button--mini"
+                href="/product/4"
+                onClick={[Function]}
+              >
+                Подробнее
+              </a>
+              <a
+                className="button button--red button--mini button--add-to-cart"
+                href="#"
+              >
+                Купить
+              </a>
+            </div>
+          </div>
+          <div
+            className="product-card"
+          >
+            <img
+              alt="Dania Super"
+              height="190"
+              src="/img/content/catalog-product-4.jpg"
+              srcSet="/img/content/catalog-product-4@2x.jpg 2x"
+              width="75"
+            />
+            <div
+              className="product-card__info"
+            >
+              <div
+                className="rate product-card__rate"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4.5 - 1"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4.5 - 2"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4.5 - 3"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4.5 - 4"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="4.5 - 5"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <p
+                  className="visually-hidden"
+                >
+                  Рейтинг: 
+                </p>
+                <p
+                  className="rate__count"
+                >
+                  <span
+                    className="visually-hidden"
+                  >
+                    Всего оценок:
+                  </span>
+                   
+                  0
+                </p>
+              </div>
+              <p
+                className="product-card__title"
+              >
+                Dania Super
+              </p>
+              <p
+                className="product-card__price"
+              >
+                <span
+                  className="visually-hidden"
+                >
+                  Цена:
+                </span>
+                3 500
+                 ₽
+              </p>
+            </div>
+            <div
+              className="product-card__buttons"
+            >
+              <a
+                className="button button--mini"
+                href="/product/5"
+                onClick={[Function]}
+              >
+                Подробнее
+              </a>
+              <a
+                className="button button--red button--mini button--add-to-cart"
+                href="#"
+              >
+                Купить
+              </a>
+            </div>
+          </div>
+          <div
+            className="product-card"
+          >
+            <img
+              alt="Честер WX"
+              height="190"
+              src="/img/content/catalog-product-2.jpg"
+              srcSet="/img/content/catalog-product-2@2x.jpg 2x"
+              width="75"
+            />
+            <div
+              className="product-card__info"
+            >
+              <div
+                className="rate product-card__rate"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 1"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 2"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 3"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 4"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="3.5 - 5"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <p
+                  className="visually-hidden"
+                >
+                  Рейтинг: 
+                </p>
+                <p
+                  className="rate__count"
+                >
+                  <span
+                    className="visually-hidden"
+                  >
+                    Всего оценок:
+                  </span>
+                   
+                  0
+                </p>
+              </div>
+              <p
+                className="product-card__title"
+              >
+                Честер WX
+              </p>
+              <p
+                className="product-card__price"
+              >
+                <span
+                  className="visually-hidden"
+                >
+                  Цена:
+                </span>
+                15 300
+                 ₽
+              </p>
+            </div>
+            <div
+              className="product-card__buttons"
+            >
+              <a
+                className="button button--mini"
+                href="/product/6"
+                onClick={[Function]}
+              >
+                Подробнее
+              </a>
+              <a
+                className="button button--red button--mini button--add-to-cart"
+                href="#"
+              >
+                Купить
+              </a>
+            </div>
+          </div>
+          <div
+            className="product-card"
+          >
+            <img
+              alt="Dania VX"
+              height="190"
+              src="/img/content/catalog-product-5.jpg"
+              srcSet="/img/content/catalog-product-5@2x.jpg 2x"
+              width="75"
+            />
+            <div
+              className="product-card__info"
+            >
+              <div
+                className="rate product-card__rate"
+              >
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="2.5 - 1"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="2.5 - 2"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-full-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="2.5 - 3"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="2.5 - 4"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <svg
+                  aria-hidden="true"
+                  height="11"
+                  key="2.5 - 5"
+                  width="12"
+                >
+                  <use
+                    xlinkHref="#icon-star"
+                  />
+                </svg>
+                <p
+                  className="visually-hidden"
+                >
+                  Рейтинг: 
+                </p>
+                <p
+                  className="rate__count"
+                >
+                  <span
+                    className="visually-hidden"
+                  >
+                    Всего оценок:
+                  </span>
+                   
+                  0
+                </p>
+              </div>
+              <p
+                className="product-card__title"
+              >
+                Dania VX
+              </p>
+              <p
+                className="product-card__price"
+              >
+                <span
+                  className="visually-hidden"
+                >
+                  Цена:
+                </span>
+                2 200
+                 ₽
+              </p>
+            </div>
+            <div
+              className="product-card__buttons"
+            >
+              <a
+                className="button button--mini"
+                href="/product/7"
+                onClick={[Function]}
+              >
+                Подробнее
+              </a>
+              <a
+                className="button button--red button--mini button--add-to-cart"
+                href="#"
+              >
+                Купить
+              </a>
+            </div>
+          </div>
+        </div>
+        <div
+          className="pagination page-content__pagination"
+        >
+          <ul
+            className="pagination__list"
+          >
+            <li
+              className="pagination__page pagination__page--active"
+              key="1"
+            >
+              <a
+                className="link pagination__page-link"
+                href="/catalog/page/1"
+                onClick={[Function]}
+              >
+                1
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer
+    className="footer"
+  >
+    <div
+      className="footer__container container"
+    >
+      <a
+        className="footer__logo logo"
+      >
+        <img
+          alt="Логотип"
+          className="logo__img"
+          height="70"
+          src="./img/svg/logo.svg"
+          width="70"
+        />
+      </a>
+      <div
+        className="socials footer__socials"
+      >
+        <ul
+          className="socials__list"
+        >
+          <li
+            className="socials-item"
+          >
+            <a
+              aria-label="skype"
+              className="socials__link"
+              href="https://www.skype.com/"
+            >
+              <svg
+                aria-hidden="true"
+                className="socials__icon"
+                height="24"
+                width="24"
+              >
+                <use
+                  xlinkHref="#icon-skype"
+                />
+              </svg>
+            </a>
+          </li>
+          <li
+            className="socials-item"
+          >
+            <a
+              aria-label="vsco"
+              className="socials__link"
+              href="https://www.vsco.com/"
+            >
+              <svg
+                aria-hidden="true"
+                className="socials__icon"
+                height="24"
+                width="24"
+              >
+                <use
+                  xlinkHref="#icon-vsco"
+                />
+              </svg>
+            </a>
+          </li>
+          <li
+            className="socials-item"
+          >
+            <a
+              aria-label="pinterest"
+              className="socials__link"
+              href="https://www.pinterest.com/"
+            >
+              <svg
+                aria-hidden="true"
+                className="socials__icon"
+                height="24"
+                width="24"
+              >
+                <use
+                  xlinkHref="#icon-pinterest"
+                />
+              </svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <section
+        className="footer__nav-section footer__nav-section--info"
+      >
+        <h2
+          className="footer__nav-title"
+        >
+          О нас
+        </h2>
+        <p
+          className="footer__nav-content footer__nav-content--font-secondary"
+        >
+          Магазин гитар, музыкальных инструментов и гитарная мастерская 
+          <br />
+           в Санкт-Петербурге.
+          <br />
+          <br />
+          Все инструменты проверены, отстроены 
+          <br />
+           и доведены до идеала!
+        </p>
+      </section>
+      <section
+        className="footer__nav-section footer__nav-section--links"
+      >
+        <h2
+          className="footer__nav-title"
+        >
+          Информация
+        </h2>
+        <ul
+          className="footer__nav-list"
+        >
+          <li
+            className="footer__nav-list-item"
+          >
+            <a
+              className="link"
+              href="#top"
+            >
+              Где купить?
+            </a>
+          </li>
+          <li
+            className="footer__nav-list-item"
+          >
+            <a
+              className="link"
+              href="#top"
+            >
+              Блог
+            </a>
+          </li>
+          <li
+            className="footer__nav-list-item"
+          >
+            <a
+              className="link"
+              href="#top"
+            >
+              Вопрос - ответ
+            </a>
+          </li>
+          <li
+            className="footer__nav-list-item"
+          >
+            <a
+              className="link"
+              href="#top"
+            >
+              Возврат
+            </a>
+          </li>
+          <li
+            className="footer__nav-list-item"
+          >
+            <a
+              className="link"
+              href="#top"
+            >
+              Сервис-центры
+            </a>
+          </li>
+        </ul>
+      </section>
+      <section
+        className="footer__nav-section footer__nav-section--contacts"
+      >
+        <h2
+          className="footer__nav-title"
+        >
+          Контакты
+        </h2>
+        <p
+          className="footer__nav-content"
+        >
+          г. Санкт-Петербург,
+          <br />
+           м. Невский проспект, 
+          <br />
+          ул. Казанская 6.
+        </p>
+        <div
+          className="footer__nav-content"
+        >
+          <svg
+            aria-hidden="true"
+            className="footer__icon"
+            height="8"
+            width="8"
+          >
+            <use
+              xlinkHref="#icon-phone"
+            />
+          </svg>
+          <a
+            className="link"
+            href="tel:88125005050"
+          >
+             8-812-500-50-50
+          </a>
+        </div>
+        <p
+          className="footer__nav-content"
+        >
+          Режим работы:
+          <br />
+          <span
+            className="footer__span"
+          >
+            <svg
+              aria-hidden="true"
+              className="footer__icon"
+              height="13"
+              width="13"
+            >
+              <use
+                xlinkHref="#icon-clock"
+              />
+            </svg>
+            <span>
+               с 11:00 до 20:00
+            </span>
+            <span>
+              без выходных
+            </span>
+          </span>
+        </p>
+      </section>
+    </div>
+  </footer>
+</div>
+`;

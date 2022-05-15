@@ -1,5 +1,6 @@
 import React from 'react';
-import withModal from '../../hoc/with-modal';
+
+import {useModal} from '../../hooks/use-modal/user-modal';
 
 export interface AddCommentModalSuccessProps{
   closeModalHandler: () => void;
@@ -7,6 +8,7 @@ export interface AddCommentModalSuccessProps{
 
 function AddCommentModalSuccess(props: AddCommentModalSuccessProps) {
   const {closeModalHandler} = props;
+  useModal(closeModalHandler);
   return (
     <div className="modal is-active modal--success modal-for-ui-kit">
       <div className="modal__wrapper">
@@ -31,4 +33,4 @@ function AddCommentModalSuccess(props: AddCommentModalSuccessProps) {
   );
 }
 
-export default withModal(AddCommentModalSuccess);
+export default AddCommentModalSuccess;
