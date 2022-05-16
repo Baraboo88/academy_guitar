@@ -4,7 +4,7 @@ function Footer() {
   return (
     <footer className="footer">
       <div className="footer__container container">
-        <a className="footer__logo logo">
+        <a href={'/'} className="footer__logo logo">
           <img className="logo__img"
             width="70"
             height="70"

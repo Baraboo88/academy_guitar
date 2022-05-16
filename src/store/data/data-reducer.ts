@@ -40,7 +40,7 @@ export const DataOperation = {
   getGuitars() {
     return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
       resetIsResponseReceivedAndError(dispatch);
-      api.get<GuitarModel []>('/guitars')
+      api.get<GuitarModel []>('/guitars?_limit=27')
         .then((response) => {
           dispatch(DataActionCreator.setGuitars(response.data));
         })

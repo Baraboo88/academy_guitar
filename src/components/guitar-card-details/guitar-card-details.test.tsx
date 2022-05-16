@@ -24,6 +24,7 @@ it('GuitarCardDetails successfully rendered', () => {
   const MOCK_ERROR = '';
 
   const mockHistory = { push: jest.fn() };
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const routeComponentPropsMock = {
     history: mockHistory as any,
     location: {} as any,

@@ -5,6 +5,7 @@ import {ActiveTab, GuitarCardDetails} from './guitar-card-details';
 import {BrowserRouter} from 'react-router-dom';
 import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
 import * as Enzyme from 'enzyme';
+import {ErrorMsg} from '../../store/data/data-reducer';
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
@@ -16,9 +17,9 @@ describe('GuitarCardDetails e2e', () => {
   const mockGetComments = jest.fn();
   const mockAddComment = jest.fn();
   const mockResetIsResponseReceived = jest.fn();
-  const MOCK_ERROR = '';
 
   const mockHistory = { push: jest.fn() };
+  /* eslint-disable  @typescript-eslint/no-explicit-any */
   const routeComponentPropsMock = {
     history: mockHistory as any,
     location: {} as any,
@@ -45,7 +46,7 @@ describe('GuitarCardDetails e2e', () => {
             addComment={mockAddComment}
             isResponseReceived ={false}
             resetIsResponseReceived={mockResetIsResponseReceived}
-            error={MOCK_ERROR}
+            error={ErrorMsg.NotFound}
           />
         </BrowserRouter>
       </Provider>,
@@ -65,5 +66,15 @@ describe('GuitarCardDetails e2e', () => {
   it('Should onMount successfully working', () => {
     expect(mockOnMount).toHaveBeenCalledTimes(1);
     expect(mockOnMount).toHaveBeenCalledWith(1);
+  });
+
+  it('Should onMount GuitarCardDetails successfully working', () => {
+    expect(mockOnMount).toHaveBeenCalledTimes(1);
+    expect(mockOnMount).toHaveBeenCalledWith(1);
+  });
+
+  it('Should history push work if not found', () => {
+    expect(mockHistory.push).toHaveBeenCalledTimes(1);
+    expect(mockHistory.push).toHaveBeenCalledWith('/not-found');
   });
 });

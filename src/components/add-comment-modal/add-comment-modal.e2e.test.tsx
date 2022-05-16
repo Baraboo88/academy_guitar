@@ -1,4 +1,3 @@
-
 import * as Enzyme from 'enzyme';
 import {mount, ReactWrapper} from 'enzyme';
 import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -10,7 +9,7 @@ Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
 describe('AddCommentModal e2e', () => {
 
-  const mockCloseModalHandler = jest.fn();
+  const mockOnCloseModalHandler = jest.fn();
   const mockSetUserNameHandler = jest.fn();
   const mockSetAdvantageHandler = jest.fn();
   const mockSetDisadvantageHandler = jest.fn();
@@ -30,7 +29,7 @@ describe('AddCommentModal e2e', () => {
           disadvantage={mockCommentToAdd.disadvantage}
           rating={mockCommentToAdd.rating}
           userName={mockCommentToAdd.userName}
-          closeModalHandler={mockCloseModalHandler}
+          onCloseModalHandler={mockOnCloseModalHandler}
           setUserNameHandler={mockSetUserNameHandler}
           setAdvantageHandler={mockSetAdvantageHandler}
           setDisadvantageHandler={mockSetDisadvantageHandler}
@@ -45,7 +44,7 @@ describe('AddCommentModal e2e', () => {
 
     const closeFields =  await findByTestAtr(app, 'test-close-modal');
     closeFields.forEach((field) => field.simulate('click'));
-    expect(mockCloseModalHandler).toHaveBeenCalledTimes(2);
+    expect(mockOnCloseModalHandler).toHaveBeenCalledTimes(2);
   });
 
   it('Should user name changed', async () => {
@@ -65,7 +64,6 @@ describe('AddCommentModal e2e', () => {
 
   it('Should disadvantage changed', async () => {
 
-
     const formField =  await findByTestAtr(app, 'test-disadvantage');
     formField.simulate('change');
     expect(mockSetDisadvantageHandler).toHaveBeenCalledTimes(1);
@@ -73,7 +71,6 @@ describe('AddCommentModal e2e', () => {
   });
 
   it('Should comment changed', async () => {
-
 
     const formField =  await findByTestAtr(app, 'test-comment');
 

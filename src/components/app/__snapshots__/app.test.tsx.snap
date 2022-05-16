@@ -560,12 +560,12 @@ exports[`App successfully rendered 1`] = `
               >
                 Подробнее
               </a>
-              <a
+              <button
                 className="button button--red button--mini button--add-to-cart"
-                href="#"
+                onClick={[Function]}
               >
                 Купить
-              </a>
+              </button>
             </div>
           </div>
           <div
@@ -678,12 +678,12 @@ exports[`App successfully rendered 1`] = `
               >
                 Подробнее
               </a>
-              <a
+              <button
                 className="button button--red button--mini button--add-to-cart"
-                href="#"
+                onClick={[Function]}
               >
                 Купить
-              </a>
+              </button>
             </div>
           </div>
           <div
@@ -797,12 +797,12 @@ exports[`App successfully rendered 1`] = `
               >
                 Подробнее
               </a>
-              <a
+              <button
                 className="button button--red button--mini button--add-to-cart"
-                href="#"
+                onClick={[Function]}
               >
                 Купить
-              </a>
+              </button>
             </div>
           </div>
           <div
@@ -916,12 +916,12 @@ exports[`App successfully rendered 1`] = `
               >
                 Подробнее
               </a>
-              <a
+              <button
                 className="button button--red button--mini button--add-to-cart"
-                href="#"
+                onClick={[Function]}
               >
                 Купить
-              </a>
+              </button>
             </div>
           </div>
           <div
@@ -1034,12 +1034,12 @@ exports[`App successfully rendered 1`] = `
               >
                 Подробнее
               </a>
-              <a
+              <button
                 className="button button--red button--mini button--add-to-cart"
-                href="#"
+                onClick={[Function]}
               >
                 Купить
-              </a>
+              </button>
             </div>
           </div>
           <div
@@ -1152,12 +1152,12 @@ exports[`App successfully rendered 1`] = `
               >
                 Подробнее
               </a>
-              <a
+              <button
                 className="button button--red button--mini button--add-to-cart"
-                href="#"
+                onClick={[Function]}
               >
                 Купить
-              </a>
+              </button>
             </div>
           </div>
           <div
@@ -1270,12 +1270,12 @@ exports[`App successfully rendered 1`] = `
               >
                 Подробнее
               </a>
-              <a
+              <button
                 className="button button--red button--mini button--add-to-cart"
-                href="#"
+                onClick={[Function]}
               >
                 Купить
-              </a>
+              </button>
             </div>
           </div>
         </div>
@@ -1310,6 +1310,7 @@ exports[`App successfully rendered 1`] = `
     >
       <a
         className="footer__logo logo"
+        href="/"
       >
         <img
           alt="Логотип"

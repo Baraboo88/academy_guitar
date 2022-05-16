@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {getDataError, getDataIsResponseReceived, getGuitars} from '../../store/data/data-selectors';
 import {StateModel} from '../../types/redux-models';
 
@@ -27,12 +27,13 @@ interface MainProps {
 
 
 function Main(props: MainProps & RouteComponentProps<MatchParams>) {
-  const {onMount, guitars, isResponseReceived, errorMsg, getCommentsCount} = props;
+  const {onMount, guitars, isResponseReceived, errorMsg, getCommentsCount, history} = props;
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [innerGuitars, setInnerGuitars] = useState<GuitarModel []>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingCommentsCount, setIsLoadingCommentsCount] = useState<boolean>(true);
+
   useEffect(() => {
     if (isResponseReceived && errorMsg) {
       setError(errorMsg);
@@ -48,20 +49,10 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
       }
     }
 
-  }, [guitars, onMount, isResponseReceived, errorMsg]);
+  }, [guitars, onMount, isResponseReceived, errorMsg, getCommentsCount, isLoadingCommentsCount]);
 
 
-  useEffect(() => {
-    if(props.match.params.id){
-      setCurrentPage(Number(props.match.params.id));
-    } else {
-      setCurrentPage(1);
-    }
-
-  }, [props.match.params.id]);
-
-
-  const getAllPages = () => {
+  const getAllPages = useCallback(() => {
     let allPages = 0;
     if (guitars) {
       if (guitars.length % ITEMS_ON_THE_PAGE === 0) {
@@ -71,7 +62,20 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
       }
     }
     return allPages;
-  };
+  }, [guitars]);
+
+  useEffect(() => {
+    if(props.match.params.id){
+      setCurrentPage(Number(props.match.params.id));
+    } else {
+      setCurrentPage(1);
+    }
+
+    if(guitars && guitars.length > 0 && getAllPages() < Number(props.match.params.id)){
+      history.push('/not-found');
+    }
+
+  }, [props.match.params.id, guitars, getAllPages, history]);
 
 
   const renderPagination = () => {
@@ -100,7 +104,7 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
           <ul className="breadcrumbs page-content__breadcrumbs">
             <li className="breadcrumbs__item"><Link to={'/'} className="link">Главная</Link>
             </li>
-            <li className="breadcrumbs__item"><a className="link">Каталог</a>
+            <li className="breadcrumbs__item"><span >Каталог</span>
             </li>
           </ul>
           <div className="catalog">

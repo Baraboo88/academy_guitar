@@ -9,6 +9,7 @@ exports[`Footer successfully rendered 1`] = `
   >
     <a
       className="footer__logo logo"
+      href="/"
     >
       <img
         alt="Логотип"

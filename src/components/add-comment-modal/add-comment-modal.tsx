@@ -5,7 +5,7 @@ import FocusTrap from 'focus-trap-react';
 import {useModal} from '../../hooks/use-modal/user-modal';
 
 interface AddCommentModalProps{
-  closeModalHandler: () => void;
+  onCloseModalHandler: () => void;
   guitar: GuitarModel;
   userName: string;
   setUserNameHandler: (name: string) => void;
@@ -25,7 +25,7 @@ export const NUMBER_OF_START = 5;
 const MOCK_FILL_VALUE = 1;
 
 function AddCommentModal(props: AddCommentModalProps) {
-  const{closeModalHandler, guitar,userName,
+  const{onCloseModalHandler, guitar,userName,
     setUserNameHandler,
     advantage,
     setAdvantageHandler,
@@ -36,7 +36,7 @@ function AddCommentModal(props: AddCommentModalProps) {
     rating,
     setRatingHandler, onSubmitHandler} = props;
 
-  useModal(closeModalHandler);
+  useModal(onCloseModalHandler);
 
   const renderStars = () => new Array(NUMBER_OF_START).fill(MOCK_FILL_VALUE).map((_,index) => {
     const starNo = NUMBER_OF_START - index + 1;
@@ -55,7 +55,7 @@ function AddCommentModal(props: AddCommentModalProps) {
     <FocusTrap>
       <div className="modal is-active modal--review modal-for-ui-kit">
         <div className="modal__wrapper">
-          <div className="modal__overlay" data-close-modal onClick={closeModalHandler} data-test="test-close-modal"></div>
+          <div className="modal__overlay" data-close-modal onClick={onCloseModalHandler} data-test="test-close-modal"></div>
           <div className="modal__content">
             <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
             <h3 className="modal__product-name title title--medium-20 title--uppercase">{guitar && guitar.name}</h3>
@@ -121,11 +121,11 @@ function AddCommentModal(props: AddCommentModalProps) {
 
             </form>
 
-            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
+            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" data-test="test-close-modal" onClick={onCloseModalHandler}>
               <span
                 className="button-cross__icon"
               >
-              </span><span className="modal__close-btn-interactive-area" onClick={closeModalHandler} data-test="test-close-modal"></span>
+              </span><span className="modal__close-btn-interactive-area"  ></span>
             </button>
           </div>
         </div>

@@ -1,17 +1,18 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 function Header() {
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
-        <a className="header__logo logo">
+        <Link className="header__logo logo" to='/'>
           <img className="logo__img"
             width="70"
             height="70"
             src="/img/svg/logo.svg"
             alt="Логотип"
           />
-        </a>
+        </Link>
         <nav className="main-nav">
           <ul className="main-nav__list">
             <li><a className="link main-nav__link link--current" href="#">Каталог</a>

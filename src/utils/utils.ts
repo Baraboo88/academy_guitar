@@ -50,3 +50,4 @@ export const monthNames = ['января', 'февраля ', 'марта', 'а�
 
 
 export const getPriceWithSpaces = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+

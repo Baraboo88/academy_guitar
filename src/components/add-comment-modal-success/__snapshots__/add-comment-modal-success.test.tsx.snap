@@ -10,6 +10,8 @@ exports[`AddCommentModalSuccess successfully rendered 1`] = `
     <div
       className="modal__overlay"
       data-close-modal={true}
+      data-test="test-close-modal"
+      onClick={[MockFunction]}
     />
     <div
       className="modal__content"
@@ -34,6 +36,7 @@ exports[`AddCommentModalSuccess successfully rendered 1`] = `
       >
         <button
           className="button button--small modal__button modal__button--review"
+          data-test="test-close-modal"
           onClick={[MockFunction]}
         >
           К покупкам!
@@ -42,6 +45,7 @@ exports[`AddCommentModalSuccess successfully rendered 1`] = `
       <button
         aria-label="Закрыть"
         className="modal__close-btn button-cross"
+        data-test="test-close-modal"
         onClick={[MockFunction]}
         type="button"
       >

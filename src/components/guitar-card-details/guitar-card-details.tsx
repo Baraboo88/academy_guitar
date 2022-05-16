@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StateModel} from '../../types/redux-models';
 import {getCurrentGuitar, getDataError, getDataIsResponseReceived} from '../../store/data/data-selectors';
 import {DataActionCreator, DataOperation, ErrorMsg} from '../../store/data/data-reducer';
@@ -12,6 +12,8 @@ import Footer from '../footer/footer';
 import CommentCard from '../comment-card/comment-card';
 import AddCommentModal from '../add-comment-modal/add-comment-modal';
 import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-modal-success';
+import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
+import useOnScreen from '../../hooks/use-on-screen/use-on-screen';
 
 
 const COMMENTS_TO_SKIP = 3;
@@ -51,10 +53,26 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
   const [modalCommentIsSending, setModalCommentIsSending] = useState(false);
   const [isCommentAddSuccess, setIsCommentAddSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>();
+  const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
 
+  const ref = useRef<HTMLDivElement>(null);
+  const isVisible = useOnScreen(ref);
+
+
+  const showMoreCommentsHandler = useCallback(() => {
+
+    setCommentsToSkip(commentsToSkip + COMMENTS_TO_SKIP);
+  },[commentsToSkip]);
+
+  useEffect(() => {
+    if(isVisible && commentsToSkip !== COMMENTS_TO_SKIP){
+      showMoreCommentsHandler();
+    }
+  },[isVisible, showMoreCommentsHandler, commentsToSkip]);
 
   useEffect(() => {
     if (error === ErrorMsg.NotFound) {
+
       history.push('/not-found');
     }
   }, [error, history]);
@@ -91,7 +109,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
 
     }
 
-  }, [currentGuitar]);
+  }, [currentGuitar, getComments]);
 
   useEffect(() => {
 
@@ -104,7 +122,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
       setDisadvantage('');
       setComment('');
     }
-  },[modalCommentIsSending, isResponseReceived]);
+  },[modalCommentIsSending, isResponseReceived, error]);
 
   useEffect(() => () => {
     resetIsResponseReceived();
@@ -115,6 +133,10 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
       addComment(currentGuitar,commentAdded);
       setModalCommentIsSending(true);
     }
+  };
+
+  const onCloseAddToCartModalHandler = () => {
+    setIsAddToCardPopUpOpened(false);
   };
 
   const userNameSetHandler = (name: string) => {
@@ -138,10 +160,6 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
   };
 
 
-  const showMoreCommentsHandler = () => {
-    setCommentsToSkip(commentsToSkip + COMMENTS_TO_SKIP);
-  };
-
   const closeAddCommentModalHandler = () => {
     setIsAddCommentOpened(false);
   };
@@ -159,7 +177,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                 </li>
                 <li className="breadcrumbs__item"><Link to={'/'} className="link">Каталог</Link>
                 </li>
-                <li className="breadcrumbs__item"><a className="link">{currentGuitar.name}</a>
+                <li className="breadcrumbs__item"><span >{currentGuitar.name}</span>
                 </li>
               </ul>
 
@@ -219,11 +237,14 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                 <div className="product-container__price-wrapper">
                   <p className="product-container__price-info product-container__price-info--title">Цена:</p>
                   <p className="product-container__price-info product-container__price-info--value">{getPriceWithSpaces(currentGuitar.price)} ₽</p>
-                  <a
-                    className="button button--red button--big product-container__button" href="#"
+                  <button
+                    onClick={() => {
+                      setIsAddToCardPopUpOpened(true);
+                    }}
+                    className="button button--red button--big product-container__button"
                   >Добавить в
                     корзину
-                  </a>
+                  </button>
                 </div>
               </div>
 
@@ -240,7 +261,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                 {(currentGuitar?.comments && currentGuitar?.comments.length > 0) ? currentGuitar?.comments.slice(0, commentsToSkip).map((innerComment) =>
                   <CommentCard key={innerComment.id} comment={innerComment}/>) : <div/>}
 
-                {(currentGuitar?.comments && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
+                {(commentsToSkip === COMMENTS_TO_SKIP && currentGuitar?.comments && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
 
                     <button onClick={() => {
                       showMoreCommentsHandler();
@@ -258,8 +279,8 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
 
               </section>
               {isAddCommentOpened && (isCommentAddSuccess ?
-                <AddCommentModalSuccess closeModalHandler={closeAddCommentModalHandler}/> :
-                <AddCommentModal closeModalHandler={closeAddCommentModalHandler} guitar={currentGuitar}
+                <AddCommentModalSuccess onCloseModalHandler={closeAddCommentModalHandler}/> :
+                <AddCommentModal onCloseModalHandler={closeAddCommentModalHandler} guitar={currentGuitar}
                   userName={userName} setUserNameHandler={userNameSetHandler}
                   advantage={advantage} setAdvantageHandler={advantageSetHandler}
                   disadvantage={disadvantage} setDisadvantageHandler={disadvantageSetHandler}
@@ -268,10 +289,11 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                   onSubmitHandler={onSubmitHandler}
                 />)}
 
-
+              {isAddToCardPopUpOpened && <AddToCartModal onCloseModalHandler={onCloseAddToCartModalHandler} guitar={currentGuitar}/>}
             </div>}
+        <div  ref={ref}></div>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
