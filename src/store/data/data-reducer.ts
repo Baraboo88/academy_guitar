@@ -62,8 +62,11 @@ export const DataOperation = {
         .catch((error) => {
           if (error.response.status === ResponseStatus.BadRequest) {
             dispatch(DataActionCreator.setError(ErrorMsg.Other));
+          } else if (error.response.status === ResponseStatus.NotFound) {
+            dispatch(DataActionCreator.setError(ErrorMsg.NotFound));
+          } else {
+            dispatch(DataActionCreator.setError(error.message));
           }
-          dispatch(DataActionCreator.setError(error.message));
         });
     };
   },

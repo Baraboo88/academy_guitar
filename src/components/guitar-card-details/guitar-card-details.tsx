@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {StateModel} from '../../types/redux-models';
 import {getCurrentGuitar, getDataError, getDataIsResponseReceived} from '../../store/data/data-selectors';
-import {DataActionCreator, DataOperation} from '../../store/data/data-reducer';
+import {DataActionCreator, DataOperation, ErrorMsg} from '../../store/data/data-reducer';
 import {connect} from 'react-redux';
 import {AddCommentModel, GuitarModel} from '../../types/guitar-model';
 import {Link, RouteComponentProps} from 'react-router-dom';
@@ -39,7 +39,7 @@ export enum ActiveTab{
 
 function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<MatchParams>) {
 
-  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived} = props;
+  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived, history} = props;
   const [commentsToSkip, setCommentsToSkip] = useState(COMMENTS_TO_SKIP);
   const [isAddCommentOpened, setIsAddCommentOpened] = useState(false);
 
@@ -51,6 +51,14 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
   const [modalCommentIsSending, setModalCommentIsSending] = useState(false);
   const [isCommentAddSuccess, setIsCommentAddSuccess] = useState(false);
   const [activeTab, setActiveTab] = useState<ActiveTab>();
+
+
+  useEffect(() => {
+    if (error === ErrorMsg.NotFound) {
+      history.push('/not-found');
+    }
+  }, [error, history]);
+
   useEffect(() => {
 
     onMount(Number(props.match.params.id));
@@ -139,7 +147,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
   };
 
   return (
-    <div>
+    <div className="wrapper">
 
       <Header/>
       <main className="page-content">
