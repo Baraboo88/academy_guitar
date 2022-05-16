@@ -5,6 +5,8 @@ import thunk from 'redux-thunk';
 import {ReactWrapper} from 'enzyme';
 
 
+export const MOCK_ERROR= 'Somme error';
+
 export const mockGuitars: GuitarModel[] = [
   {
     id: 1,

@@ -53,7 +53,6 @@ describe('GuitarCardDetails e2e', () => {
   });
 
   it('Should resetCurrentQuest successfully working', () => {
-
     app.unmount();
     expect(mockResetCurrentGuitar).toHaveBeenCalledTimes(1);
   });

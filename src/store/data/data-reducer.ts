@@ -6,7 +6,6 @@ import { AxiosStatic} from 'axios';
 export enum DataAction {
     SetGuitars = 'set-guitars',
     SetCurrentGuitar = 'set-current-guitar',
-    SetGuitarsCommentsCount = 'set-guitars-comments-count',
     SetError = 'set-error',
     SetIsResponseReceived = 'set-is-response-received',
 }
