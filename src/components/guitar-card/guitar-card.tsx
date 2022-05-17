@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {GuitarModel} from '../../types/guitar-model';
-import {generateStarsArray, getCyrillicRating, getPriceWithSpaces, imageAdapter} from '../../utils/utils';
+import {generateStarsArray, getCyrillicRating, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
 
@@ -49,8 +49,8 @@ function GuitarCard(props :GuitarCardProps) {
   return (
     <>
       <div className="product-card">
-        <img src={`/img/content/catalog-product-${imageAdapter(card.previewImg)}.jpg`}
-          srcSet={`/img/content/catalog-product-${imageAdapter(card.previewImg)}@2x.jpg 2x`}
+        <img src={`/img/content/catalog-product-${getAdapterImage(card.previewImg)}.jpg`}
+          srcSet={`/img/content/catalog-product-${getAdapterImage(card.previewImg)}@2x.jpg 2x`}
           width="75"
           height="190" alt={`${card.name}`}
         />
@@ -85,7 +85,7 @@ function GuitarCard(props :GuitarCardProps) {
         </div>
 
       </div>
-      {isAddToCardPopUpOpened && <AddToCartModal onCloseModalHandler={onCloseModalHandler} guitar={card}/>}
+      {isAddToCardPopUpOpened && <AddToCartModal onModalClose={onCloseModalHandler} guitar={card}/>}
     </>
   );
 }

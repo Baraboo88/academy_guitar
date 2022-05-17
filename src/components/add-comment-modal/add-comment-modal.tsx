@@ -1,49 +1,48 @@
 import React from 'react';
 import {AddCommentModel, GuitarModel} from '../../types/guitar-model';
-import {getCyrillicRating} from '../../utils/utils';
+import {getCyrillicRating, MOCK_FILL_VALUE} from '../../utils/utils';
 import FocusTrap from 'focus-trap-react';
 import {useModal} from '../../hooks/use-modal/user-modal';
 
 interface AddCommentModalProps{
-  onCloseModalHandler: () => void;
+  onCloseModal: () => void;
   guitar: GuitarModel;
   userName: string;
-  setUserNameHandler: (name: string) => void;
+  onSetUserName: (name: string) => void;
   advantage: string;
-  setAdvantageHandler: (adv: string) => void;
+  onSetAdvantage: (adv: string) => void;
   disadvantage:string;
-  setDisadvantageHandler: (disadv: string) => void;
+  onSetDisadvantage: (disadv: string) => void;
   comment: string;
-  setCommentHandler: (comment: string) => void;
+  onSetComment: (comment: string) => void;
   rating: number;
-  setRatingHandler: (rating: number) => void;
+  onSetRating: (rating: number) => void;
   onSubmitHandler: (comment: AddCommentModel) => void;
 }
 
 
 export const NUMBER_OF_START = 5;
-const MOCK_FILL_VALUE = 1;
 
 function AddCommentModal(props: AddCommentModalProps) {
-  const{onCloseModalHandler, guitar,userName,
-    setUserNameHandler,
+  const{onCloseModal, guitar,userName,
+    onSetUserName,
     advantage,
-    setAdvantageHandler,
+    onSetAdvantage,
     disadvantage,
-    setDisadvantageHandler,
+    onSetDisadvantage,
     comment,
-    setCommentHandler,
+    onSetComment,
     rating,
-    setRatingHandler, onSubmitHandler} = props;
+    onSetRating, onSubmitHandler} = props;
 
-  useModal(onCloseModalHandler);
+  useModal(onCloseModal);
 
   const renderStars = () => new Array(NUMBER_OF_START).fill(MOCK_FILL_VALUE).map((_,index) => {
     const starNo = NUMBER_OF_START - index + 1;
     return (
       <React.Fragment key={getCyrillicRating(starNo)}>
         <input  className="visually-hidden" id={`star-${starNo}`} name="rate" type="radio" value={starNo} onChange={(evt) => {
-          setRatingHandler(Number(evt.target.value));
+          onSetRating(Number(evt.target.value));
         }}
         data-test="test-rating"
         />
@@ -55,7 +54,7 @@ function AddCommentModal(props: AddCommentModalProps) {
     <FocusTrap>
       <div className="modal is-active modal--review modal-for-ui-kit">
         <div className="modal__wrapper">
-          <div className="modal__overlay" data-close-modal onClick={onCloseModalHandler} data-test="test-close-modal"></div>
+          <div className="modal__overlay" data-close-modal onClick={onCloseModal} data-test="test-close-modal"></div>
           <div className="modal__content">
             <h2 className="modal__header modal__header--review title title--medium">Оставить отзыв</h2>
             <h3 className="modal__product-name title title--medium-20 title--uppercase">{guitar && guitar.name}</h3>
@@ -76,7 +75,7 @@ function AddCommentModal(props: AddCommentModalProps) {
                     autoComplete="off"
                     value = {userName}
                     onChange={(evt) => {
-                      setUserNameHandler(evt.target.value);
+                      onSetUserName(evt.target.value);
                     }}
                     data-test="test-user-name"
                   />
@@ -85,21 +84,20 @@ function AddCommentModal(props: AddCommentModalProps) {
                 <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                   <div className="rate rate--reverse" >
                     {renderStars()}
-
                     {!rating && <p className="rate__message">Поставьте оценку</p>}
                   </div>
                 </div>
               </div>
               <label className="form-review__label form-review__label--required" htmlFor="adv">Достоинства</label>
               <input value={advantage} onChange={(evt) => {
-                setAdvantageHandler(evt.target.value);
+                onSetAdvantage(evt.target.value);
               }} className="form-review__input" id="adv" type="text" autoComplete="off"
               data-test="test-advantage"
               />
               {!advantage && <p className="form-review__warning">Заполните поле</p>}
               <label className="form-review__label form-review__label--required" htmlFor="disadv">Недостатки</label>
               <input value={disadvantage} onChange={(evt) => {
-                setDisadvantageHandler(evt.target.value);
+                onSetDisadvantage(evt.target.value);
               }} className="form-review__input" id="disadv" type="text" autoComplete="off"
               data-test="test-disadvantage"
               />
@@ -109,7 +107,7 @@ function AddCommentModal(props: AddCommentModalProps) {
               >Комментарий
               </label>
               <textarea value={comment} onChange={(evt) => {
-                setCommentHandler(evt.target.value);
+                onSetComment(evt.target.value);
               }} className="form-review__input form-review__input--textarea" id="comment" rows={10}
               autoComplete="off"
               data-test="test-comment"
@@ -121,7 +119,7 @@ function AddCommentModal(props: AddCommentModalProps) {
 
             </form>
 
-            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" data-test="test-close-modal" onClick={onCloseModalHandler}>
+            <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" data-test="test-close-modal" onClick={onCloseModal}>
               <span
                 className="button-cross__icon"
               >

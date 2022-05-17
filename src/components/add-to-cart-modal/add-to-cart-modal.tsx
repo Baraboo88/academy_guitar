@@ -1,25 +1,25 @@
 import React from 'react';
 import {useModal} from '../../hooks/use-modal/user-modal';
 import {GuitarModel} from '../../types/guitar-model';
-import {getCyrillicType, getPriceWithSpaces, imageAdapter} from '../../utils/utils';
+import {getCyrillicType, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
 
 export interface AddToCartModelProps{
-    onCloseModalHandler: () => void;
+    onModalClose: () => void;
     guitar: GuitarModel;
 }
 function AddToCartModal(props: AddToCartModelProps) {
-  const {onCloseModalHandler, guitar} = props;
-  useModal(onCloseModalHandler);
+  const {onModalClose, guitar} = props;
+  useModal(onModalClose);
   return (
     <div className="modal is-active modal-for-ui-kit">
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal  onClick={onCloseModalHandler} data-test="test-close-modal"></div>
+        <div className="modal__overlay" data-close-modal onClick={onModalClose} data-test="test-close-modal"></div>
         <div className="modal__content">
           <h2 className="modal__header title title--medium">Добавить товар в корзину</h2>
           <div className="modal__info">
             <img className="modal__img"
-              src={`/img/content/catalog-product-${imageAdapter(guitar.previewImg)}.jpg`}
-              srcSet={`/img/content/catalog-product-${imageAdapter(guitar.previewImg)}@2x.jpg 2x`}
+              src={`/img/content/catalog-product-${getAdapterImage(guitar.previewImg)}.jpg`}
+              srcSet={`/img/content/catalog-product-${getAdapterImage(guitar.previewImg)}@2x.jpg 2x`}
               width="67"
               height="137" alt={guitar.name}
             />
@@ -41,7 +41,7 @@ function AddToCartModal(props: AddToCartModelProps) {
                           корзину
             </button>
           </div>
-          <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" data-test="test-close-modal" onClick={onCloseModalHandler}>
+          <button className="modal__close-btn button-cross" type="button" aria-label="Закрыть" data-test="test-close-modal" onClick={onModalClose}>
             <span
               className="button-cross__icon"
             >

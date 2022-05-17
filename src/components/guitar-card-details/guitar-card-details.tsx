@@ -5,7 +5,7 @@ import {DataActionCreator, DataOperation, ErrorMsg} from '../../store/data/data-
 import {connect} from 'react-redux';
 import {AddCommentModel, GuitarModel} from '../../types/guitar-model';
 import {Link, RouteComponentProps} from 'react-router-dom';
-import {getCyrillicRating, getCyrillicType, getPriceWithSpaces, imageAdapter} from '../../utils/utils';
+import {getCyrillicRating, getCyrillicType, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
 import {renderStars, StarSize} from '../guitar-card/guitar-card';
 import Header from '../header/header';
 import Footer from '../footer/footer';
@@ -59,16 +59,16 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
   const isVisible = useOnScreen(ref);
 
 
-  const showMoreCommentsHandler = useCallback(() => {
+  const handlerCommentsShowMore = useCallback(() => {
 
     setCommentsToSkip(commentsToSkip + COMMENTS_TO_SKIP);
   },[commentsToSkip]);
 
   useEffect(() => {
     if(isVisible && commentsToSkip !== COMMENTS_TO_SKIP){
-      showMoreCommentsHandler();
+      handlerCommentsShowMore();
     }
-  },[isVisible, showMoreCommentsHandler, commentsToSkip]);
+  },[isVisible, handlerCommentsShowMore, commentsToSkip]);
 
   useEffect(() => {
     if (error === ErrorMsg.NotFound) {
@@ -128,39 +128,39 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
     resetIsResponseReceived();
   },[resetIsResponseReceived]);
 
-  const onSubmitHandler = (commentAdded: AddCommentModel) => {
+  const handlerCommentSubmit = (commentAdded: AddCommentModel) => {
     if(commentAdded.userName && commentAdded.advantage && commentAdded.disadvantage && commentAdded.comment && commentAdded.rating&& currentGuitar){
       addComment(currentGuitar,commentAdded);
       setModalCommentIsSending(true);
     }
   };
 
-  const onCloseAddToCartModalHandler = () => {
+  const handlerAddToCartModalClose = () => {
     setIsAddToCardPopUpOpened(false);
   };
 
-  const userNameSetHandler = (name: string) => {
+  const handlerUserNameSet = (name: string) => {
     setUserName(name);
   };
 
-  const advantageSetHandler = (adv: string) => {
+  const handlerAdvantageSet = (adv: string) => {
     setAdvantage(adv);
   };
 
-  const disadvantageSetHandler = (disadv: string) => {
+  const handlerDisadvantageSet = (disadv: string) => {
     setDisadvantage(disadv);
   };
 
-  const commentSetHandler = (userComment: string) => {
+  const handlerCommentSet = (userComment: string) => {
     setComment(userComment);
   };
 
-  const ratingSetHandler = (userRating: number) => {
+  const handlerRatingSet = (userRating: number) => {
     setRating(userRating);
   };
 
 
-  const closeAddCommentModalHandler = () => {
+  const handlerAddCommentModalClose = () => {
     setIsAddCommentOpened(false);
   };
 
@@ -184,8 +184,8 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
 
               <div className="product-container">
                 <img className="product-container__img"
-                  src={`/img/content/catalog-product-${imageAdapter(currentGuitar.previewImg)}.jpg`}
-                  srcSet={`/img/content/catalog-product-${imageAdapter(currentGuitar.previewImg)}@2x.jpg 2x`}
+                  src={`/img/content/catalog-product-${getAdapterImage(currentGuitar.previewImg)}.jpg`}
+                  srcSet={`/img/content/catalog-product-${getAdapterImage(currentGuitar.previewImg)}@2x.jpg 2x`}
                   width="90"
                   height="235" alt=""
                 />
@@ -264,7 +264,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                 {(commentsToSkip === COMMENTS_TO_SKIP && currentGuitar?.comments && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
 
                     <button onClick={() => {
-                      showMoreCommentsHandler();
+                      handlerCommentsShowMore();
                     }} className="button button--medium reviews__more-button"
                     >Показать еще отзывы
                     </button>}
@@ -279,17 +279,17 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
 
               </section>
               {isAddCommentOpened && (isCommentAddSuccess ?
-                <AddCommentModalSuccess onCloseModalHandler={closeAddCommentModalHandler}/> :
-                <AddCommentModal onCloseModalHandler={closeAddCommentModalHandler} guitar={currentGuitar}
-                  userName={userName} setUserNameHandler={userNameSetHandler}
-                  advantage={advantage} setAdvantageHandler={advantageSetHandler}
-                  disadvantage={disadvantage} setDisadvantageHandler={disadvantageSetHandler}
-                  rating={rating} setRatingHandler={ratingSetHandler}
-                  comment={comment} setCommentHandler={commentSetHandler}
-                  onSubmitHandler={onSubmitHandler}
+                <AddCommentModalSuccess onModalClose={handlerAddCommentModalClose}/> :
+                <AddCommentModal onCloseModal={handlerAddCommentModalClose} guitar={currentGuitar}
+                  userName={userName} onSetUserName={handlerUserNameSet}
+                  advantage={advantage} onSetAdvantage={handlerAdvantageSet}
+                  disadvantage={disadvantage} onSetDisadvantage={handlerDisadvantageSet}
+                  rating={rating} onSetRating={handlerRatingSet}
+                  comment={comment} onSetComment={handlerCommentSet}
+                  onSubmitHandler={handlerCommentSubmit}
                 />)}
 
-              {isAddToCardPopUpOpened && <AddToCartModal onCloseModalHandler={onCloseAddToCartModalHandler} guitar={currentGuitar}/>}
+              {isAddToCardPopUpOpened && <AddToCartModal onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
             </div>}
         <div  ref={ref}></div>
       </main>

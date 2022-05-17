@@ -2,7 +2,7 @@ import {GuitarType} from '../types/guitar-model';
 
 const STARTS_AMOUNT = 5;
 
-export const imageAdapter = (img: string) => img.slice(img.length - 5, img.length - 4);
+export const getAdapterImage = (img: string) => img.slice(img.length - 5, img.length - 4);
 
 
 export const generateStarsArray = () => {
@@ -51,3 +51,4 @@ export const monthNames = ['января', 'февраля ', 'марта', 'а�
 
 export const getPriceWithSpaces = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
+export const MOCK_FILL_VALUE = 1;

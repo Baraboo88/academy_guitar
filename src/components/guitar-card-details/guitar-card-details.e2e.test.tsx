@@ -6,6 +6,7 @@ import {BrowserRouter} from 'react-router-dom';
 import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
 import * as Enzyme from 'enzyme';
 import {ErrorMsg} from '../../store/data/data-reducer';
+import 'intersection-observer';
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
 

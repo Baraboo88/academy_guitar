@@ -36,6 +36,7 @@
     "enzyme-to-json": "3.6.2",
     "eslint-config-htmlacademy": "4.1.0",
     "faker": "5.5.3",
+    "intersection-observer": "^0.12.0",
     "jest-watch-typeahead": "^0.6.5",
     "react-test-renderer": "17.0.2",
     "redux-devtools-extension": "2.13",

@@ -14,13 +14,13 @@ Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
 
 it('AddCommentModal successfully rendered', () => {
-  const mockCloseModalHandler = jest.fn();
-  const mockSetUserNameHandler = jest.fn();
-  const mockSetAdvantageHandler = jest.fn();
-  const mockSetDisadvantageHandler = jest.fn();
-  const mockSetCommentHandler = jest.fn();
-  const mockSetRatingHandler = jest.fn();
-  const mockOnSubmitHandler = jest.fn();
+  const mockHandlerModalClose = jest.fn();
+  const mockHandlerUserNameSet = jest.fn();
+  const mockHandlerAdvantageSet = jest.fn();
+  const mockHandlerDisadvantageSet = jest.fn();
+  const mockHandlerCommentSet = jest.fn();
+  const mockHandlerRatingSet = jest.fn();
+  const mockHandlerCommentSubmit = jest.fn();
   const tree = mount(
     <Provider store={getTestStore()}>
       <AddCommentModal
@@ -30,13 +30,13 @@ it('AddCommentModal successfully rendered', () => {
         disadvantage={mockCommentToAdd.disadvantage}
         rating={mockCommentToAdd.rating}
         userName={mockCommentToAdd.userName}
-        onCloseModalHandler={mockCloseModalHandler}
-        setUserNameHandler={mockSetUserNameHandler}
-        setAdvantageHandler={mockSetAdvantageHandler}
-        setDisadvantageHandler={mockSetDisadvantageHandler}
-        setCommentHandler={mockSetCommentHandler}
-        setRatingHandler={mockSetRatingHandler}
-        onSubmitHandler={mockOnSubmitHandler}
+        onCloseModal={mockHandlerModalClose}
+        onSetUserName={mockHandlerUserNameSet}
+        onSetAdvantage={mockHandlerAdvantageSet}
+        onSetDisadvantage={mockHandlerDisadvantageSet}
+        onSetComment={mockHandlerCommentSet}
+        onSetRating={mockHandlerRatingSet}
+        onSubmitHandler={mockHandlerCommentSubmit}
 
       />
     </Provider>,

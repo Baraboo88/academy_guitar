@@ -15,7 +15,7 @@ describe('AddCommentModalSuccess e2e', () => {
 
   beforeEach(() => {
     app = mount(
-      <AddToCartModal guitar={mockGuitars[0]}  onCloseModalHandler={mockOnCloseModalHandler}/>,
+      <AddToCartModal guitar={mockGuitars[0]}  onModalClose={mockOnCloseModalHandler}/>,
     );
   });
 

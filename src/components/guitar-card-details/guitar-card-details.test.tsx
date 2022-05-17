@@ -11,6 +11,7 @@ import {getTestStore, mockGuitars} from '../../utils/test-utils';
 import {ActiveTab, GuitarCardDetails} from './guitar-card-details';
 import { BrowserRouter } from 'react-router-dom';
 
+import 'intersection-observer';
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
 

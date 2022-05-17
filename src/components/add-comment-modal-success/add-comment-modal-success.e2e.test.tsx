@@ -10,18 +10,18 @@ Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
 describe('AddCommentModalSuccess e2e', () => {
 
-  const mockOnCloseModalHandler = jest.fn();
+  const mockHandlerModalClose = jest.fn();
   let app: ReactWrapper;
 
   beforeEach(() => {
     app = mount(
-      <AddCommentModalSuccess onCloseModalHandler={mockOnCloseModalHandler}/>,
+      <AddCommentModalSuccess onModalClose={mockHandlerModalClose}/>,
     );
   });
 
   it('Should modal close executed', async () => {
     const closeFields = await findByTestAtr(app, 'test-close-modal');
     closeFields.forEach((field) => field.simulate('click'));
-    expect(mockOnCloseModalHandler).toHaveBeenCalledTimes(3);
+    expect(mockHandlerModalClose).toHaveBeenCalledTimes(3);
   });
 });

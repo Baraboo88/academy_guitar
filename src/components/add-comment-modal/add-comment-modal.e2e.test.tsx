@@ -9,13 +9,13 @@ Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
 describe('AddCommentModal e2e', () => {
 
-  const mockOnCloseModalHandler = jest.fn();
-  const mockSetUserNameHandler = jest.fn();
-  const mockSetAdvantageHandler = jest.fn();
-  const mockSetDisadvantageHandler = jest.fn();
-  const mockSetCommentHandler = jest.fn();
-  const mockSetRatingHandler = jest.fn();
-  const mockOnSubmitHandler = jest.fn();
+  const mockHandlerModalClose = jest.fn();
+  const mockHandlerUserNameSet = jest.fn();
+  const mockHandlerAdvantageSet = jest.fn();
+  const mockHandlerDisadvantageSet = jest.fn();
+  const mockHandlerCommentSet = jest.fn();
+  const mockHandlerRatingSet = jest.fn();
+  const mockHandlerCommentSubmit = jest.fn();
 
   let app: ReactWrapper;
 
@@ -29,13 +29,13 @@ describe('AddCommentModal e2e', () => {
           disadvantage={mockCommentToAdd.disadvantage}
           rating={mockCommentToAdd.rating}
           userName={mockCommentToAdd.userName}
-          onCloseModalHandler={mockOnCloseModalHandler}
-          setUserNameHandler={mockSetUserNameHandler}
-          setAdvantageHandler={mockSetAdvantageHandler}
-          setDisadvantageHandler={mockSetDisadvantageHandler}
-          setCommentHandler={mockSetCommentHandler}
-          setRatingHandler={mockSetRatingHandler}
-          onSubmitHandler={mockOnSubmitHandler}
+          onCloseModal={mockHandlerModalClose}
+          onSetUserName={mockHandlerUserNameSet}
+          onSetAdvantage={mockHandlerAdvantageSet }
+          onSetDisadvantage={mockHandlerDisadvantageSet}
+          onSetComment={mockHandlerCommentSet}
+          onSetRating={mockHandlerRatingSet}
+          onSubmitHandler={mockHandlerCommentSubmit}
         />
       </Provider>);
   });
@@ -44,21 +44,21 @@ describe('AddCommentModal e2e', () => {
 
     const closeFields =  await findByTestAtr(app, 'test-close-modal');
     closeFields.forEach((field) => field.simulate('click'));
-    expect(mockOnCloseModalHandler).toHaveBeenCalledTimes(2);
+    expect(mockHandlerModalClose).toHaveBeenCalledTimes(2);
   });
 
   it('Should user name changed', async () => {
 
     const formField =  await findByTestAtr(app, 'test-user-name');
     formField.simulate('change');
-    expect(mockSetUserNameHandler).toHaveBeenCalledTimes(1);
+    expect(mockHandlerUserNameSet).toHaveBeenCalledTimes(1);
 
   });
 
   it('Should advantage changed', async () => {
     const formField =  await findByTestAtr(app, 'test-advantage');
     formField.simulate('change');
-    expect(mockSetAdvantageHandler).toHaveBeenCalledTimes(1);
+    expect(mockHandlerAdvantageSet ).toHaveBeenCalledTimes(1);
 
   });
 
@@ -66,7 +66,7 @@ describe('AddCommentModal e2e', () => {
 
     const formField =  await findByTestAtr(app, 'test-disadvantage');
     formField.simulate('change');
-    expect(mockSetDisadvantageHandler).toHaveBeenCalledTimes(1);
+    expect(mockHandlerDisadvantageSet).toHaveBeenCalledTimes(1);
 
   });
 
@@ -75,22 +75,22 @@ describe('AddCommentModal e2e', () => {
     const formField =  await findByTestAtr(app, 'test-comment');
 
     formField.simulate('change');
-    expect(mockSetCommentHandler).toHaveBeenCalledTimes(1);
+    expect(mockHandlerCommentSet).toHaveBeenCalledTimes(1);
   });
 
   it('Should rating changed', async () => {
 
     const ratingFields =  await findByTestAtr(app, 'test-rating');
     ratingFields.forEach((field) => field.simulate('change'));
-    expect(mockSetRatingHandler).toHaveBeenCalledTimes(NUMBER_OF_START);
+    expect(mockHandlerRatingSet).toHaveBeenCalledTimes(NUMBER_OF_START);
   });
 
   it('Should addComment works', async () => {
 
     const formField =  await findByTestAtr(app, 'test-submit');
     formField.simulate('submit');
-    expect(mockOnSubmitHandler).toHaveBeenCalledTimes(1);
-    expect(mockOnSubmitHandler).toHaveBeenCalledWith( {...mockCommentToAdd, guitarId: mockGuitars[2].id });
+    expect(mockHandlerCommentSubmit).toHaveBeenCalledTimes(1);
+    expect(mockHandlerCommentSubmit).toHaveBeenCalledWith( {...mockCommentToAdd, guitarId: mockGuitars[2].id });
   });
 
 });

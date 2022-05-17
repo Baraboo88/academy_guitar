@@ -13,6 +13,8 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
     >
       <a
         className="header__logo logo"
+        href="/"
+        onClick={[Function]}
       >
         <img
           alt="Логотип"
@@ -224,11 +226,9 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
         <li
           className="breadcrumbs__item"
         >
-          <a
-            className="link"
-          >
+          <span>
             Честер Bass
-          </a>
+          </span>
         </li>
       </ul>
       <div
@@ -444,6 +444,7 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
         </button>
       </section>
     </div>
+    <div />
   </main>
   <footer
     className="footer"

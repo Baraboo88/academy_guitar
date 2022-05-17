@@ -12,7 +12,6 @@ function App() {
         <Route exact path="/product/:id/:cat" component={GuitarCardDetails}/>
         <Route exact path="/product/:id" component={GuitarCardDetails}/>
         <Route exact path="/catalog/page/:id" component={Main}/>
-
         <Route exact path="/" component={Main}/>
         <Route component={NotFound}/>
 

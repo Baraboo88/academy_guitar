@@ -11,7 +11,6 @@ export enum DataAction {
 }
 
 export enum ResponseStatus {
-    Ok = 201,
     BadRequest = 400,
     NotFound = 404,
 
