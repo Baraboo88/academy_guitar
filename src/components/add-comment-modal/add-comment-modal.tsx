@@ -2,7 +2,7 @@ import React from 'react';
 import {AddCommentModel, GuitarModel} from '../../types/guitar-model';
 import {getCyrillicRating, MOCK_FILL_VALUE} from '../../utils/utils';
 import FocusTrap from 'focus-trap-react';
-import {useModal} from '../../hooks/use-modal/user-modal';
+import {useModal} from '../../hooks/use-modal/use-modal';
 
 interface AddCommentModalProps{
   onCloseModal: () => void;

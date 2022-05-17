@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {useModal} from '../../hooks/use-modal/user-modal';
+import {useModal} from '../../hooks/use-modal/use-modal';
 
 export interface AddCommentModalSuccessProps{
   onModalClose: () => void;

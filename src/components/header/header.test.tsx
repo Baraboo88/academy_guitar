@@ -3,7 +3,7 @@ import * as React from 'react';
 
 
 import Header from './header';
-import {BrowserRouter} from "react-router-dom";
+import {BrowserRouter} from 'react-router-dom';
 
 it('Header successfully rendered', () => {
   const tree = renderer.create(<BrowserRouter><Header/></BrowserRouter>);

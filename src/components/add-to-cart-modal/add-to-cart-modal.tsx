@@ -1,5 +1,5 @@
 import React from 'react';
-import {useModal} from '../../hooks/use-modal/user-modal';
+import {useModal} from '../../hooks/use-modal/use-modal';
 import {GuitarModel} from '../../types/guitar-model';
 import {getCyrillicType, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
 
