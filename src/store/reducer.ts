@@ -1,7 +1,9 @@
 
-import {  dataReducer as data } from './data/data-reducer';
+import {  currentGuitarReducer as currentGuitar } from './current-guitar/current-guitar-reducer';
+import {  guitarsReducer as guitars } from './guitars/guitars-reducer';
 const rootReducer = {
-  data,
+  guitars,
+  currentGuitar,
 };
 
 export default rootReducer;

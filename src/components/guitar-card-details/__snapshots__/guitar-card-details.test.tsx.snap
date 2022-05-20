@@ -325,15 +325,15 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
             className="tabs"
           >
             <a
-              className="button button--medium tabs__button "
-              href="/product/1/characteristics"
+              className="button button--medium tabs__button button--black-border"
+              href="/product/undefined/characteristics"
               onClick={[Function]}
             >
               Характеристики
             </a>
             <a
               className="button button--medium tabs__button button--black-border "
-              href="/product/1/description"
+              href="/product/undefined/description"
               onClick={[Function]}
             >
               Описание
@@ -343,7 +343,7 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
               id="characteristics"
             >
               <table
-                className="tabs__table "
+                className="tabs__table hidden"
               >
                 <tbody>
                   <tr

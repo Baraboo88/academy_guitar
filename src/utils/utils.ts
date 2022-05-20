@@ -5,7 +5,7 @@ const STARTS_AMOUNT = 5;
 export const getAdapterImage = (img: string) => img.slice(img.length - 5, img.length - 4);
 
 
-export const generateStarsArray = () => {
+export const generateStars = () => {
   const stars = [];
   for (let i = 1; i <= STARTS_AMOUNT; i++) {
     stars.push(i);
@@ -52,3 +52,15 @@ export const monthNames = ['января', 'февраля ', 'марта', 'а�
 export const getPriceWithSpaces = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 export const MOCK_FILL_VALUE = 1;
+
+export enum ErrorMsg {
+  Other = 'Something went wrong...',
+  NotFound = 'not-found',
+}
+
+
+export enum ResponseStatus {
+  BadRequest = 400,
+  NotFound = 404,
+
+}

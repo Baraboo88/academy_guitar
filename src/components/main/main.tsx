@@ -1,21 +1,18 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {getDataError, getDataIsResponseReceived, getGuitars} from '../../store/data/data-selectors';
+
 import {StateModel} from '../../types/redux-models';
 
-import { DataOperation} from '../../store/data/data-reducer';
 import {connect} from 'react-redux';
 import {GuitarModel} from '../../types/guitar-model';
 import GuitarCard from '../guitar-card/guitar-card';
-import {Link, RouteComponentProps} from 'react-router-dom';
+import {Link, useNavigate, useParams} from 'react-router-dom';
 import Header from '../header/header';
 import Footer from '../footer/footer';
+import {getGuitars, getGuitarsError, getGuitarsIsResponseReceived} from '../../store/guitars/guitars-selectors';
+import {GuitarsOperation} from '../../store/guitars/guitars-reducer';
 
 const ITEMS_ON_THE_PAGE = 9;
 
-
-interface MatchParams {
-  id?: string;
-}
 
 interface MainProps {
   guitars: GuitarModel [];
@@ -26,13 +23,16 @@ interface MainProps {
 }
 
 
-function Main(props: MainProps & RouteComponentProps<MatchParams>) {
-  const {onMount, guitars, isResponseReceived, errorMsg, getCommentsCount, history} = props;
+function Main(props: MainProps) {
+  const {onMount, guitars, isResponseReceived, errorMsg, getCommentsCount} = props;
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [innerGuitars, setInnerGuitars] = useState<GuitarModel []>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingCommentsCount, setIsLoadingCommentsCount] = useState<boolean>(true);
+
+  const {id} = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isResponseReceived && errorMsg) {
@@ -65,17 +65,17 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
   }, [guitars]);
 
   useEffect(() => {
-    if(props.match.params.id){
-      setCurrentPage(Number(props.match.params.id));
+    if(id){
+      setCurrentPage(Number(id));
     } else {
       setCurrentPage(1);
     }
 
-    if(guitars && guitars.length > 0 && getAllPages() < Number(props.match.params.id)){
-      history.push('/not-found');
+    if(guitars && guitars.length > 0 && getAllPages() < Number(id)){
+      navigate('/not-found');
     }
 
-  }, [props.match.params.id, guitars, getAllPages, history]);
+  }, [id, guitars, getAllPages, navigate]);
 
 
   const renderPagination = () => {
@@ -88,7 +88,7 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
     }
     return pages.map((page) =>(
       <li className={`pagination__page ${page === currentPage ? 'pagination__page--active' : ''}`} key={page}>
-        <Link to={`/catalog/page/${page}`} className="link pagination__page-link" href="#">
+        <Link to={`/catalog/page/${page}`} className="link pagination__page-link">
           {page}
         </Link>
       </li>));
@@ -214,17 +214,17 @@ function Main(props: MainProps & RouteComponentProps<MatchParams>) {
 
 const mapStateToProps = (state: StateModel) => ({
   guitars: getGuitars(state),
-  isResponseReceived: getDataIsResponseReceived(state),
-  errorMsg: getDataError(state),
+  isResponseReceived: getGuitarsIsResponseReceived(state),
+  errorMsg: getGuitarsError(state),
 });
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const mapDispatchToProps = (dispatch: any) => ({
   onMount() {
-    dispatch(DataOperation.getGuitars());
+    dispatch(GuitarsOperation.getGuitars());
   },
   getCommentsCount(guitars: GuitarModel []){
-    dispatch(DataOperation.getCommentsCount(guitars));
+    dispatch(GuitarsOperation.getCommentsCount(guitars));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

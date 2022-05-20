@@ -87,9 +87,12 @@ export const mockGuitars: GuitarModel[] = [
   },
 ];
 export const testInitialState = {
-  data: {
+  currentGuitar: {
+    currentGuitar: mockGuitars,
+    errorMsg: '',
+  },
+  guitars: {
     guitars: mockGuitars,
-    currentGuitar: mockGuitars[1],
     errorMsg: '',
   },
 };

@@ -1,11 +1,10 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {StateModel} from '../../types/redux-models';
-import {getCurrentGuitar, getDataError, getDataIsResponseReceived} from '../../store/data/data-selectors';
-import {DataActionCreator, DataOperation, ErrorMsg} from '../../store/data/data-reducer';
+import {getCurrentGuitar, getCurrentGuitarError, getCurrentGuitarIsResponseReceived} from '../../store/current-guitar/current-guitar-selectors';
 import {connect} from 'react-redux';
-import {AddCommentModel, GuitarModel} from '../../types/guitar-model';
-import {Link, RouteComponentProps} from 'react-router-dom';
-import {getCyrillicRating, getCyrillicType, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
+import {AddCommentModel, GuitarCommentModel, GuitarModel} from '../../types/guitar-model';
+import {Link, useNavigate, useParams} from 'react-router-dom';
+import {getCyrillicRating, getCyrillicType, getPriceWithSpaces, getAdapterImage, ErrorMsg} from '../../utils/utils';
 import {renderStars, StarSize} from '../guitar-card/guitar-card';
 import Header from '../header/header';
 import Footer from '../footer/footer';
@@ -14,14 +13,10 @@ import AddCommentModal from '../add-comment-modal/add-comment-modal';
 import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-modal-success';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
 import useOnScreen from '../../hooks/use-on-screen/use-on-screen';
+import {CurrentGuitarActionCreator, CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-reducer';
 
 
 const COMMENTS_TO_SKIP = 3;
-
-interface MatchParams {
-    id?: string;
-    cat?: ActiveTab;
-}
 
 interface GuitarCardDetailsProps {
     currentGuitar: GuitarModel | null;
@@ -39,9 +34,9 @@ export enum ActiveTab{
   Description='description'
 }
 
-function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<MatchParams>) {
+function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
-  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived, history} = props;
+  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived} = props;
   const [commentsToSkip, setCommentsToSkip] = useState(COMMENTS_TO_SKIP);
   const [isAddCommentOpened, setIsAddCommentOpened] = useState(false);
 
@@ -57,7 +52,9 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
 
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref);
+  const navigate = useNavigate();
 
+  const {id, cat} = useParams();
 
   const handlerCommentsShowMore = useCallback(() => {
 
@@ -72,35 +69,33 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
 
   useEffect(() => {
     if (error === ErrorMsg.NotFound) {
-
-      history.push('/not-found');
+      navigate('/not-found');
     }
-  }, [error, history]);
+  }, [error, navigate]);
 
-  useEffect(() => {
-
-    onMount(Number(props.match.params.id));
+  useEffect( () => {
+    onMount(Number(id));
 
     return () => {
       resetCurrentGuitar();
     };
 
-  }, [props.match.params.id, onMount, resetCurrentGuitar]);
+  }, [id, onMount, resetCurrentGuitar]);
 
   useEffect(() => {
     if(currentGuitar) {
-      if( props.match.params.cat === ActiveTab.Characteristics){
+      if( cat === ActiveTab.Characteristics){
         setActiveTab(ActiveTab.Characteristics);
       }
 
-      if( props.match.params.cat === ActiveTab.Description){
+      if( cat === ActiveTab.Description){
         setActiveTab(ActiveTab.Description);
       }
     } else {
       setActiveTab(ActiveTab.Characteristics);
     }
 
-  }, [props.match.params.cat, currentGuitar]);
+  }, [cat, currentGuitar]);
 
   useEffect(() => {
 
@@ -173,7 +168,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
             <div className="container">
               <h1 className="page-content__title title title--bigger">{currentGuitar.name}</h1>
               <ul className="breadcrumbs page-content__breadcrumbs">
-                <li className="breadcrumbs__item"><Link to={'/'} className="link" href="./main.html">Главная</Link>
+                <li className="breadcrumbs__item"><Link to={'/'} className="link">Главная</Link>
                 </li>
                 <li className="breadcrumbs__item"><Link to={'/'} className="link">Каталог</Link>
                 </li>
@@ -202,13 +197,13 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                     </p>
                   </div>
                   <div className="tabs">
-                    <Link to={`/product/${props.match.params.id}/${ActiveTab.Characteristics}`}
+                    <Link to={`/product/${id}/${ActiveTab.Characteristics}`}
                       className={`button button--medium tabs__button ${activeTab !== ActiveTab.Characteristics ? 'button--black-border' : ''}`}
                     >
                       Характеристики
                     </Link>
                     <Link
-                      to={`/product/${props.match.params.id}/${ActiveTab.Description}`}
+                      to={`/product/${id}/${ActiveTab.Description}`}
                       className={`button button--medium tabs__button ${activeTab !== ActiveTab.Description ? 'button--black-border' : ''} `}
                     >Описание
                     </Link>
@@ -258,7 +253,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
                 >Оставить отзыв
                 </button>
 
-                {(currentGuitar?.comments && currentGuitar?.comments.length > 0) ? currentGuitar?.comments.slice(0, commentsToSkip).map((innerComment) =>
+                {(currentGuitar?.comments && currentGuitar?.comments.length > 0) ? currentGuitar?.comments.slice(0, commentsToSkip).map((innerComment:GuitarCommentModel) =>
                   <CommentCard key={innerComment.id} comment={innerComment}/>) : <div/>}
 
                 {(commentsToSkip === COMMENTS_TO_SKIP && currentGuitar?.comments && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
@@ -300,29 +295,29 @@ function GuitarCardDetails(props: GuitarCardDetailsProps & RouteComponentProps<M
 
 const mapStateToProps = (state: StateModel) => ({
   currentGuitar: getCurrentGuitar(state),
-  isResponseReceived: getDataIsResponseReceived(state),
-  error: getDataError(state),
+  isResponseReceived: getCurrentGuitarIsResponseReceived(state),
+  error: getCurrentGuitarError(state),
 });
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const mapDispatchToProps = (dispatch: any) => (
   {
     onMount(id: number) {
-      dispatch(DataOperation.getGuitarById(id));
+      dispatch(CurrentGuitarOperation.getGuitarById(id));
     },
     getComments(guitar: GuitarModel) {
-      dispatch(DataOperation.getCurrentGuitarComments(guitar));
+      dispatch(CurrentGuitarOperation.getCurrentGuitarComments(guitar));
     },
     resetCurrentGuitar() {
-      dispatch(DataActionCreator.setCurrentGuitar(null));
-      dispatch(DataActionCreator.setIsResponseReceived(false));
-      dispatch(DataActionCreator.setError(''));
+      dispatch(CurrentGuitarActionCreator.setCurrentGuitar(null));
+      dispatch(CurrentGuitarActionCreator.setIsResponseReceived(false));
+      dispatch(CurrentGuitarActionCreator.setError(''));
     },
     addComment(guitar: GuitarModel, comment: AddCommentModel){
-      dispatch(DataOperation.addComment(guitar, comment));
+      dispatch(CurrentGuitarOperation.addComment(guitar, comment));
     },
     resetIsResponseReceived() {
-      dispatch(DataActionCreator.setIsResponseReceived(false));
+      dispatch(CurrentGuitarActionCreator.setIsResponseReceived(false));
     },
   });
 

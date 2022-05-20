@@ -8,10 +8,11 @@ import toJson from 'enzyme-to-json';
 import { Provider } from 'react-redux';
 
 import {getTestStore, mockGuitars} from '../../utils/test-utils';
-import {ActiveTab, GuitarCardDetails} from './guitar-card-details';
-import { BrowserRouter } from 'react-router-dom';
+import { GuitarCardDetails} from './guitar-card-details';
 
 import 'intersection-observer';
+
+import { BrowserRouter } from 'react-router-dom';
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
@@ -24,24 +25,10 @@ it('GuitarCardDetails successfully rendered', () => {
   const mockResetIsResponseReceived = jest.fn();
   const MOCK_ERROR = '';
 
-  const mockHistory = { push: jest.fn() };
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  const routeComponentPropsMock = {
-    history: mockHistory as any,
-    location: {} as any,
-    match: {
-      params: {
-        id: '1',
-        cat: ActiveTab.Characteristics,
-      },
-    } as any,
-  };
-
   const tree = mount(
     <Provider store={getTestStore()}>
       <BrowserRouter>
         <GuitarCardDetails
-          {...routeComponentPropsMock}
           currentGuitar={mockGuitars[0]}
           resetCurrentGuitar ={mockResetCurrentGuitar}
           onMount = {mockOnMount}

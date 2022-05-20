@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {GuitarModel} from '../../types/guitar-model';
-import {generateStarsArray, getCyrillicRating, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
+import {generateStars, getCyrillicRating, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
 
@@ -9,7 +9,7 @@ export enum StarSize{
 }
 
 
-export const renderStars = (rating: number, size: StarSize) => generateStarsArray().map((el, index) => {
+export const renderStars = (rating: number, size: StarSize) => generateStars().map((el, index) => {
 
   switch(size) {
     case StarSize.CardDetails:

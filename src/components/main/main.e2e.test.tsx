@@ -17,25 +17,12 @@ describe('GuitarCardDetails e2e', () => {
 
   const MOCK_ERROR = '';
 
-  const mockHistory = {push: jest.fn()};
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
-  const routeComponentPropsMock = {
-    history: mockHistory as any,
-    location: {} as any,
-    match: {
-      params: {
-        id: '1',
-        cat: ActiveTab.Characteristics,
-      },
-    } as any,
-  };
 
   it('Should onMount successfully working', () => {
     mount(
       <Provider store={getTestStore()}>
         <BrowserRouter>
           <Main
-            {...routeComponentPropsMock}
             guitars={[]}
             onMount={mockOnMount}
 
@@ -54,7 +41,6 @@ describe('GuitarCardDetails e2e', () => {
       <Provider store={getTestStore()}>
         <BrowserRouter>
           <Main
-            {...routeComponentPropsMock}
             guitars={mockGuitars}
             onMount={mockOnMount}
 

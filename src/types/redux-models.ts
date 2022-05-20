@@ -1,12 +1,19 @@
 import {GuitarModel} from './guitar-model';
 
-export interface DataStateModel {
+export interface GuitarsStateModel {
     guitars: GuitarModel [];
+    isResponseReceived: boolean;
+    errorMsg: string;
+}
+
+export interface CurrentGuitarStateModel {
     currentGuitar: GuitarModel | null;
     isResponseReceived: boolean;
     errorMsg: string;
 }
 
+
 export interface StateModel {
-    data: DataStateModel
+    guitars: GuitarsStateModel,
+    currentGuitar: CurrentGuitarStateModel
 }
