@@ -5,9 +5,9 @@ import { AxiosStatic} from 'axios';
 import {ErrorMsg, ResponseStatus} from '../../utils/utils';
 
 export enum CurrentGuitarAction {
-    SetCurrentGuitar = 'current-guitar-set-current-guitar',
-    SetError = 'current-guitar-set-error',
-    SetIsResponseReceived = 'current-guitar-set-is-response-received',
+    SetCurrentGuitar = 'current-guitar/set-current-guitar',
+    SetError = 'current-guitar/set-error',
+    SetIsResponseReceived = 'current-guitar/set-is-response-received',
 }
 
 
