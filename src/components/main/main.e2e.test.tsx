@@ -1,6 +1,5 @@
 import * as Enzyme from 'enzyme';
 import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
-import {ActiveTab } from '../guitar-card-details/guitar-card-details';
 import {mount} from 'enzyme';
 import {Provider} from 'react-redux';
 import {getTestStore, mockGuitars} from '../../utils/test-utils';
