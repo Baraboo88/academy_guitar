@@ -53,6 +53,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
               type="text"
               value="Some name"
             />
+            <div
+              style={
+                Object {
+                  "height": 15,
+                }
+              }
+            />
           </div>
           <div>
             <span
@@ -143,6 +150,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
                 htmlFor="star-1"
                 title="Ужасно"
               />
+              <div
+                style={
+                  Object {
+                    "height": 15,
+                  }
+                }
+              />
             </div>
           </div>
         </div>
@@ -161,6 +175,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
           type="text"
           value="Mock Advantage"
         />
+        <div
+          style={
+            Object {
+              "height": 15,
+            }
+          }
+        />
         <label
           className="form-review__label form-review__label--required"
           htmlFor="disadv"
@@ -176,6 +197,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
           type="text"
           value="Mock Disadvantage"
         />
+        <div
+          style={
+            Object {
+              "height": 15,
+            }
+          }
+        />
         <label
           className="form-review__label form-review__label--required"
           htmlFor="comment"
@@ -190,6 +218,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
           onChange={[Function]}
           rows={10}
           value="Mock Comment"
+        />
+        <div
+          style={
+            Object {
+              "height": 15,
+            }
+          }
         />
         <button
           className="button button--medium-20 form-review__button"

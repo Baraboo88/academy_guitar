@@ -445,7 +445,6 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
         </button>
       </section>
     </div>
-    <div />
   </main>
   <footer
     className="footer"

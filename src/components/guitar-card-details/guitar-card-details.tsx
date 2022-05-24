@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {StateModel} from '../../types/redux-models';
 import {getCurrentGuitar, getCurrentGuitarError, getCurrentGuitarIsResponseReceived} from '../../store/current-guitar/current-guitar-selectors';
 import {connect} from 'react-redux';
@@ -12,12 +12,12 @@ import CommentCard from '../comment-card/comment-card';
 import AddCommentModal from '../add-comment-modal/add-comment-modal';
 import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-modal-success';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
-import useOnScreen from '../../hooks/use-on-screen/use-on-screen';
+
 import {CurrentGuitarActionCreator, CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-reducer';
 
 
 const COMMENTS_TO_SKIP = 3;
-const DELAY_MIL_SEC = 1000;
+
 interface GuitarCardDetailsProps {
     currentGuitar: GuitarModel | null;
     resetCurrentGuitar: () => void;
@@ -57,10 +57,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
   const [activeTab, setActiveTab] = useState<ActiveTab>();
   const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
-  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
 
-  const ref = useRef<HTMLDivElement>(null);
-  const isVisible = useOnScreen(ref);
   const navigate = useNavigate();
 
   const {id, cat} = useParams();
@@ -68,21 +65,8 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
   const handlerCommentsShowMore = useCallback(() => {
 
     setCommentsToSkip(commentsToSkip + COMMENTS_TO_SKIP);
-    setIsCommentsLoading(true);
-  },[commentsToSkip, setIsCommentsLoading]);
+  },[commentsToSkip]);
 
-  useEffect(() => {
-    if(isVisible && commentsToSkip !== COMMENTS_TO_SKIP){
-
-      if(!isCommentsLoading){
-
-        handlerCommentsShowMore();
-      }
-      setTimeout(() => {
-        setIsCommentsLoading(false);
-      }, DELAY_MIL_SEC);
-    }
-  },[isVisible, handlerCommentsShowMore, commentsToSkip, isCommentsLoading, setIsCommentsLoading]);
 
   useEffect(() => {
     if (error === ErrorMsg.NotFound) {
@@ -328,7 +312,6 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
               {isAddToCardPopUpOpened && <AddToCartModal onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
             </div>}
-        <div  ref={ref}></div>
       </main>
       <Footer />
     </div>
