@@ -29,8 +29,9 @@ exports[`Header successfully rendered 1`] = `
       >
         <li>
           <a
-            className="link main-nav__link link--current"
-            href="#"
+            className="link main-nav__link "
+            href="/"
+            onClick={[Function]}
           >
             Каталог
           </a>

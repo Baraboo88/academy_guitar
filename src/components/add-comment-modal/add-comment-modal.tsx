@@ -1,8 +1,10 @@
-import React from 'react';
+import React, {useRef} from 'react';
 import {AddCommentModel, GuitarModel} from '../../types/guitar-model';
 import {getCyrillicRating, MOCK_FILL_VALUE} from '../../utils/utils';
 import FocusTrap from 'focus-trap-react';
 import {useModal} from '../../hooks/use-modal/use-modal';
+import {useActiveElement} from '../../hooks/use-active-element/use-active-element';
+
 
 interface AddCommentModalProps{
   onCloseModal: () => void;
@@ -18,8 +20,19 @@ interface AddCommentModalProps{
   rating: number;
   onSetRating: (rating: number) => void;
   onSubmitHandler: (comment: AddCommentModel) => void;
+  isNameValidationError: boolean;
+  isAdvantageValidationError: boolean;
+  isDisadvantageValidationError: boolean;
+  isCommentValidationError: boolean;
+  isRatingValidationError: boolean;
 }
 
+enum Arrow {
+  Right = 'ArrowRight',
+Left = 'ArrowLeft'
+}
+
+const EMPTY_BLOCK_HEIGHT = 15;
 
 export const NUMBER_OF_START = 5;
 
@@ -33,20 +46,94 @@ function AddCommentModal(props: AddCommentModalProps) {
     comment,
     onSetComment,
     rating,
-    onSetRating, onSubmitHandler} = props;
+    onSetRating,
+    onSubmitHandler,
+    isNameValidationError,
+    isAdvantageValidationError,
+    isDisadvantageValidationError,
+    isCommentValidationError,
+    isRatingValidationError} = props;
 
   useModal(onCloseModal);
 
+
+  const starRefs = useRef([]);
+  const focusedElement = useActiveElement();
+
+
   const renderStars = () => new Array(NUMBER_OF_START).fill(MOCK_FILL_VALUE).map((_,index) => {
-    const starNo = NUMBER_OF_START - index + 1;
+    const starNo = NUMBER_OF_START - index;
+    if(starNo === NUMBER_OF_START && focusedElement === starRefs.current[5]&& rating === 0){
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      if(starRefs.current[1] ){
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        starRefs.current[1].focus();
+      }
+
+    }
     return (
       <React.Fragment key={getCyrillicRating(starNo)}>
-        <input  className="visually-hidden" id={`star-${starNo}`} name="rate" type="radio" value={starNo} onChange={(evt) => {
+        <input ref={(element) => {
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+          starRefs.current[starNo] = element;
+
+        }}  checked={rating === starNo} onKeyDown={(evt) => {
+          if(evt.key === Arrow.Right || evt.key === Arrow.Left){
+            evt.preventDefault();
+            evt.stopPropagation();
+
+            if(Arrow.Right === evt.key){
+
+              if(rating !== NUMBER_OF_START){
+                onSetRating(Number(rating + 1));
+
+                if(starRefs.current[rating + 1]){
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  starRefs.current[rating + 1].focus();
+                }
+
+              } else {
+                onSetRating(Number( 1));
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                starRefs.current[1].focus();
+              }
+            }
+
+            if(Arrow.Left === evt.key){
+
+              if(rating !== 1){
+                onSetRating(Number(rating - 1));
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                if(starRefs.current[rating - 1]){
+                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                  // @ts-ignore
+                  starRefs.current[rating - 1].focus();
+                }
+              } else {
+                onSetRating(Number(NUMBER_OF_START));
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                starRefs.current[NUMBER_OF_START].focus();
+              }
+            }
+
+          }
+
+
+        }} className="visually-hidden" id={`star-${starNo}`} name="rate" type="radio" value={starNo} onChange={(evt) => {
+
           onSetRating(Number(evt.target.value));
+
         }}
         data-test="test-rating"
         />
-        <label className="rate__label" htmlFor={`star-${starNo}`} title={getCyrillicRating(starNo)}></label>
+        <label className="rate__label"  htmlFor={`star-${starNo}`} title={getCyrillicRating(starNo)}></label>
       </React.Fragment>);
   });
 
@@ -79,12 +166,12 @@ function AddCommentModal(props: AddCommentModalProps) {
                     }}
                     data-test="test-user-name"
                   />
-                  {!userName && <p className="form-review__warning">Заполните поле</p>}
+                  {isNameValidationError && !userName ? <p className="form-review__warning">Заполните поле</p> : <div style={{height: EMPTY_BLOCK_HEIGHT}}/>  }
                 </div>
                 <div><span className="form-review__label form-review__label--required">Ваша Оценка</span>
                   <div className="rate rate--reverse" >
                     {renderStars()}
-                    {!rating && <p className="rate__message">Поставьте оценку</p>}
+                    {isRatingValidationError && !rating ? <p className="rate__message">Поставьте оценку</p> : <div style={{height: EMPTY_BLOCK_HEIGHT}}/>  }
                   </div>
                 </div>
               </div>
@@ -94,14 +181,16 @@ function AddCommentModal(props: AddCommentModalProps) {
               }} className="form-review__input" id="adv" type="text" autoComplete="off"
               data-test="test-advantage"
               />
-              {!advantage && <p className="form-review__warning">Заполните поле</p>}
+
+              {isAdvantageValidationError && !advantage ? <p className="form-review__warning">Заполните поле</p> : <div style={{height: EMPTY_BLOCK_HEIGHT}}/>  }
               <label className="form-review__label form-review__label--required" htmlFor="disadv">Недостатки</label>
               <input value={disadvantage} onChange={(evt) => {
                 onSetDisadvantage(evt.target.value);
               }} className="form-review__input" id="disadv" type="text" autoComplete="off"
               data-test="test-disadvantage"
               />
-              {!disadvantage && <p className="form-review__warning">Заполните поле</p>}
+              {isDisadvantageValidationError && !disadvantage ? <p className="form-review__warning">Заполните поле</p> : <div style={{height: EMPTY_BLOCK_HEIGHT}}/>  }
+
               <label className="form-review__label form-review__label--required"
                 htmlFor="comment"
               >Комментарий
@@ -113,7 +202,8 @@ function AddCommentModal(props: AddCommentModalProps) {
               data-test="test-comment"
               >
               </textarea>
-              {!comment && <p className="form-review__warning">Заполните поле</p>}
+              {isCommentValidationError && !comment ? <p className="form-review__warning">Заполните поле</p> : <div style={{height: EMPTY_BLOCK_HEIGHT}}/> }
+
               <button className="button button--medium-20 form-review__button" type="submit">Отправить отзыв
               </button>
 

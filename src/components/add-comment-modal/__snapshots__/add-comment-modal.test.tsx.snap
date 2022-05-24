@@ -64,25 +64,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
               className="rate rate--reverse"
             >
               <input
-                className="visually-hidden"
-                data-test="test-rating"
-                id="star-6"
-                name="rate"
-                onChange={[Function]}
-                type="radio"
-                value={6}
-              />
-              <label
-                className="rate__label"
-                htmlFor="star-6"
-                title=""
-              />
-              <input
+                checked={false}
                 className="visually-hidden"
                 data-test="test-rating"
                 id="star-5"
                 name="rate"
                 onChange={[Function]}
+                onKeyDown={[Function]}
                 type="radio"
                 value={5}
               />
@@ -92,11 +80,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
                 title="Отлично"
               />
               <input
+                checked={false}
                 className="visually-hidden"
                 data-test="test-rating"
                 id="star-4"
                 name="rate"
                 onChange={[Function]}
+                onKeyDown={[Function]}
                 type="radio"
                 value={4}
               />
@@ -106,11 +96,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
                 title="Хорошо"
               />
               <input
+                checked={true}
                 className="visually-hidden"
                 data-test="test-rating"
                 id="star-3"
                 name="rate"
                 onChange={[Function]}
+                onKeyDown={[Function]}
                 type="radio"
                 value={3}
               />
@@ -120,11 +112,13 @@ exports[`AddCommentModal successfully rendered 1`] = `
                 title="Нормально"
               />
               <input
+                checked={false}
                 className="visually-hidden"
                 data-test="test-rating"
                 id="star-2"
                 name="rate"
                 onChange={[Function]}
+                onKeyDown={[Function]}
                 type="radio"
                 value={2}
               />
@@ -132,6 +126,22 @@ exports[`AddCommentModal successfully rendered 1`] = `
                 className="rate__label"
                 htmlFor="star-2"
                 title="Плохо"
+              />
+              <input
+                checked={false}
+                className="visually-hidden"
+                data-test="test-rating"
+                id="star-1"
+                name="rate"
+                onChange={[Function]}
+                onKeyDown={[Function]}
+                type="radio"
+                value={1}
+              />
+              <label
+                className="rate__label"
+                htmlFor="star-1"
+                title="Ужасно"
               />
             </div>
           </div>

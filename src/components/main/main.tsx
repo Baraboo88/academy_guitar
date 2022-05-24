@@ -10,6 +10,7 @@ import Header from '../header/header';
 import Footer from '../footer/footer';
 import {getGuitars, getGuitarsError, getGuitarsIsResponseReceived} from '../../store/guitars/guitars-selectors';
 import {GuitarsOperation} from '../../store/guitars/guitars-reducer';
+import {Page} from '../../utils/utils';
 
 const ITEMS_ON_THE_PAGE = 9;
 
@@ -97,7 +98,7 @@ function Main(props: MainProps) {
 
   return (
     <div className="wrapper">
-      <Header/>
+      <Header activePage={Page.Catalog}/>
       <main className="page-content">
         <div className="container">
           <h1 className="page-content__title title title--bigger">Каталог гитар</h1>

@@ -37,7 +37,11 @@ it('AddCommentModal successfully rendered', () => {
         onSetComment={mockHandlerCommentSet}
         onSetRating={mockHandlerRatingSet}
         onSubmitHandler={mockHandlerCommentSubmit}
-
+        isNameValidationError ={false}
+        isAdvantageValidationError={false}
+        isDisadvantageValidationError={false}
+        isCommentValidationError={false}
+        isRatingValidationError={false}
       />
     </Provider>,
   );

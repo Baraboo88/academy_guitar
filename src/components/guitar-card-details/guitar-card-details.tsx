@@ -17,7 +17,7 @@ import {CurrentGuitarActionCreator, CurrentGuitarOperation} from '../../store/cu
 
 
 const COMMENTS_TO_SKIP = 3;
-
+const DELAY_MIL_SEC = 1000;
 interface GuitarCardDetailsProps {
     currentGuitar: GuitarModel | null;
     resetCurrentGuitar: () => void;
@@ -47,8 +47,17 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
   const [rating, setRating] = useState<number>(0);
   const [modalCommentIsSending, setModalCommentIsSending] = useState(false);
   const [isCommentAddSuccess, setIsCommentAddSuccess] = useState(false);
+
+  //validation
+  const [isNameValidationError, setIsNameValidationError] = useState(false);
+  const [isAdvantageValidationError, setIsAdvantageValidationError] = useState(false);
+  const [isDisadvantageValidationError, setIsDisadvantageValidationError] = useState(false);
+  const [isCommentValidationError, setIsCommentValidationError] = useState(false);
+  const [isRatingValidationError, setIsRatingValidationError] = useState(false);
+
   const [activeTab, setActiveTab] = useState<ActiveTab>();
   const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
+  const [isCommentsLoading, setIsCommentsLoading] = useState(false);
 
   const ref = useRef<HTMLDivElement>(null);
   const isVisible = useOnScreen(ref);
@@ -59,13 +68,21 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
   const handlerCommentsShowMore = useCallback(() => {
 
     setCommentsToSkip(commentsToSkip + COMMENTS_TO_SKIP);
-  },[commentsToSkip]);
+    setIsCommentsLoading(true);
+  },[commentsToSkip, setIsCommentsLoading]);
 
   useEffect(() => {
     if(isVisible && commentsToSkip !== COMMENTS_TO_SKIP){
-      handlerCommentsShowMore();
+
+      if(!isCommentsLoading){
+
+        handlerCommentsShowMore();
+      }
+      setTimeout(() => {
+        setIsCommentsLoading(false);
+      }, DELAY_MIL_SEC);
     }
-  },[isVisible, handlerCommentsShowMore, commentsToSkip]);
+  },[isVisible, handlerCommentsShowMore, commentsToSkip, isCommentsLoading, setIsCommentsLoading]);
 
   useEffect(() => {
     if (error === ErrorMsg.NotFound) {
@@ -124,6 +141,21 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
   },[resetIsResponseReceived]);
 
   const handlerCommentSubmit = (commentAdded: AddCommentModel) => {
+    if(!commentAdded.userName){
+      setIsNameValidationError(true);
+    }
+    if(!commentAdded.advantage){
+      setIsAdvantageValidationError(true);
+    }
+    if(!commentAdded.disadvantage){
+      setIsDisadvantageValidationError(true);
+    }
+    if(!commentAdded.comment){
+      setIsCommentValidationError(true);
+    }
+    if(!commentAdded.rating){
+      setIsRatingValidationError(true);
+    }
     if(commentAdded.userName && commentAdded.advantage && commentAdded.disadvantage && commentAdded.comment && commentAdded.rating&& currentGuitar){
       addComment(currentGuitar,commentAdded);
       setModalCommentIsSending(true);
@@ -136,28 +168,33 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
   const handlerUserNameSet = (name: string) => {
     setUserName(name);
+    setIsNameValidationError(false);
   };
 
   const handlerAdvantageSet = (adv: string) => {
     setAdvantage(adv);
+    setIsAdvantageValidationError(false);
   };
 
   const handlerDisadvantageSet = (disadv: string) => {
     setDisadvantage(disadv);
+    setIsDisadvantageValidationError(false);
   };
 
   const handlerCommentSet = (userComment: string) => {
     setComment(userComment);
+    setIsCommentValidationError(false);
   };
 
   const handlerRatingSet = (userRating: number) => {
     setRating(userRating);
+    setIsRatingValidationError(false);
   };
-
 
   const handlerAddCommentModalClose = () => {
     setIsAddCommentOpened(false);
   };
+
 
   return (
     <div className="wrapper">
@@ -256,7 +293,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
                 {(currentGuitar?.comments && currentGuitar?.comments.length > 0) ? currentGuitar?.comments.slice(0, commentsToSkip).map((innerComment:GuitarCommentModel) =>
                   <CommentCard key={innerComment.id} comment={innerComment}/>) : <div/>}
 
-                {(commentsToSkip === COMMENTS_TO_SKIP && currentGuitar?.comments && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
+                {(currentGuitar?.comments && commentsToSkip < currentGuitar?.comments?.length  && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
 
                     <button onClick={() => {
                       handlerCommentsShowMore();
@@ -282,6 +319,11 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
                   rating={rating} onSetRating={handlerRatingSet}
                   comment={comment} onSetComment={handlerCommentSet}
                   onSubmitHandler={handlerCommentSubmit}
+                  isNameValidationError ={isNameValidationError}
+                  isAdvantageValidationError = {isAdvantageValidationError}
+                  isDisadvantageValidationError ={isDisadvantageValidationError}
+                  isCommentValidationError={isCommentValidationError}
+                  isRatingValidationError={isRatingValidationError}
                 />)}
 
               {isAddToCardPopUpOpened && <AddToCartModal onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}

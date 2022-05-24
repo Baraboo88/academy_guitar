@@ -54,13 +54,17 @@ export const getPriceWithSpaces = (price: number) => price.toString().replace(/\
 export const MOCK_FILL_VALUE = 1;
 
 export enum ErrorMsg {
-  Other = 'Something went wrong...',
-  NotFound = 'not-found',
+    Other = 'Something went wrong...',
+    NotFound = 'not-found',
 }
 
 
 export enum ResponseStatus {
-  BadRequest = 400,
-  NotFound = 404,
+    BadRequest = 400,
+    NotFound = 404,
 
+}
+
+export enum Page {
+    Catalog, WhereToBuy, About
 }

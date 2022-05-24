@@ -36,6 +36,11 @@ describe('AddCommentModal e2e', () => {
           onSetComment={mockHandlerCommentSet}
           onSetRating={mockHandlerRatingSet}
           onSubmitHandler={mockHandlerCommentSubmit}
+          isNameValidationError ={false}
+          isAdvantageValidationError={false}
+          isDisadvantageValidationError={false}
+          isCommentValidationError={false}
+          isRatingValidationError={false}
         />
       </Provider>);
   });

@@ -1,7 +1,14 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import {Page} from '../../utils/utils';
 
-function Header() {
+interface HeaderProps{
+  activePage?: Page
+}
+
+function Header(props: HeaderProps) {
+  const {activePage} = props;
+
   return (
     <header className="header" id="header">
       <div className="container header__wrapper">
@@ -15,7 +22,7 @@ function Header() {
         </Link>
         <nav className="main-nav">
           <ul className="main-nav__list">
-            <li><a className="link main-nav__link link--current" href="#">Каталог</a>
+            <li><Link to='/' className={`link main-nav__link ${activePage === Page.Catalog ? 'link--current' : ''}`} >Каталог</Link>
             </li>
             <li><a className="link main-nav__link" href="#">Где купить?</a>
             </li>
