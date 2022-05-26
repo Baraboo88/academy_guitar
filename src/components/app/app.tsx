@@ -12,6 +12,8 @@ function App() {
         <Route path="/product/:id/:cat" element={<GuitarCardDetails/>}/>
         <Route path="/product/:id" element={<GuitarCardDetails/>}/>
         <Route path="/catalog/page/:id" element={<Main/>}/>
+        <Route path="/catalog/page/:id/:sortTypeWithDirection" element={<Main/>}/>
+        <Route path="/:sortTypeWithDirection" element={<Main/>}/>
         <Route path="/" element={<Main/>}/>
         <Route path='*' element={<NotFound/>}/>
       </Routes>

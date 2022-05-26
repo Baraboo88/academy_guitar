@@ -8,9 +8,15 @@ import GuitarCard from '../guitar-card/guitar-card';
 import {Link, useNavigate, useParams} from 'react-router-dom';
 import Header from '../header/header';
 import Footer from '../footer/footer';
-import {getGuitars, getGuitarsError, getGuitarsIsResponseReceived} from '../../store/guitars/guitars-selectors';
-import {GuitarsOperation} from '../../store/guitars/guitars-reducer';
-import {Page} from '../../utils/utils';
+import {
+  getGuitarsError,
+  getGuitarsIsResponseReceived,
+  getGuitarsSortDirection,
+  getGuitarsSortType,
+  getSortedGuitars
+} from '../../store/guitars/guitars-selectors';
+import {GuitarsActionCreator, GuitarsOperation} from '../../store/guitars/guitars-reducer';
+import {Page, SortDirection, SortType, SortTypeWithDirection} from '../../utils/utils';
 
 const ITEMS_ON_THE_PAGE = 9;
 
@@ -18,6 +24,10 @@ const ITEMS_ON_THE_PAGE = 9;
 interface MainProps {
   guitars: GuitarModel [];
   onMount: () => void;
+  sortDirection: SortDirection,
+  sortType: SortType,
+  setSortType: (sortType: SortType) => void;
+  setSortDirection: (sortDirection: SortDirection) => void;
   isResponseReceived: boolean;
   errorMsg: string;
   getCommentsCount: (guitars: GuitarModel []) => void;
@@ -25,14 +35,15 @@ interface MainProps {
 
 
 function Main(props: MainProps) {
-  const {onMount, guitars, isResponseReceived, errorMsg, getCommentsCount} = props;
+  const {onMount, guitars, isResponseReceived, errorMsg, getCommentsCount, sortDirection, sortType,setSortType, setSortDirection} = props;
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [innerGuitars, setInnerGuitars] = useState<GuitarModel []>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingCommentsCount, setIsLoadingCommentsCount] = useState<boolean>(true);
 
-  const {id} = useParams();
+  const {id, sortTypeWithDirection} = useParams();
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,6 +89,26 @@ function Main(props: MainProps) {
 
   }, [id, guitars, getAllPages, navigate]);
 
+  useEffect(() => {
+    if(sortTypeWithDirection && guitars.length > 0){
+      if(sortTypeWithDirection === SortTypeWithDirection.PopularityLowToHigh){
+        setSortType(SortType.Popularity);
+        setSortDirection(SortDirection.LowToHigh);
+      }
+      if(sortTypeWithDirection === SortTypeWithDirection.PopularityHighToLow){
+        setSortType(SortType.Popularity);
+        setSortDirection(SortDirection.HighToLow);
+      }
+      if(sortTypeWithDirection === SortTypeWithDirection.PriceLowToHigh){
+        setSortType(SortType.Price);
+        setSortDirection(SortDirection.LowToHigh);
+      }
+      if(sortTypeWithDirection === SortTypeWithDirection.PriceHighToLow){
+        setSortType(SortType.Price);
+        setSortDirection(SortDirection.HighToLow);
+      }
+    }
+  }, [sortTypeWithDirection, guitars, setSortDirection, setSortType]);
 
   const renderPagination = () => {
 
@@ -95,6 +126,21 @@ function Main(props: MainProps) {
       </li>));
   };
 
+  const generateSortLink = (type: SortType, direction: SortDirection) => {
+    if(id){
+      if(type === SortType.Price){
+        return direction === SortDirection.HighToLow ? `/catalog/page/${id}/${SortTypeWithDirection.PriceHighToLow}` : `/catalog/page/${id}/${SortTypeWithDirection.PriceLowToHigh}`;
+      } else {
+        return direction === SortDirection.HighToLow ? `/catalog/page/${id}/${SortTypeWithDirection.PopularityHighToLow}` : `/catalog/page/${id}/${SortTypeWithDirection.PopularityLowToHigh}`;
+      }
+    } else {
+      if(type === SortType.Price){
+        return direction === SortDirection.HighToLow ? `/${SortTypeWithDirection.PriceHighToLow}` : `/${SortTypeWithDirection.PriceLowToHigh}`;
+      } else {
+        return direction === SortDirection.HighToLow ? `/${SortTypeWithDirection.PopularityHighToLow}` : `/${SortTypeWithDirection.PopularityLowToHigh}`;
+      }
+    }
+  };
 
   return (
     <div className="wrapper">
@@ -167,18 +213,29 @@ function Main(props: MainProps) {
             <div className="catalog-sort">
               <h2 className="catalog-sort__title">Сортировать:</h2>
               <div className="catalog-sort__type">
-                <button className="catalog-sort__type-button" aria-label="по цене">по цене</button>
-                <button className="catalog-sort__type-button" aria-label="по популярности">по
+                <button onClick={() => {
+                  navigate(generateSortLink(SortType.Price, sortDirection));
+                }} className={`catalog-sort__type-button ${sortType === SortType.Price ? 'catalog-sort__type-button--active': ''}`} aria-label="по цене"
+                >по цене
+                </button>
+                <button onClick={() => {
+                  navigate(generateSortLink(SortType.Popularity, sortDirection));
+                }} className={`catalog-sort__type-button ${sortType === SortType.Popularity ? 'catalog-sort__type-button--active': ''}`} aria-label="по популярности"
+                >по
                                     популярности
                 </button>
               </div>
               <div className="catalog-sort__order">
-                <button className="catalog-sort__order-button catalog-sort__order-button--up"
-                  aria-label="По возрастанию"
+                <button onClick={() => {
+                  navigate(generateSortLink(sortType === SortType.None || sortType === SortType.Price ? SortType.Price : SortType.Popularity, SortDirection.LowToHigh));
+                }} className={`catalog-sort__order-button catalog-sort__order-button--up  ${sortDirection === SortDirection.LowToHigh ?  'catalog-sort__order-button--active' : ''}`}
+                aria-label="По возрастанию"
                 >
                 </button>
-                <button className="catalog-sort__order-button catalog-sort__order-button--down"
-                  aria-label="По убыванию"
+                <button onClick={() => {
+                  navigate(generateSortLink(sortType === SortType.None || sortType === SortType.Price ? SortType.Price : SortType.Popularity, SortDirection.HighToLow));
+                }} className={`catalog-sort__order-button ${sortDirection === SortDirection.HighToLow ?  'catalog-sort__order-button--active' : ''} catalog-sort__order-button--down`}
+                aria-label="По убыванию"
                 >
                 </button>
               </div>
@@ -214,7 +271,9 @@ function Main(props: MainProps) {
 
 
 const mapStateToProps = (state: StateModel) => ({
-  guitars: getGuitars(state),
+  guitars: getSortedGuitars(state),
+  sortDirection: getGuitarsSortDirection(state),
+  sortType: getGuitarsSortType(state),
   isResponseReceived: getGuitarsIsResponseReceived(state),
   errorMsg: getGuitarsError(state),
 });
@@ -226,6 +285,12 @@ const mapDispatchToProps = (dispatch: any) => ({
   },
   getCommentsCount(guitars: GuitarModel []){
     dispatch(GuitarsOperation.getCommentsCount(guitars));
+  },
+  setSortType(sortType: SortType){
+    dispatch(GuitarsActionCreator.setGuitarsSortType(sortType));
+  },
+  setSortDirection(sortDirection: SortDirection){
+    dispatch(GuitarsActionCreator.setGuitarsSortDirection(sortDirection));
   },
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Main);

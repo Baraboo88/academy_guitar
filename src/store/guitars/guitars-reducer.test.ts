@@ -1,9 +1,14 @@
 import { GuitarsStateModel} from '../../types/redux-models';
 import { GuitarsAction, guitarsReducer} from './guitars-reducer';
 import {MOCK_ERROR, mockGuitars} from '../../utils/test-utils';
+import {SortDirection, SortType} from '../../utils/utils';
+
 
 const initialState:GuitarsStateModel = {
   guitars: [],
+  nameFilter: '',
+  sortDirection: SortDirection.None,
+  sortType:SortType.Price,
   isResponseReceived: false,
   errorMsg: '',
 };

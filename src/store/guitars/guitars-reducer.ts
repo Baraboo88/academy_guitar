@@ -1,17 +1,24 @@
-import { GuitarModel} from '../../types/guitar-model';
+import {GuitarModel} from '../../types/guitar-model';
 import {GuitarsStateModel, StateModel} from '../../types/redux-models';
 import {AppDispatch} from '../../index';
-import { AxiosStatic} from 'axios';
-import {ErrorMsg, ResponseStatus} from '../../utils/utils';
+import {AxiosStatic} from 'axios';
+import {ErrorMsg, ResponseStatus, SortDirection, SortType} from '../../utils/utils';
 
 export enum GuitarsAction {
     SetGuitars = 'guitars/set-guitars',
+    SetNameFilter= 'guitars/set-name-filter',
+    SetSortDirection = 'guitars/set-sort-direction',
+    SetSortType = 'guitars/set-sort-type',
     SetError = 'guitars/set-error',
     SetIsResponseReceived = 'guitars/set-is-response-received',
+
 }
 
 const initialState: GuitarsStateModel = {
   guitars: [],
+  nameFilter: '',
+  sortDirection: SortDirection.None,
+  sortType: SortType.None,
   isResponseReceived: false,
   errorMsg: '',
 };
@@ -75,6 +82,15 @@ export const GuitarsActionCreator = {
   setGuitars(guitars: GuitarModel[]) {
     return {type: GuitarsAction.SetGuitars, payload: guitars};
   },
+  setGuitarsNameFilter(filter: string) {
+    return {type: GuitarsAction.SetNameFilter, payload: filter};
+  },
+  setGuitarsSortDirection(sortDirection: SortDirection) {
+    return {type: GuitarsAction.SetSortDirection, payload: sortDirection};
+  },
+  setGuitarsSortType(sortType: SortType) {
+    return {type: GuitarsAction.SetSortType, payload: sortType};
+  },
   setError(error: string) {
     return {type: GuitarsAction.SetError, payload: error};
   },
@@ -92,6 +108,12 @@ export const guitarsReducer = (state: GuitarsStateModel = initialState, action:a
         isResponseReceived: true,
         errorMsg: '',
       });
+    case GuitarsAction.SetNameFilter:
+      return Object.assign({}, state, {nameFilter: action.payload});
+    case GuitarsAction.SetSortDirection:
+      return Object.assign({}, state, {sortDirection: action.payload});
+    case GuitarsAction.SetSortType:
+      return Object.assign({}, state, {sortType: action.payload});
     case GuitarsAction.SetError:
       return Object.assign({}, state, {errorMsg: action.payload, isResponseReceived: true});
     case GuitarsAction.SetIsResponseReceived:

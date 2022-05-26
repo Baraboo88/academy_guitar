@@ -62,9 +62,20 @@ export enum ErrorMsg {
 export enum ResponseStatus {
     BadRequest = 400,
     NotFound = 404,
-
 }
 
 export enum Page {
     Catalog, WhereToBuy, About
+}
+
+export enum SortDirection{
+  None, LowToHigh, HighToLow
+}
+
+export enum SortType{
+  None, Price, Popularity
+}
+
+export enum SortTypeWithDirection{
+  PriceLowToHigh='price-low-to-high',PriceHighToLow='price-high-to-low', PopularityLowToHigh='popularity-low-to-high', PopularityHighToLow = 'popularity-high-to-low'
 }
