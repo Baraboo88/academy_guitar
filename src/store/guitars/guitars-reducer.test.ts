@@ -9,6 +9,9 @@ const initialState:GuitarsStateModel = {
   nameFilter: '',
   sortDirection: SortDirection.None,
   sortType:SortType.Price,
+  guitarsStrings: [],
+  guitarsTypes: [],
+  mimMaxPrice: [],
   isResponseReceived: false,
   errorMsg: '',
 };

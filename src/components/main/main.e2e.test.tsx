@@ -5,7 +5,8 @@ import {Provider} from 'react-redux';
 import {getTestStore, mockGuitars} from '../../utils/test-utils';
 import {BrowserRouter} from 'react-router-dom';
 import {Main} from './main';
-import {SortDirection, SortType} from "../../utils/utils";
+import {SortDirection, SortType} from '../../utils/utils';
+import {GuitarStringCount} from '../../types/guitar-model';
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
@@ -32,6 +33,7 @@ describe('GuitarCardDetails e2e', () => {
             getCommentsCount={mockGetCommentsCount}
             isResponseReceived={false}
             errorMsg={MOCK_ERROR}
+            guitarsStrings={[GuitarStringCount.Four]}
           />
         </BrowserRouter>
       </Provider>,
@@ -53,6 +55,7 @@ describe('GuitarCardDetails e2e', () => {
             getCommentsCount={mockGetCommentsCount}
             isResponseReceived={false}
             errorMsg={MOCK_ERROR}
+
           />
         </BrowserRouter>
       </Provider>,

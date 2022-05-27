@@ -44,6 +44,21 @@ export const getCyrillicType = (type: GuitarType) => {
   }
 };
 
+export const getCyrillicTypeFiler = (type: GuitarType) => {
+  switch (type) {
+    case GuitarType.Electric:
+      return 'Электрогитары';
+    case GuitarType.Acoustic:
+      return 'Акустические гитары';
+    case GuitarType.Ukulele:
+      return 'Укулеле';
+    default:
+      return '';
+  }
+};
+
+
+
 export const monthNames = ['января', 'февраля ', 'марта', 'апреля', 'майя', 'июня',
   'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
 ];
@@ -78,4 +93,18 @@ export enum SortType{
 
 export enum SortTypeWithDirection{
   PriceLowToHigh='price-low-to-high',PriceHighToLow='price-high-to-low', PopularityLowToHigh='popularity-low-to-high', PopularityHighToLow = 'popularity-high-to-low'
+}
+
+export enum Query{
+  PageNo='page', Sort='sort', Types='types', Strings='strings', MinPrices='minPrice',MaxPrices='maxPrice'
+}
+
+export interface QueryModel{
+  page: string;
+  sort: string;
+  types?: string [];
+  strings?: string [];
+  minPrice: number;
+  maxPrice: number;
+  prices?: number[]
 }

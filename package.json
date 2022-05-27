@@ -6,6 +6,7 @@
     "disable-scroll": "0.6.0",
     "focus-trap-react": "8.11.1",
     "history": "4.10.1",
+    "query-string": "7.1.1",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-redux": "^7.2.2",

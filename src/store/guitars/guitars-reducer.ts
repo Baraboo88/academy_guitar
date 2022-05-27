@@ -1,4 +1,4 @@
-import {GuitarModel} from '../../types/guitar-model';
+import {GuitarModel, GuitarStringCount, GuitarType} from '../../types/guitar-model';
 import {GuitarsStateModel, StateModel} from '../../types/redux-models';
 import {AppDispatch} from '../../index';
 import {AxiosStatic} from 'axios';
@@ -11,12 +11,19 @@ export enum GuitarsAction {
     SetSortType = 'guitars/set-sort-type',
     SetError = 'guitars/set-error',
     SetIsResponseReceived = 'guitars/set-is-response-received',
-
+    SetMinPrice='guitars/set-min-price',
+    SetMaxPrice='guitars/set-max-price',
+    SetGuitarsTypes='guitars/set-guitars-type',
+    SetNoOfStrings='guitars/set-no-of-strings'
 }
 
 const initialState: GuitarsStateModel = {
   guitars: [],
   nameFilter: '',
+  minPrice: -1,
+  maxPrice: -1,
+  guitarsStrings: [],
+  guitarsTypes: [],
   sortDirection: SortDirection.None,
   sortType: SortType.None,
   isResponseReceived: false,
@@ -91,6 +98,18 @@ export const GuitarsActionCreator = {
   setGuitarsSortType(sortType: SortType) {
     return {type: GuitarsAction.SetSortType, payload: sortType};
   },
+  setMinPrice(minPrice: number){
+    return {type: GuitarsAction.SetMinPrice, payload:minPrice};
+  },
+  setMaxPrice(maxPrice:number){
+    return {type: GuitarsAction.SetMaxPrice, payload:maxPrice};
+  },
+  setGuitarsTypes(guitarTypes: GuitarType []){
+    return {type: GuitarsAction.SetGuitarsTypes, payload: guitarTypes};
+  },
+  setNoOfStrings(noOfStrings: GuitarStringCount []){
+    return {type: GuitarsAction.SetNoOfStrings, payload: noOfStrings};
+  },
   setError(error: string) {
     return {type: GuitarsAction.SetError, payload: error};
   },
@@ -114,6 +133,14 @@ export const guitarsReducer = (state: GuitarsStateModel = initialState, action:a
       return Object.assign({}, state, {sortDirection: action.payload});
     case GuitarsAction.SetSortType:
       return Object.assign({}, state, {sortType: action.payload});
+    case GuitarsAction.SetMinPrice:
+      return Object.assign({}, state, {minPrice: action.payload});
+    case GuitarsAction.SetMaxPrice:
+      return Object.assign({}, state, {maxPrice: action.payload});
+    case GuitarsAction.SetGuitarsTypes:
+      return Object.assign({}, state, {guitarsTypes: action.payload});
+    case GuitarsAction.SetNoOfStrings:
+      return Object.assign({}, state, {guitarsStrings: action.payload});
     case GuitarsAction.SetError:
       return Object.assign({}, state, {errorMsg: action.payload, isResponseReceived: true});
     case GuitarsAction.SetIsResponseReceived:
