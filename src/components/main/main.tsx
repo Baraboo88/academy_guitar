@@ -33,6 +33,7 @@ import {
 } from '../../utils/utils';
 import {useQuery} from '../../hooks/use-query/use-query';
 import * as queryString from 'query-string';
+import disableScroll from 'disable-scroll';
 
 const ITEMS_ON_THE_PAGE = 9;
 
@@ -92,7 +93,7 @@ function Main(props: MainProps) {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const [innerQueryString, setInnerQueryString] = useState<QueryModel>({});
-  const [innerMinPrice, setInnerMinPrice] = useState(selectedMinPrice);
+  const [innerMinPrice, setInnerMinPrice] = useState('');
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -172,30 +173,53 @@ function Main(props: MainProps) {
 
   useEffect(()=> {
     if(newPrice){
-      let newMinPrice: number;
-      if( availableMinMaxPrices.length === 0){
-        newMinPrice = Number(newPrice) < 0 ? 0 :Number(newPrice);
+      let newMinPrice = Number(newPrice);
 
-      } else {
-        newMinPrice = Number(newPrice) < availableMinMaxPrices[0] ? availableMinMaxPrices[0] :Number(newPrice);
+      if(newMinPrice < availableMinMaxPrices[0]){
+        newMinPrice = availableMinMaxPrices[0];
       }
+      if(newMinPrice > availableMinMaxPrices[1]){
+        newMinPrice = availableMinMaxPrices[1];
+      }
+
       setInnerQueryString({...innerQueryString, minPrice:newMinPrice});
+      console.log(newMinPrice);
+      setInnerMinPrice(newMinPrice.toString());
       setMinPrice(newMinPrice);
     }
 
-  }, [newPrice, setMinPrice]);
+  }, [newPrice, setMinPrice, availableMinMaxPrices]);
+
 
   useEffect(()=> {
-    if(selectedMinPrice){
-      setInnerMinPrice(selectedMinPrice)
+    console.log(selectedMinPrice);
+    if(selectedMinPrice >= 0){
+
+      setInnerMinPrice(selectedMinPrice.toString());
     }
 
   }, [selectedMinPrice]);
 
-  useEffect(() => {
-    setTimeout(() => {navigate(generateMinPriceLink(innerMinPrice));}, 2000);
-  }, [innerMinPrice]);
+  const onPriceSubmit = () => {
+    navigate(generateMinPriceLink(Number(innerMinPrice)));
+  };
 
+  const escFunction = useCallback((event) => {
+    if (event.key === 'Enter') {
+      onPriceSubmit();
+    }
+  }, [onPriceSubmit]);
+
+
+  useEffect(() => {
+    document.addEventListener('keydown', escFunction, false);
+
+    disableScroll.on();
+    return () => {
+      document.removeEventListener('keydown', escFunction, false);
+      disableScroll.off();
+    };
+  }, [escFunction]);
 
   const renderPagination = () => {
 

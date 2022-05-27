@@ -29,6 +29,29 @@ export const getGuitarsWithNameFilter = createSelector([getGuitarsNameFilter, ge
   return returnGuitars.slice(0, 3);
 }) ;
 
+
+const getGuitarsForMinMaxPrice =  createSelector([getGuitarsSelectedStrings, getGuitarsSelectedTypes, getGuitars],(stringsNo, guitarsType, guitars) => {
+  const returnGuitars: GuitarModel [] = [];
+
+  const applyStringFilter = (guitar: GuitarModel) => {
+    if(stringsNo.length > 0 && stringsNo.find((el) => el === guitar.stringCount)){
+      returnGuitars.push(guitar);
+    }
+    if(stringsNo.length === 0){
+      returnGuitars.push(guitar);
+    }
+  };
+  guitars.forEach((guitar) => {
+    if(guitarsType.find((el) => el === guitar.type)){
+      applyStringFilter(guitar);
+    }
+    if(guitarsType.length === 0){
+      applyStringFilter(guitar);
+    }
+  });
+  return returnGuitars;
+})
+
 export const getFilteredGuitars = createSelector([getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, getGuitarsSelectedStrings, getGuitarsSelectedTypes, getGuitars],(minPrice, maxPrice,stringsNo, guitarsType, guitars) => {
 
   const returnGuitars: GuitarModel [] = [];
@@ -91,7 +114,8 @@ export const getSortedGuitars = createSelector([getGuitarsSortType, getGuitarsSo
 
 });
 
-export const getMinMaxPrice = createSelector(getFilteredGuitars,getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, (guitars, minCurrentPrice, maxCurrentPrice) => {
+export const getMinMaxPrice = createSelector(getGuitarsForMinMaxPrice,getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, (guitars, minCurrentPrice, maxCurrentPrice) => {
+
   let minPrice = guitars.length > 0 ? Number.MAX_SAFE_INTEGER : 0;
   let maxPrice = 0;
   guitars.forEach((guitar) => {
