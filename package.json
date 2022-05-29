@@ -14,7 +14,8 @@
     "react-scripts": "5.0.0",
     "redux": "^4.2.0",
     "redux-thunk": "2.4.1",
-    "reselect": "4.0.0"
+    "reselect": "4.0.0",
+    "use-debounce": "8.0.1"
   },
   "devDependencies": {
     "@jedmao/redux-mock-store": "3.0.5",

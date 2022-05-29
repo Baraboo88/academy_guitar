@@ -78,7 +78,7 @@ export const getFilteredGuitars = createSelector([getGuitarsSelectedMinPrice, ge
     if(minPrice === -1 && maxPrice === -1){
       applyTypeAndStringsFilter(guitar);
     }
-    if(minPrice === -1 && minPrice !== -1 && guitar.price <= maxPrice){
+    if(minPrice === -1 && maxPrice !== -1 && guitar.price <= maxPrice){
       applyTypeAndStringsFilter(guitar);
     }
     if(minPrice !== -1 && minPrice <= guitar.price && maxPrice !== -1 && guitar.price <= maxPrice){

@@ -34,6 +34,8 @@ import {
 import {useQuery} from '../../hooks/use-query/use-query';
 import * as queryString from 'query-string';
 import disableScroll from 'disable-scroll';
+import {useDebounce} from 'use-debounce';
+import CatalogFilter from '../catalog-filter/catalog-filter';
 
 const ITEMS_ON_THE_PAGE = 9;
 
@@ -48,17 +50,6 @@ interface MainProps {
     isResponseReceived: boolean;
     errorMsg: string;
     getCommentsCount: (guitars: GuitarModel []) => void;
-    setMinPrice: (minPrice: number) => void,
-    setMaxPrice: (maxPrice: number) => void;
-    setGuitarsTypes: (guitarTypes: GuitarType []) => void;
-    setNoOfStrings: (noOfStrings: GuitarStringCount []) => void;
-    availableMinMaxPrices: number [],
-    availableGuitarsString: GuitarStringCount [],
-    availableGuitarsTypes: GuitarType [],
-    selectedMinPrice: number,
-    selectedMaxPrice: number,
-    selectedTypes: GuitarType [],
-    selectedStrings: GuitarStringCount [],
 }
 
 
@@ -73,17 +64,6 @@ function Main(props: MainProps) {
     sortType,
     setSortType,
     setSortDirection,
-    setMinPrice,
-    setMaxPrice,
-    setGuitarsTypes,
-    setNoOfStrings,
-    availableMinMaxPrices,
-    availableGuitarsString,
-    availableGuitarsTypes,
-    selectedMinPrice,
-    selectedMaxPrice,
-    selectedTypes,
-    selectedStrings,
   } = props;
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -92,15 +72,14 @@ function Main(props: MainProps) {
   const [isLoadingCommentsCount, setIsLoadingCommentsCount] = useState<boolean>(true);
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
-  const [innerQueryString, setInnerQueryString] = useState<QueryModel>({});
-  const [innerMinPrice, setInnerMinPrice] = useState('');
+  const [innerQuery, setInnerQuery] = useState<QueryModel>({});
+
 
   const navigate = useNavigate();
   const query = useQuery();
   const pageNo = query.get(Query.PageNo);
   const sort = query.get(Query.Sort);
-  const newPrice = query.get(Query.MinPrices);
-  const maxPrice = query.get(Query.MaxPrices);
+
 
   useEffect(() => {
     if (isResponseReceived && errorMsg) {
@@ -134,7 +113,7 @@ function Main(props: MainProps) {
 
   useEffect(() => {
     if (pageNo) {
-      setInnerQueryString({...innerQueryString, page: pageNo});
+      setInnerQuery({...innerQuery, page: pageNo});
       setCurrentPage(Number(pageNo));
     } else {
       setCurrentPage(1);
@@ -149,81 +128,34 @@ function Main(props: MainProps) {
   useEffect(() => {
     if (sort && guitars.length > 0) {
       if (sort === SortTypeWithDirection.PopularityLowToHigh) {
-        setInnerQueryString({...innerQueryString, sort:SortTypeWithDirection.PopularityLowToHigh});
+        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PopularityLowToHigh});
         setSortType(SortType.Popularity);
         setSortDirection(SortDirection.LowToHigh);
       }
       if (sort === SortTypeWithDirection.PopularityHighToLow) {
-        setInnerQueryString({...innerQueryString, sort:SortTypeWithDirection.PopularityHighToLow});
+        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PopularityHighToLow});
         setSortType(SortType.Popularity);
         setSortDirection(SortDirection.HighToLow);
       }
       if (sort === SortTypeWithDirection.PriceLowToHigh) {
-        setInnerQueryString({...innerQueryString, sort:SortTypeWithDirection.PriceLowToHigh});
+        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PriceLowToHigh});
         setSortType(SortType.Price);
         setSortDirection(SortDirection.LowToHigh);
       }
       if (sort === SortTypeWithDirection.PriceHighToLow) {
-        setInnerQueryString({...innerQueryString, sort:SortTypeWithDirection.PriceHighToLow});
+        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PriceHighToLow});
         setSortType(SortType.Price);
         setSortDirection(SortDirection.HighToLow);
       }
     }
   }, [sort, guitars, setSortDirection, setSortType]);
 
-  useEffect(()=> {
-    if(newPrice){
-      let newMinPrice = Number(newPrice);
 
-      if(newMinPrice < availableMinMaxPrices[0]){
-        newMinPrice = availableMinMaxPrices[0];
-      }
-      if(newMinPrice > availableMinMaxPrices[1]){
-        newMinPrice = availableMinMaxPrices[1];
-      }
-
-      setInnerQueryString({...innerQueryString, minPrice:newMinPrice});
-      console.log(newMinPrice);
-      setInnerMinPrice(newMinPrice.toString());
-      setMinPrice(newMinPrice);
-    }
-
-  }, [newPrice, setMinPrice, availableMinMaxPrices]);
-
-
-  useEffect(()=> {
-    console.log(selectedMinPrice);
-    if(selectedMinPrice >= 0){
-
-      setInnerMinPrice(selectedMinPrice.toString());
-    }
-
-  }, [selectedMinPrice]);
-
-  const onPriceSubmit = () => {
-    navigate(generateMinPriceLink(Number(innerMinPrice)));
+  const handlerQuerySet = (newQuery: QueryModel) => {
+    setInnerQuery(newQuery);
   };
 
-  const escFunction = useCallback((event) => {
-    if (event.key === 'Enter') {
-      onPriceSubmit();
-    }
-  }, [onPriceSubmit]);
-
-
-  useEffect(() => {
-    document.addEventListener('keydown', escFunction, false);
-
-    disableScroll.on();
-    return () => {
-      document.removeEventListener('keydown', escFunction, false);
-      disableScroll.off();
-    };
-  }, [escFunction]);
-
   const renderPagination = () => {
-
-
     const allPages = getAllPages();
     const pages = [];
     for (let i = 1; i <= allPages; i++) {
@@ -249,13 +181,9 @@ function Main(props: MainProps) {
   };
 
 
-  const generateMaxPriceLink = (elPrice:number) => `?${queryString.stringify({...innerQueryString, maxPrice: elPrice},  {skipEmptyString: true})}`;
+  const generatePageLink = (page: number) => `?${queryString.stringify({...innerQuery, page},  {skipEmptyString: true})}`;
 
-  const generateMinPriceLink = (elPrice:number) => `?${queryString.stringify({...innerQueryString, minPrice: elPrice},  {skipEmptyString: true})}`;
-
-  const generatePageLink = (page: number) => `?${queryString.stringify({...innerQueryString, page},  {skipEmptyString: true})}`;
-
-  const generateSortLink = (type: SortType, direction: SortDirection) => `?${queryString.stringify({...innerQueryString, sort: getSortQuery(type, direction)},{skipEmptyString: true})}`;
+  const generateSortLink = (type: SortType, direction: SortDirection) => `?${queryString.stringify({...innerQuery, sort: getSortQuery(type, direction)},{skipEmptyString: true})}`;
 
   return (
     <div className="wrapper">
@@ -270,53 +198,7 @@ function Main(props: MainProps) {
             </li>
           </ul>
           <div className="catalog">
-            <form className="catalog-filter">
-              <h2 className="title title--bigger catalog-filter__title">Фильтр</h2>
-              <fieldset className="catalog-filter__block">
-                <legend className="catalog-filter__block-title">Цена, ₽</legend>
-                <div className="catalog-filter__price-range">
-                  <div className="form-input">
-                    <label className="visually-hidden">Минимальная цена</label>
-                    <input value={innerMinPrice === -1 ? '' : innerMinPrice} onChange={(evt) => {
-                      setInnerMinPrice(Number(evt.target.value));
-
-                    }} type="number" placeholder={`${availableMinMaxPrices.length > 0 ? getPriceWithSpaces(availableMinMaxPrices[0]) : ''}`} id="priceMin" name="от"
-                    />
-                  </div>
-                  <div className="form-input">
-                    <label className="visually-hidden">Максимальная цена</label>
-                    <input type="number" placeholder={`${availableMinMaxPrices.length > 1 ? getPriceWithSpaces(availableMinMaxPrices[1]) : ''}`} id="priceMax" name="до"/>
-                  </div>
-                </div>
-              </fieldset>
-              <fieldset className="catalog-filter__block">
-                <legend className="catalog-filter__block-title">Тип гитар</legend>
-                {availableGuitarsTypes && availableGuitarsTypes.map((guitarType) =>
-                  (
-                    <div key={guitarType} className="form-checkbox catalog-filter__block-item">
-                      <input className="visually-hidden" type="checkbox" id={guitarType} name={guitarType}/>
-                      <label htmlFor={guitarType}>{getCyrillicTypeFiler(guitarType)}</label>
-                    </div>))}
-
-              </fieldset>
-              <fieldset className="catalog-filter__block">
-                <legend className="catalog-filter__block-title">Количество струн</legend>
-                {availableGuitarsString && availableGuitarsString.map((stringNo) =>
-                  (
-                    <div key={stringNo} className="form-checkbox catalog-filter__block-item">
-                      <input  className="visually-hidden" type="checkbox"
-                        id={`${stringNo}-strings`} name={`${stringNo}-strings`}
-                      />
-                      <label htmlFor={`${stringNo}-strings`}>{stringNo}</label>
-                    </div>))}
-
-              </fieldset>
-              <button className="catalog-filter__reset-btn button button--black-border button--medium"
-                type="reset"
-              >
-                                Очистить
-              </button>
-            </form>
+            <CatalogFilter innerQuery={innerQuery} onInnerQuerySet={handlerQuerySet}/>
             <div className="catalog-sort">
               <h2 className="catalog-sort__title">Сортировать:</h2>
               <div className="catalog-sort__type">
