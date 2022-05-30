@@ -1,6 +1,8 @@
-import {GuitarType} from '../types/guitar-model';
+import {GuitarModel, GuitarStringCount, GuitarType} from '../types/guitar-model';
 
 const STARTS_AMOUNT = 5;
+export const MIN_PRICE_INICIAL_VALUE = -1;
+export const MAX_PRICE_INICIAL_VALUE = -1;
 
 export const getAdapterImage = (img: string) => img.slice(img.length - 5, img.length - 4);
 
@@ -58,7 +60,6 @@ export const getCyrillicTypeFiler = (type: GuitarType) => {
 };
 
 
-
 export const monthNames = ['января', 'февраля ', 'марта', 'апреля', 'майя', 'июня',
   'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
 ];
@@ -96,15 +97,21 @@ export enum SortTypeWithDirection{
 }
 
 export enum Query{
-  PageNo='page', Sort='sort', Types='types', Strings='strings', MinPrices='minPrice',MaxPrices='maxPrice'
+  PageNo='page', Sort='sort', GuitarTypes='guitarTypes', GuitarStrings='guitarStrings', MinPrices='minPrice',MaxPrices='maxPrice'
 }
 
 export interface QueryModel{
   page: string;
   sort: string;
-  types?: string [];
-  strings?: string [];
-  minPrice: number;
-  maxPrice: number;
+  guitarTypes?: string [];
+  guitarStrings?: string [];
+  minPrice: string | number;
+  maxPrice: string | number;
   prices?: number[]
 }
+
+export const getGuitarsWithMinAndMaxFilter = (guitars: GuitarModel [], minPrice: number, maxPrice: number) => guitars.filter((guitar) => ((minPrice === MIN_PRICE_INICIAL_VALUE && maxPrice === MAX_PRICE_INICIAL_VALUE) || (minPrice === MIN_PRICE_INICIAL_VALUE && maxPrice !== MAX_PRICE_INICIAL_VALUE && guitar.price <= maxPrice) || (minPrice !== -1 && minPrice <= guitar.price && maxPrice !== MIN_PRICE_INICIAL_VALUE && guitar.price <= maxPrice) || (minPrice !== MIN_PRICE_INICIAL_VALUE && minPrice <= guitar.price && maxPrice === MAX_PRICE_INICIAL_VALUE)));
+
+export const getGuitarsWithTypeFilter =(guitars: GuitarModel[], guitarsTypes: GuitarType []) => guitars.filter((guitar) => (guitarsTypes.find((el) => el === guitar.type) || guitarsTypes.length === 0));
+
+export const getGuitarsWithStringFilter = (guitars: GuitarModel [], guitarStrings: GuitarStringCount []) =>guitars.filter((guitar) => guitarStrings.find((el) => el === guitar.stringCount.toString()) || guitarStrings.length === 0 );

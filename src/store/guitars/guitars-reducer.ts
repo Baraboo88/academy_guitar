@@ -14,7 +14,7 @@ export enum GuitarsAction {
     SetMinPrice='guitars/set-min-price',
     SetMaxPrice='guitars/set-max-price',
     SetGuitarsTypes='guitars/set-guitars-type',
-    SetNoOfStrings='guitars/set-no-of-strings'
+    SetNoOfStrings='guitars/set-guitars-strings'
 }
 
 const initialState: GuitarsStateModel = {
