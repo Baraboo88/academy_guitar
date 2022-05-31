@@ -59,6 +59,11 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
       </nav>
       <div
         className="form-search"
+        style={
+          Object {
+            "display": "flex",
+          }
+        }
       >
         <form
           className="form-search__form"
@@ -88,8 +93,10 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
             autoComplete="off"
             className="form-search__input"
             id="search"
+            onChange={[Function]}
             placeholder="что вы ищите?"
             type="text"
+            value=""
           />
           <label
             className="visually-hidden"
@@ -100,47 +107,11 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
         </form>
         <ul
           className="form-search__select-list hidden"
-        >
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер Plus
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX2
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX3
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX4
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX5
-          </li>
-        </ul>
+        />
         <button
           className="form-search__reset"
           form="form-search"
+          onClick={[Function]}
           type="reset"
         >
           <svg

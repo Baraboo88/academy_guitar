@@ -23,6 +23,13 @@ it('Reducer Guitars setGuitars  success', () => {
     guitars: mockGuitars,
     isResponseReceived: true,
     errorMsg: '',
+    guitarsStrings: [],
+    guitarsTypes: [],
+    maxPrice: MAX_PRICE_INICIAL_VALUE,
+    minPrice: MIN_PRICE_INICIAL_VALUE,
+    nameFilter: '',
+    sortDirection: SortDirection.None,
+    sortType: SortType.Price,
   });
 });
 
@@ -32,6 +39,13 @@ it('Reducer Guitars setError  success', () => {
     guitars: [],
     isResponseReceived: true,
     errorMsg: MOCK_ERROR,
+    guitarsStrings: [],
+    guitarsTypes: [],
+    maxPrice: MAX_PRICE_INICIAL_VALUE,
+    minPrice: MIN_PRICE_INICIAL_VALUE,
+    nameFilter: '',
+    sortDirection: SortDirection.None,
+    sortType: SortType.Price,
   });
 });
 
@@ -41,5 +55,12 @@ it('Reducer Guitars setIsResponseReceived   success', () => {
     guitars: [],
     isResponseReceived: false,
     errorMsg: '',
+    guitarsStrings: [],
+    guitarsTypes: [],
+    maxPrice: MAX_PRICE_INICIAL_VALUE,
+    minPrice: MIN_PRICE_INICIAL_VALUE,
+    nameFilter: '',
+    sortDirection: SortDirection.None,
+    sortType: SortType.Price,
   });
 });

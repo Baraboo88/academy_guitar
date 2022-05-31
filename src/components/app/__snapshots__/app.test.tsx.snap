@@ -59,6 +59,11 @@ exports[`App successfully rendered 1`] = `
       </nav>
       <div
         className="form-search"
+        style={
+          Object {
+            "display": "flex",
+          }
+        }
       >
         <form
           className="form-search__form"
@@ -88,8 +93,10 @@ exports[`App successfully rendered 1`] = `
             autoComplete="off"
             className="form-search__input"
             id="search"
+            onChange={[Function]}
             placeholder="что вы ищите?"
             type="text"
+            value=""
           />
           <label
             className="visually-hidden"
@@ -100,47 +107,11 @@ exports[`App successfully rendered 1`] = `
         </form>
         <ul
           className="form-search__select-list hidden"
-        >
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер Plus
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX2
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX3
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX4
-          </li>
-          <li
-            className="form-search__select-item"
-            tabIndex={0}
-          >
-            Четстер UX5
-          </li>
-        </ul>
+        />
         <button
           className="form-search__reset"
           form="form-search"
+          onClick={[Function]}
           type="reset"
         >
           <svg
@@ -254,8 +225,10 @@ exports[`App successfully rendered 1`] = `
                 <input
                   id="priceMin"
                   name="от"
-                  placeholder="1 000"
+                  onChange={[Function]}
+                  placeholder="2 200"
                   type="number"
+                  value=""
                 />
               </div>
               <div
@@ -269,8 +242,10 @@ exports[`App successfully rendered 1`] = `
                 <input
                   id="priceMax"
                   name="до"
+                  onChange={[Function]}
                   placeholder="30 000"
                   type="number"
+                  value=""
                 />
               </div>
             </div>
@@ -285,11 +260,15 @@ exports[`App successfully rendered 1`] = `
             </legend>
             <div
               className="form-checkbox catalog-filter__block-item"
+              key="acoustic"
             >
               <input
+                checked={false}
                 className="visually-hidden"
+                disabled={false}
                 id="acoustic"
                 name="acoustic"
+                onChange={[Function]}
                 type="checkbox"
               />
               <label
@@ -300,12 +279,15 @@ exports[`App successfully rendered 1`] = `
             </div>
             <div
               className="form-checkbox catalog-filter__block-item"
+              key="electric"
             >
               <input
+                checked={false}
                 className="visually-hidden"
-                defaultChecked={true}
+                disabled={false}
                 id="electric"
                 name="electric"
+                onChange={[Function]}
                 type="checkbox"
               />
               <label
@@ -316,12 +298,15 @@ exports[`App successfully rendered 1`] = `
             </div>
             <div
               className="form-checkbox catalog-filter__block-item"
+              key="ukulele"
             >
               <input
+                checked={false}
                 className="visually-hidden"
-                defaultChecked={true}
+                disabled={false}
                 id="ukulele"
                 name="ukulele"
+                onChange={[Function]}
                 type="checkbox"
               />
               <label
@@ -341,12 +326,14 @@ exports[`App successfully rendered 1`] = `
             </legend>
             <div
               className="form-checkbox catalog-filter__block-item"
+              key="4"
             >
               <input
                 className="visually-hidden"
-                defaultChecked={true}
+                disabled={true}
                 id="4-strings"
                 name="4-strings"
+                onChange={[Function]}
                 type="checkbox"
               />
               <label
@@ -357,12 +344,14 @@ exports[`App successfully rendered 1`] = `
             </div>
             <div
               className="form-checkbox catalog-filter__block-item"
+              key="6"
             >
               <input
                 className="visually-hidden"
-                defaultChecked={true}
+                disabled={true}
                 id="6-strings"
                 name="6-strings"
+                onChange={[Function]}
                 type="checkbox"
               />
               <label
@@ -373,11 +362,14 @@ exports[`App successfully rendered 1`] = `
             </div>
             <div
               className="form-checkbox catalog-filter__block-item"
+              key="7"
             >
               <input
                 className="visually-hidden"
+                disabled={true}
                 id="7-strings"
                 name="7-strings"
+                onChange={[Function]}
                 type="checkbox"
               />
               <label
@@ -388,12 +380,14 @@ exports[`App successfully rendered 1`] = `
             </div>
             <div
               className="form-checkbox catalog-filter__block-item"
+              key="12"
             >
               <input
                 className="visually-hidden"
                 disabled={true}
                 id="12-strings"
                 name="12-strings"
+                onChange={[Function]}
                 type="checkbox"
               />
               <label
@@ -405,6 +399,7 @@ exports[`App successfully rendered 1`] = `
           </fieldset>
           <button
             className="catalog-filter__reset-btn button button--black-border button--medium"
+            onClick={[Function]}
             type="reset"
           >
             Очистить
@@ -423,13 +418,15 @@ exports[`App successfully rendered 1`] = `
           >
             <button
               aria-label="по цене"
-              className="catalog-sort__type-button"
+              className="catalog-sort__type-button "
+              onClick={[Function]}
             >
               по цене
             </button>
             <button
               aria-label="по популярности"
-              className="catalog-sort__type-button"
+              className="catalog-sort__type-button "
+              onClick={[Function]}
             >
               по популярности
             </button>
@@ -439,11 +436,13 @@ exports[`App successfully rendered 1`] = `
           >
             <button
               aria-label="По возрастанию"
-              className="catalog-sort__order-button catalog-sort__order-button--up"
+              className="catalog-sort__order-button catalog-sort__order-button--up  "
+              onClick={[Function]}
             />
             <button
               aria-label="По убыванию"
-              className="catalog-sort__order-button catalog-sort__order-button--down"
+              className="catalog-sort__order-button  catalog-sort__order-button--down"
+              onClick={[Function]}
             />
           </div>
         </div>
@@ -1292,7 +1291,7 @@ exports[`App successfully rendered 1`] = `
             >
               <a
                 className="link pagination__page-link"
-                href="/catalog/page/1"
+                href="/?page=1"
                 onClick={[Function]}
               >
                 1

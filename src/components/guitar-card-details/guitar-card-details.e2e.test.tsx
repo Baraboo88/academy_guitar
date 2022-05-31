@@ -1,6 +1,6 @@
 import {mount, ReactWrapper} from 'enzyme';
 
-import {  mockGuitars} from '../../utils/test-utils';
+import {getTestStore, mockGuitars} from '../../utils/test-utils';
 import { GuitarCardDetails} from './guitar-card-details';
 import {BrowserRouter} from 'react-router-dom';
 import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -11,6 +11,7 @@ import 'intersection-observer';
 
 import React from 'react';
 import {ErrorMsg} from '../../utils/utils';
+import {Provider} from 'react-redux';
 
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
@@ -39,20 +40,22 @@ describe('GuitarCardDetails e2e', () => {
 
   beforeEach(() => {
     app = mount(
-      <BrowserRouter>
-        <GuitarCardDetails
-          currentGuitar={mockGuitars[0]}
-          resetCurrentGuitar ={mockResetCurrentGuitar}
-          onMount = {mockOnMount}
-          getComments={mockGetComments}
-          addComment={mockAddComment}
-          isResponseReceived ={false}
-          resetIsResponseReceived={mockResetIsResponseReceived}
-          error={ErrorMsg.NotFound}
-        />
+      <Provider store={getTestStore()}>
+        <BrowserRouter>
+          <GuitarCardDetails
+            currentGuitar={mockGuitars[0]}
+            resetCurrentGuitar ={mockResetCurrentGuitar}
+            onMount = {mockOnMount}
+            getComments={mockGetComments}
+            addComment={mockAddComment}
+            isResponseReceived ={false}
+            resetIsResponseReceived={mockResetIsResponseReceived}
+            error={ErrorMsg.NotFound}
+          />
 
 
-      </BrowserRouter>,
+        </BrowserRouter>
+      </Provider>,
     );
   });
 

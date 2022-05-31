@@ -1,8 +1,9 @@
-import {AddCommentModel, GuitarCommentModel, GuitarModel, GuitarType} from '../types/guitar-model';
+import {AddCommentModel, GuitarCommentModel, GuitarModel, GuitarStringCount, GuitarType} from '../types/guitar-model';
 import {createApi} from '../api';
 import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import {ReactWrapper} from 'enzyme';
+import {SortDirection, SortType} from './utils';
 
 
 export const MOCK_ERROR= 'Somme error';
@@ -15,7 +16,7 @@ export const mockGuitars: GuitarModel[] = [
     type: 'electric' as GuitarType,
     description: 'Замечательный малобюджетный вариант, созданный для новичков, которые отдают предпочтение мелодичным стилям. Прекрасно звучат блюз и баллады, исполненные на этой гитаре. Акустические свойства весьма высоки, в отличие от ее стоимости.',
     previewImg: 'img/guitar-1.jpg',
-    stringCount: 7,
+    stringCount: GuitarStringCount.Seven,
     rating: 4,
     price: 17500,
   },
@@ -26,7 +27,7 @@ export const mockGuitars: GuitarModel[] = [
     type: 'electric' as GuitarType,
     description: 'Эргономичность гитары и качество сборки являются, пожалуй, её главными преимуществами. Идеальное расположение в руках музыканта дополняется прочностью конструкции из клёна.',
     previewImg: 'img/guitar-8.jpg',
-    stringCount: 7,
+    stringCount: GuitarStringCount.Seven,
     rating: 3.5,
     price: 29500,
   },
@@ -37,7 +38,7 @@ export const mockGuitars: GuitarModel[] = [
     type: 'ukulele' as GuitarType,
     description: 'Укулеле класса премиум от компании CURT, собравшая в себе все самые необходимые качесва: лёгкость корпуса, прочность струн и компактный размер.',
     previewImg: 'img/guitar-6.jpg',
-    stringCount: 4,
+    stringCount: GuitarStringCount.Four,
     rating: 4,
     price: 6800,
   },
@@ -48,7 +49,7 @@ export const mockGuitars: GuitarModel[] = [
     type: 'electric' as GuitarType,
     description: 'CURT T300 - это шестиструнная электрогитара популярной линейки FPT. Модель с классическим стилем головы грифа и деки.',
     previewImg: 'img/guitar-3.jpg',
-    stringCount: 6,
+    stringCount: GuitarStringCount.Six,
     rating: 5,
     price: 30000,
   },
@@ -59,7 +60,7 @@ export const mockGuitars: GuitarModel[] = [
     type: 'acoustic' as GuitarType,
     description: 'Гитары производителя Dania пользуются популярностью у музыкантов разного уровня. В модели Super идеально сочетаются демократичная цена и качество. Корпус, выполненный из тополя позволяет корпусу долгое время сохранять свой первоначальный вид.',
     previewImg: 'img/guitar-4.jpg',
-    stringCount: 7,
+    stringCount: GuitarStringCount.Seven,
     rating: 4.5,
     price: 3500,
   },
@@ -70,7 +71,7 @@ export const mockGuitars: GuitarModel[] = [
     type: 'electric' as GuitarType,
     description: 'Электрогитара с олд-скульным грифом и глянцевым корпусом для настоящих рок-музыкантов. Насыщенный звук идеально подойдет для исполнения рок-композиций.',
     previewImg: 'img/guitar-2.jpg',
-    stringCount: 6,
+    stringCount: GuitarStringCount.Six,
     rating: 3.5,
     price: 15300,
   },
@@ -81,7 +82,7 @@ export const mockGuitars: GuitarModel[] = [
     type: 'ukulele' as GuitarType,
     description: 'Укулеле - прекрасный компактный аналог классической акустической гитары. Прекрасное качество продуктов компании Dania сочетается с демократичными ценами продуктов линейки GSR.',
     previewImg: 'img/guitar-5.jpg',
-    stringCount: 4,
+    stringCount: GuitarStringCount.Four,
     rating: 2.5,
     price: 2200,
   },
@@ -94,6 +95,13 @@ export const testInitialState = {
   guitars: {
     guitars: mockGuitars,
     errorMsg: '',
+    nameFilter: '',
+    minPrice: -1,
+    maxPrice: -1,
+    guitarsStrings: [],
+    guitarsTypes: [],
+    sortDirection: SortDirection.None,
+    sortType: SortType.None,
   },
 };
 
