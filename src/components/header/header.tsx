@@ -31,7 +31,7 @@ function Header(props: HeaderProps) {
     if(guitars.length === 0){
       fetchGuitars();
     }
-  }, [guitars]);
+  }, [guitars, fetchGuitars]);
   const navigate = useNavigate();
   const renderFilteredGuitars = () => guitarsWithFilter.map((guitar) =>
     (

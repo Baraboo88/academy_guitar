@@ -4,9 +4,7 @@ import {
   getPriceWithSpaces, MAX_PRICE_INICIAL_VALUE,
   MIN_PRICE_INICIAL_VALUE,
   Query,
-  QueryModel,
-  SortDirection,
-  SortType
+  QueryModel
 } from '../../utils/utils';
 import {StateModel} from '../../types/redux-models';
 import {

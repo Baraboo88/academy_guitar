@@ -23,7 +23,6 @@ import {
 } from '../../store/guitars/guitars-selectors';
 import {GuitarsActionCreator, GuitarsOperation} from '../../store/guitars/guitars-reducer';
 import {
-  getCyrillicTypeFiler, getPriceWithSpaces,
   Page,
   Query,
   QueryModel,
@@ -33,8 +32,7 @@ import {
 } from '../../utils/utils';
 import {useQuery} from '../../hooks/use-query/use-query';
 import * as queryString from 'query-string';
-import disableScroll from 'disable-scroll';
-import {useDebounce} from 'use-debounce';
+
 import CatalogFilter from '../catalog-filter/catalog-filter';
 
 const ITEMS_ON_THE_PAGE = 9;
@@ -123,7 +121,7 @@ function Main(props: MainProps) {
       navigate('/not-found');
     }
 
-  }, [pageNo, guitars, getAllPages, navigate]);
+  }, [pageNo, guitars, getAllPages, navigate, innerQuery]);
 
   useEffect(() => {
     if (sort && guitars.length > 0) {
@@ -148,7 +146,7 @@ function Main(props: MainProps) {
         setSortDirection(SortDirection.HighToLow);
       }
     }
-  }, [sort, guitars, setSortDirection, setSortType]);
+  }, [sort, guitars, setSortDirection, setSortType, innerQuery]);
 
 
   const handlerQuerySet = (newQuery: QueryModel) => {

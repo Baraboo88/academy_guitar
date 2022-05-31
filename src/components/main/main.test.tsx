@@ -7,7 +7,6 @@ import {BrowserRouter} from 'react-router-dom';
 import toJson from 'enzyme-to-json';
 import {Main} from './main';
 import {SortDirection, SortType} from '../../utils/utils';
-import {GuitarStringCount} from '../../types/guitar-model';
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
@@ -33,7 +32,6 @@ it('Main successfully rendered', () => {
           sortType={SortType.Price}
           setSortType={jest.fn()}
           setSortDirection={jest.fn()}
-
         />
       </BrowserRouter>
     </Provider>,
