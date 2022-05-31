@@ -1,7 +1,7 @@
 import { GuitarsStateModel} from '../../types/redux-models';
 import { GuitarsAction, guitarsReducer} from './guitars-reducer';
 import {MOCK_ERROR, mockGuitars} from '../../utils/test-utils';
-import {SortDirection, SortType} from '../../utils/utils';
+import {MAX_PRICE_INICIAL_VALUE, MIN_PRICE_INICIAL_VALUE, SortDirection, SortType} from '../../utils/utils';
 
 
 const initialState:GuitarsStateModel = {
@@ -11,7 +11,8 @@ const initialState:GuitarsStateModel = {
   sortType:SortType.Price,
   guitarsStrings: [],
   guitarsTypes: [],
-  mimMaxPrice: [],
+  minPrice: MIN_PRICE_INICIAL_VALUE,
+  maxPrice: MAX_PRICE_INICIAL_VALUE,
   isResponseReceived: false,
   errorMsg: '',
 };
