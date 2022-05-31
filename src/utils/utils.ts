@@ -97,7 +97,7 @@ export enum SortTypeWithDirection{
 }
 
 export enum Query{
-  PageNo='page', Sort='sort', GuitarTypes='guitarTypes', GuitarStrings='guitarStrings', MinPrices='minPrice',MaxPrices='maxPrice'
+  PageNo='page', Sort='sort', GuitarTypes='guitarTypes', GuitarStrings='guitarStrings', MinPrice='minPrice',MaxPrice='maxPrice'
 }
 
 export interface QueryModel{
@@ -107,7 +107,6 @@ export interface QueryModel{
   guitarStrings?: string [];
   minPrice: string | number;
   maxPrice: string | number;
-  prices?: number[]
 }
 
 export const getGuitarsWithMinAndMaxFilter = (guitars: GuitarModel [], minPrice: number, maxPrice: number) => guitars.filter((guitar) => ((minPrice === MIN_PRICE_INICIAL_VALUE && maxPrice === MAX_PRICE_INICIAL_VALUE) || (minPrice === MIN_PRICE_INICIAL_VALUE && maxPrice !== MAX_PRICE_INICIAL_VALUE && guitar.price <= maxPrice) || (minPrice !== -1 && minPrice <= guitar.price && maxPrice !== MIN_PRICE_INICIAL_VALUE && guitar.price <= maxPrice) || (minPrice !== MIN_PRICE_INICIAL_VALUE && minPrice <= guitar.price && maxPrice === MAX_PRICE_INICIAL_VALUE)));

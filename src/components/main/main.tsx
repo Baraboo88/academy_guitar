@@ -33,7 +33,7 @@ import {
 import {useQuery} from '../../hooks/use-query/use-query';
 import * as queryString from 'query-string';
 
-import CatalogFilter from '../catalog-filter/catalog-filter';
+import CatalogFilter from '../catalog-filters/catalog-filters';
 
 const ITEMS_ON_THE_PAGE = 9;
 
@@ -121,7 +121,7 @@ function Main(props: MainProps) {
       navigate('/not-found');
     }
 
-  }, [pageNo, guitars, getAllPages, navigate, innerQuery]);
+  }, [pageNo, guitars, getAllPages, navigate]);
 
   useEffect(() => {
     if (sort && guitars.length > 0) {
@@ -142,11 +142,13 @@ function Main(props: MainProps) {
       }
       if (sort === SortTypeWithDirection.PriceHighToLow) {
         setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PriceHighToLow});
+
         setSortType(SortType.Price);
+
         setSortDirection(SortDirection.HighToLow);
       }
     }
-  }, [sort, guitars, setSortDirection, setSortType, innerQuery]);
+  }, [sort, guitars, setSortDirection, setSortType]);
 
 
   const handlerQuerySet = (newQuery: QueryModel) => {

@@ -44,7 +44,7 @@ interface CatalogFilterProps {
 }
 
 
-function CatalogFilter(props: CatalogFilterProps) {
+function CatalogFilters(props: CatalogFilterProps) {
   const {
     setMinPrice,
     setMaxPrice,
@@ -65,14 +65,15 @@ function CatalogFilter(props: CatalogFilterProps) {
 
   const navigate = useNavigate();
   const query = useQuery();
-  // const [debouncedMinPrice] = useDebounce(innerMinPrice, 1000);
-  // const [debouncedMaxPrice] = useDebounce(innerMaxPrice, 1000);
-  const minPriceFromQuery = query.get(Query.MinPrices);
-  const maxPriceFromQuery = query.get(Query.MaxPrices);
+
+  const minPriceFromQuery = query.get(Query.MinPrice);
+  const maxPriceFromQuery = query.get(Query.MaxPrice);
   const guitarsTypesFromQuery = query.get(Query.GuitarTypes);
   const guitarStringsFromQuery = query.get(Query.GuitarStrings);
   useEffect(()=> {
+
     if(minPriceFromQuery){
+
       let newMinPrice = Number(minPriceFromQuery);
 
       if(newMinPrice < availableMinMaxPrices[0]){
@@ -86,8 +87,8 @@ function CatalogFilter(props: CatalogFilterProps) {
       setMinPrice(newMinPrice);
     } else {
       setInnerMinPrice('');
-      setMaxPrice(MIN_PRICE_INICIAL_VALUE);
-      onInnerQuerySet({...innerQuery, maxPrice:''});
+      setMinPrice(MIN_PRICE_INICIAL_VALUE);
+      onInnerQuerySet({...innerQuery, minPrice:''});
     }
 
   }, [minPriceFromQuery, setMinPrice, availableMinMaxPrices]);
@@ -112,19 +113,6 @@ function CatalogFilter(props: CatalogFilterProps) {
 
   }, [maxPriceFromQuery, setMaxPrice, availableMinMaxPrices]);
 
-  // useEffect(() => {
-  //   if(debouncedMinPrice && Number(debouncedMinPrice) >= 0) {
-  //     navigate(generateMinPriceLink(Number(debouncedMinPrice)));
-  //   }
-  // }, [debouncedMinPrice]);
-  //
-  //
-  // useEffect(() => {
-  //   if(innerMaxPrice && debouncedMaxPrice){
-  //     navigate(Number(debouncedMaxPrice) >= Number(innerMinPrice) ? generateMaxPriceLink(Number(debouncedMaxPrice)) : generateMaxPriceLink(Number(innerMinPrice)));
-  //   }
-  //
-  // }, [debouncedMaxPrice]);
 
   useEffect(() => {
     if(guitarsTypesFromQuery){
@@ -141,6 +129,7 @@ function CatalogFilter(props: CatalogFilterProps) {
     if(guitarStringsFromQuery){
       const newGuitarStrings = guitarStringsFromQuery.toString().split(',').map((el) => el  as GuitarStringCount);
       setGuitarsStrings(newGuitarStrings);
+      onInnerQuerySet({...innerQuery, guitarStrings: newGuitarStrings});
     } else {
       onInnerQuerySet({...innerQuery, guitarStrings: []});
       setGuitarsStrings([]);
@@ -288,6 +277,6 @@ const mapDispatchToProps = (dispatch: any) => ({
     dispatch(GuitarsActionCreator.setNoOfStrings(noOfStrings));
   },
 });
-export default connect(mapStateToProps, mapDispatchToProps)(CatalogFilter);
+export default connect(mapStateToProps, mapDispatchToProps)(CatalogFilters);
 
-export {CatalogFilter};
+export {CatalogFilters};
