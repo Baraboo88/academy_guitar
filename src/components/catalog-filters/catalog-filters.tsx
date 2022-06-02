@@ -92,15 +92,6 @@ function CatalogFilters(props: CatalogFilterProps) {
 
   }, [minPriceFromQuery, setMinPrice, availableMinMaxPrices, onInnerQuerySet]);
 
-
-  useEffect(() => {
-    if(Number(innerMaxPrice) !== selectedMaxPrice) {
-
-      onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? MAX_PRICE_INITIAL_VALUE : Number(selectedMaxPrice)});
-      setInnerMaxPrice(selectedMaxPrice.toString());
-    }
-  }, [selectedMaxPrice]);
-
   useEffect(() => {
     if(Number(innerMinPrice) !== selectedMinPrice) {
       onInnerQuerySet({minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? MIN_PRICE_INITIAL_VALUE : Number(innerMinPrice)});
@@ -110,21 +101,30 @@ function CatalogFilters(props: CatalogFilterProps) {
 
   }, [selectedMinPrice]);
 
+  useEffect(() => {
+    if(Number(innerMaxPrice) !== selectedMaxPrice) {
+
+      onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? MAX_PRICE_INITIAL_VALUE : Number(selectedMaxPrice)});
+      setInnerMaxPrice(selectedMaxPrice.toString());
+    }
+  }, [selectedMaxPrice]);
+
+
   useEffect(()=> {
     if(maxPriceFromQuery){
       let newMaxPrice = Number(maxPriceFromQuery);
-      if(newMaxPrice !== selectedMaxPrice){
-        if(newMaxPrice > availableMinMaxPrices[1]){
-          newMaxPrice = availableMinMaxPrices[1];
-        }
-        if(newMaxPrice < availableMinMaxPrices[0]){
-          newMaxPrice = availableMinMaxPrices[0];
-        }
-        setMaxPrice(newMaxPrice);
-      } else {
-        setMaxPrice(MAX_PRICE_INITIAL_VALUE);
-      }
 
+      if(newMaxPrice > availableMinMaxPrices[1]){
+        newMaxPrice = availableMinMaxPrices[1];
+      }
+      if(newMaxPrice < availableMinMaxPrices[0]){
+        newMaxPrice = availableMinMaxPrices[0];
+      }
+      setMaxPrice(newMaxPrice);
+
+
+    } else {
+      setMaxPrice(MAX_PRICE_INITIAL_VALUE);
     }
 
 
