@@ -11,6 +11,7 @@ import {getTestStore} from '../../utils/test-utils';
 
 import { BrowserRouter } from 'react-router-dom';
 import {CatalogFilters} from './catalog-filters';
+import {MAX_PRICE_INITIAL_VALUE, MIN_PRICE_INITIAL_VALUE} from '../../utils/utils';
 
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});
@@ -42,6 +43,8 @@ it('CatalogFilters successfully rendered', () => {
           selectedStrings={[]}
           onInnerQuerySet={mockOnInnerQuerySet}
           innerQuery={query}
+          selectedMinPrice={MIN_PRICE_INITIAL_VALUE}
+          selectedMaxPrice={MAX_PRICE_INITIAL_VALUE}
         />
       </BrowserRouter>
     </Provider>,

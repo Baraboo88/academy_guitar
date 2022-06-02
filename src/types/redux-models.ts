@@ -3,7 +3,7 @@ import {SortDirection, SortType} from '../utils/utils';
 
 export interface GuitarsStateModel {
     guitars: GuitarModel [];
-    nameFilter: string;
+    searchGuitarName: string;
     sortDirection: SortDirection;
     sortType: SortType;
     minPrice: number;

@@ -14,6 +14,7 @@ import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-mod
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
 
 import {CurrentGuitarActionCreator, CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-reducer';
+import {TailSpin} from 'react-loader-spinner';
 
 
 const COMMENTS_TO_SKIP = 3;
@@ -39,6 +40,8 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
   const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived} = props;
   const [commentsToSkip, setCommentsToSkip] = useState(COMMENTS_TO_SKIP);
   const [isAddCommentOpened, setIsAddCommentOpened] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState('');
 
   const [userName, setUserName] = useState<string>('');
   const [advantage, setAdvantage] = useState<string>('');
@@ -69,9 +72,15 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
 
   useEffect(() => {
-    if (error === ErrorMsg.NotFound) {
-      navigate('/not-found');
+    if(error){
+      if (error === ErrorMsg.NotFound) {
+        navigate('/not-found');
+      } else {
+        setErrorMsg(error);
+      }
+
     }
+
   }, [error, navigate]);
 
   useEffect( () => {
@@ -81,7 +90,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
       resetCurrentGuitar();
     };
 
-  }, [id, onMount, resetCurrentGuitar]);
+  }, [id, onMount, resetCurrentGuitar, setIsLoading]);
 
   useEffect(() => {
     if(currentGuitar) {
@@ -99,11 +108,13 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
   }, [cat, currentGuitar]);
 
   useEffect(() => {
-
-    if (currentGuitar && !currentGuitar.comments) {
-      getComments(currentGuitar);
-
+    if(currentGuitar){
+      setIsLoading(false);
+      if(!currentGuitar.comments){
+        getComments(currentGuitar);
+      }
     }
+
 
   }, [currentGuitar, getComments]);
 
@@ -184,100 +195,112 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
     <div className="wrapper">
 
       <Header/>
+
       <main className="page-content">
-        {currentGuitar &&
-            <div className="container">
-              <h1 className="page-content__title title title--bigger">{currentGuitar.name}</h1>
-              <ul className="breadcrumbs page-content__breadcrumbs">
-                <li className="breadcrumbs__item"><Link to={'/'} className="link">Главная</Link>
-                </li>
-                <li className="breadcrumbs__item"><Link to={'/'} className="link">Каталог</Link>
-                </li>
-                <li className="breadcrumbs__item"><span >{currentGuitar.name}</span>
-                </li>
-              </ul>
 
 
-              <div className="product-container">
-                <img className="product-container__img"
-                  src={`/img/content/catalog-product-${getAdapterImage(currentGuitar.previewImg)}.jpg`}
-                  srcSet={`/img/content/catalog-product-${getAdapterImage(currentGuitar.previewImg)}@2x.jpg 2x`}
-                  width="90"
-                  height="235" alt=""
-                />
-                <div className="product-container__info-wrapper">
-                  <h2 className="product-container__title title title--big title--uppercase">{currentGuitar.name}</h2>
-                  <div className="rate product-container__rating">
-                    {renderStars(currentGuitar.rating, StarSize.CardDetails)}
-                    <p className="visually-hidden">Оценка: {getCyrillicRating(currentGuitar.rating)}</p>
-                    <p className="rate__count">
-                      <span
-                        className="visually-hidden"
-                      >Всего оценок:
-                      </span> {currentGuitar.comments ? currentGuitar.comments.length : 0}
-                    </p>
-                  </div>
-                  <div className="tabs">
-                    <Link to={`/product/${id}/${ActiveTab.Characteristics}`}
-                      className={`button button--medium tabs__button ${activeTab !== ActiveTab.Characteristics ? 'button--black-border' : ''}`}
-                    >
+        <div className="container">
+          {(errorMsg || isLoading) &&
+              <div style={{marginLeft: 'auto', marginRight: 'auto', display: 'flex', justifyContent: 'center'}}>
+                {isLoading && <TailSpin  color="#000000" height={80} width={80} />}
+                {errorMsg &&       <span style={{color: 'red', textAlign: 'center'}}>Something went wrong</span>}
+
+              </div>}
+
+
+          {currentGuitar &&
+                  <>
+                    <h1 className="page-content__title title title--bigger">{currentGuitar.name}</h1>
+                    <ul className="breadcrumbs page-content__breadcrumbs">
+                      <li className="breadcrumbs__item"><Link to={'/'} className="link">Главная</Link>
+                      </li>
+                      <li className="breadcrumbs__item"><Link to={'/'} className="link">Каталог</Link>
+                      </li>
+                      <li className="breadcrumbs__item"><span >{currentGuitar.name}</span>
+                      </li>
+                    </ul>
+
+
+                    <div className="product-container">
+                      <img className="product-container__img"
+                        src={`/img/content/catalog-product-${getAdapterImage(currentGuitar.previewImg)}.jpg`}
+                        srcSet={`/img/content/catalog-product-${getAdapterImage(currentGuitar.previewImg)}@2x.jpg 2x`}
+                        width="90"
+                        height="235" alt=""
+                      />
+                      <div className="product-container__info-wrapper">
+                        <h2 className="product-container__title title title--big title--uppercase">{currentGuitar.name}</h2>
+                        <div className="rate product-container__rating">
+                          {renderStars(currentGuitar.rating, StarSize.CardDetails)}
+                          <p className="visually-hidden">Оценка: {getCyrillicRating(currentGuitar.rating)}</p>
+                          <p className="rate__count">
+                            <span
+                              className="visually-hidden"
+                            >Всего оценок:
+                            </span> {currentGuitar.comments ? currentGuitar.comments.length : 0}
+                          </p>
+                        </div>
+                        <div className="tabs">
+                          <Link to={`/product/${id}/${ActiveTab.Characteristics}`}
+                            className={`button button--medium tabs__button ${activeTab !== ActiveTab.Characteristics ? 'button--black-border' : ''}`}
+                          >
                       Характеристики
-                    </Link>
-                    <Link
-                      to={`/product/${id}/${ActiveTab.Description}`}
-                      className={`button button--medium tabs__button ${activeTab !== ActiveTab.Description ? 'button--black-border' : ''} `}
-                    >Описание
-                    </Link>
-                    <div className="tabs__content" id="characteristics">
-                      <table className={`tabs__table ${activeTab !== ActiveTab.Characteristics ? 'hidden' : ''}`}>
-                        <tbody>
-                          <tr className="tabs__table-row">
-                            <td className="tabs__title">Артикул:</td>
-                            <td className="tabs__value">{currentGuitar.vendorCode}</td>
-                          </tr>
-                          <tr className="tabs__table-row">
-                            <td className="tabs__title">Тип:</td>
-                            <td className="tabs__value">{getCyrillicType(currentGuitar.type)}</td>
-                          </tr>
-                          <tr className="tabs__table-row">
-                            <td className="tabs__title">Количество струн:</td>
-                            <td className="tabs__value">{currentGuitar.stringCount} струнная</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <p className={`tabs__product-description  ${activeTab !== ActiveTab.Description ? 'hidden' : ''}`}>{currentGuitar.description}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                <div className="product-container__price-wrapper">
-                  <p className="product-container__price-info product-container__price-info--title">Цена:</p>
-                  <p className="product-container__price-info product-container__price-info--value">{getPriceWithSpaces(currentGuitar.price)} ₽</p>
-                  <button
-                    onClick={() => {
-                      setIsAddToCardPopUpOpened(true);
-                    }}
-                    className="button button--red button--big product-container__button"
-                  >Добавить в
+                          </Link>
+                          <Link
+                            to={`/product/${id}/${ActiveTab.Description}`}
+                            className={`button button--medium tabs__button ${activeTab !== ActiveTab.Description ? 'button--black-border' : ''} `}
+                          >Описание
+                          </Link>
+                          <div className="tabs__content" id="characteristics">
+                            <table className={`tabs__table ${activeTab !== ActiveTab.Characteristics ? 'hidden' : ''}`}>
+                              <tbody>
+                                <tr className="tabs__table-row">
+                                  <td className="tabs__title">Артикул:</td>
+                                  <td className="tabs__value">{currentGuitar.vendorCode}</td>
+                                </tr>
+                                <tr className="tabs__table-row">
+                                  <td className="tabs__title">Тип:</td>
+                                  <td className="tabs__value">{getCyrillicType(currentGuitar.type)}</td>
+                                </tr>
+                                <tr className="tabs__table-row">
+                                  <td className="tabs__title">Количество струн:</td>
+                                  <td className="tabs__value">{currentGuitar.stringCount} струнная</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                            <p className={`tabs__product-description  ${activeTab !== ActiveTab.Description ? 'hidden' : ''}`}>{currentGuitar.description}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="product-container__price-wrapper">
+                        <p className="product-container__price-info product-container__price-info--title">Цена:</p>
+                        <p className="product-container__price-info product-container__price-info--value">{getPriceWithSpaces(currentGuitar.price)} ₽</p>
+                        <button
+                          onClick={() => {
+                            setIsAddToCardPopUpOpened(true);
+                          }}
+                          className="button button--red button--big product-container__button"
+                        >Добавить в
                     корзину
-                  </button>
-                </div>
-              </div>
+                        </button>
+                      </div>
+                    </div>
 
-              <section className="reviews">
-                <h3 className="reviews__title title title--bigger">Отзывы</h3>
-                <button onClick={() => {
-                  setIsAddCommentOpened(true);
-                  setIsCommentAddSuccess(false);
-                }}
-                className="button button--red-border button--big reviews__sumbit-button"
-                >Оставить отзыв
-                </button>
+                    <section className="reviews">
+                      <h3 className="reviews__title title title--bigger">Отзывы</h3>
+                      <button onClick={() => {
+                        setIsAddCommentOpened(true);
+                        setIsCommentAddSuccess(false);
+                      }}
+                      className="button button--red-border button--big reviews__sumbit-button"
+                      >Оставить отзыв
+                      </button>
 
-                {(currentGuitar?.comments && currentGuitar?.comments.length > 0) ? currentGuitar?.comments.slice(0, commentsToSkip).map((innerComment:GuitarCommentModel) =>
-                  <CommentCard key={innerComment.id} comment={innerComment}/>) : <div/>}
+                      {(currentGuitar?.comments && currentGuitar?.comments.length > 0) ? currentGuitar?.comments.slice(0, commentsToSkip).map((innerComment:GuitarCommentModel) =>
+                        <CommentCard key={innerComment.id} comment={innerComment}/>) : <div/>}
 
-                {(currentGuitar?.comments && commentsToSkip < currentGuitar?.comments?.length  && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
+                      {(currentGuitar?.comments && commentsToSkip < currentGuitar?.comments?.length  && currentGuitar?.comments.length > 0 && commentsToSkip < currentGuitar?.comments.length) &&
 
                     <button onClick={() => {
                       handlerCommentsShowMore();
@@ -286,32 +309,34 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
                     </button>}
 
 
-                <button className="button button--up button--red-border button--big reviews__up-button"
-                  onClick={() => {
-                    window.scrollTo(0, 0);
-                  }}
-                >Наверх
-                </button>
+                      <button className="button button--up button--red-border button--big reviews__up-button"
+                        onClick={() => {
+                          window.scrollTo(0, 0);
+                        }}
+                      >Наверх
+                      </button>
 
-              </section>
-              {isAddCommentOpened && (isCommentAddSuccess ?
-                <AddCommentModalSuccess onModalClose={handlerAddCommentModalClose}/> :
-                <AddCommentModal onCloseModal={handlerAddCommentModalClose} guitar={currentGuitar}
-                  userName={userName} onSetUserName={handlerUserNameSet}
-                  advantage={advantage} onSetAdvantage={handlerAdvantageSet}
-                  disadvantage={disadvantage} onSetDisadvantage={handlerDisadvantageSet}
-                  rating={rating} onSetRating={handlerRatingSet}
-                  comment={comment} onSetComment={handlerCommentSet}
-                  onSubmitHandler={handlerCommentSubmit}
-                  isNameValidationError ={isNameValidationError}
-                  isAdvantageValidationError = {isAdvantageValidationError}
-                  isDisadvantageValidationError ={isDisadvantageValidationError}
-                  isCommentValidationError={isCommentValidationError}
-                  isRatingValidationError={isRatingValidationError}
-                />)}
+                    </section>
+                    {isAddCommentOpened && (isCommentAddSuccess ?
+                      <AddCommentModalSuccess onModalClose={handlerAddCommentModalClose}/> :
+                      <AddCommentModal onCloseModal={handlerAddCommentModalClose} guitar={currentGuitar}
+                        userName={userName} onSetUserName={handlerUserNameSet}
+                        advantage={advantage} onSetAdvantage={handlerAdvantageSet}
+                        disadvantage={disadvantage} onSetDisadvantage={handlerDisadvantageSet}
+                        rating={rating} onSetRating={handlerRatingSet}
+                        comment={comment} onSetComment={handlerCommentSet}
+                        onSubmitHandler={handlerCommentSubmit}
+                        isNameValidationError ={isNameValidationError}
+                        isAdvantageValidationError = {isAdvantageValidationError}
+                        isDisadvantageValidationError ={isDisadvantageValidationError}
+                        isCommentValidationError={isCommentValidationError}
+                        isRatingValidationError={isRatingValidationError}
+                      />)}
 
-              {isAddToCardPopUpOpened && <AddToCartModal onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
-            </div>}
+                    {isAddToCardPopUpOpened && <AddToCartModal onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
+
+                  </>}
+        </div>
       </main>
       <Footer />
     </div>

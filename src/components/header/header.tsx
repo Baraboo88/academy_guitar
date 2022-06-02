@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import {Link, useNavigate} from 'react-router-dom';
-import {Page} from '../../utils/utils';
+import {ENTER_KEY, Page} from '../../utils/utils';
 import {StateModel} from '../../types/redux-models';
 
 import { GuitarModel} from '../../types/guitar-model';
@@ -9,7 +9,7 @@ import {connect} from 'react-redux';
 import {
   getGuitars,
   getGuitarsError,
-  getGuitarsIsResponseReceived, getGuitarsNameFilter,
+  getGuitarsIsResponseReceived, getSearchGuitarName,
   getGuitarsWithNameFilter
 } from '../../store/guitars/guitars-selectors';
 import {GuitarsActionCreator, GuitarsOperation} from '../../store/guitars/guitars-reducer';
@@ -19,13 +19,14 @@ interface HeaderProps {
   activePage?: Page;
   guitars: GuitarModel [],
   guitarsWithFilter: GuitarModel [],
-  guitarsNameFilter: string,
+  searchGuitarName: string,
   fetchGuitars: () => void;
-  setGuitarsNameFilter: (filterName: string) => void;
+  setSearchGuitarName: (filterName: string) => void;
 }
 
 function Header(props: HeaderProps) {
-  const {activePage, guitars, guitarsWithFilter, guitarsNameFilter, fetchGuitars, setGuitarsNameFilter} = props;
+  const {activePage, guitars, guitarsWithFilter, searchGuitarName, fetchGuitars, setSearchGuitarName} = props;
+
 
   useEffect(() => {
     if(guitars.length === 0){
@@ -33,11 +34,21 @@ function Header(props: HeaderProps) {
     }
   }, [guitars, fetchGuitars]);
   const navigate = useNavigate();
+
+  const handlerSearchedGuitarClick = (id: number) => {
+    navigate(`/product/${id}`);
+    setSearchGuitarName('');
+  };
+
   const renderFilteredGuitars = () => guitarsWithFilter.map((guitar) =>
     (
-      <li key={guitar.id} onClick={() => {
-        navigate(`/product/${guitar.id}`);
-        setGuitarsNameFilter('');
+      <li key={guitar.id} onKeyDown={(evt) => {
+        if(evt.key === ENTER_KEY){
+          handlerSearchedGuitarClick(guitar.id);
+        }
+
+      }} onClick={() => {
+        handlerSearchedGuitarClick(guitar.id);
       }} className="form-search__select-item" tabIndex={0}
       >
         {guitar.name}
@@ -73,18 +84,19 @@ function Header(props: HeaderProps) {
               </svg>
               <span className="visually-hidden">Начать поиск</span>
             </button>
-            <input value={guitarsNameFilter} onChange={(evt) => {
-              setGuitarsNameFilter(evt.target.value);
+            <input value={searchGuitarName} onChange={(evt) => {
+              setSearchGuitarName(evt.target.value);
             }} className="form-search__input" id="search" type="text" autoComplete="off"
             placeholder="что вы ищите?"
+            data-test="test-search-name"
             />
             <label className="visually-hidden" htmlFor="search">Поиск</label>
           </form>
-          <ul className={`form-search__select-list ${guitarsNameFilter ? 'list-opened' : 'hidden'}`}>
+          <ul className={`form-search__select-list ${searchGuitarName ? 'list-opened' : 'hidden'}`}>
             {guitarsWithFilter.length > 0 && renderFilteredGuitars()}
           </ul>
           <button onClick={() => {
-            setGuitarsNameFilter('');
+            setSearchGuitarName('');
           }} className="form-search__reset" type="reset" form="form-search"
           >
             <svg className="form-search__icon" width="14" height="15" aria-hidden="true">
@@ -110,7 +122,7 @@ function Header(props: HeaderProps) {
 const mapStateToProps = (state: StateModel) => ({
   guitars: getGuitars(state),
   guitarsWithFilter: getGuitarsWithNameFilter(state),
-  guitarsNameFilter: getGuitarsNameFilter(state),
+  searchGuitarName: getSearchGuitarName(state),
   isResponseReceived: getGuitarsIsResponseReceived(state),
   errorMsg: getGuitarsError(state),
 });
@@ -120,8 +132,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   fetchGuitars() {
     dispatch(GuitarsOperation.getGuitars());
   },
-  setGuitarsNameFilter(filter: string){
-    dispatch(GuitarsActionCreator.setGuitarsNameFilter(filter));
+  setSearchGuitarName(filter: string){
+    dispatch(GuitarsActionCreator.setSearchGuitarName(filter));
   },
 
 });

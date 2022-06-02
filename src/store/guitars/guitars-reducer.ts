@@ -6,7 +6,7 @@ import {ErrorMsg, ResponseStatus, SortDirection, SortType} from '../../utils/uti
 
 export enum GuitarsAction {
     SetGuitars = 'guitars/set-guitars',
-    SetNameFilter= 'guitars/set-name-filter',
+    SetNameSearch= 'guitars/set-name-search',
     SetSortDirection = 'guitars/set-sort-direction',
     SetSortType = 'guitars/set-sort-type',
     SetError = 'guitars/set-error',
@@ -19,7 +19,7 @@ export enum GuitarsAction {
 
 const initialState: GuitarsStateModel = {
   guitars: [],
-  nameFilter: '',
+  searchGuitarName: '',
   minPrice: -1,
   maxPrice: -1,
   guitarsStrings: [],
@@ -89,8 +89,8 @@ export const GuitarsActionCreator = {
   setGuitars(guitars: GuitarModel[]) {
     return {type: GuitarsAction.SetGuitars, payload: guitars};
   },
-  setGuitarsNameFilter(filter: string) {
-    return {type: GuitarsAction.SetNameFilter, payload: filter};
+  setSearchGuitarName(filter: string) {
+    return {type: GuitarsAction.SetNameSearch, payload: filter};
   },
   setGuitarsSortDirection(sortDirection: SortDirection) {
     return {type: GuitarsAction.SetSortDirection, payload: sortDirection};
@@ -127,7 +127,7 @@ export const guitarsReducer = (state: GuitarsStateModel = initialState, action:a
         isResponseReceived: true,
         errorMsg: '',
       });
-    case GuitarsAction.SetNameFilter:
+    case GuitarsAction.SetNameSearch:
       return Object.assign({}, state, {nameFilter: action.payload});
     case GuitarsAction.SetSortDirection:
       return Object.assign({}, state, {sortDirection: action.payload});

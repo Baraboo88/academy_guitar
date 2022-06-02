@@ -1,8 +1,8 @@
 import {GuitarModel, GuitarStringCount, GuitarType} from '../types/guitar-model';
 
 const STARTS_AMOUNT = 5;
-export const MIN_PRICE_INICIAL_VALUE = -1;
-export const MAX_PRICE_INICIAL_VALUE = -1;
+export const MIN_PRICE_INITIAL_VALUE = -1;
+export const MAX_PRICE_INITIAL_VALUE = -1;
 
 export const getAdapterImage = (img: string) => img.slice(img.length - 5, img.length - 4);
 
@@ -100,16 +100,22 @@ export enum Query{
   PageNo='page', Sort='sort', GuitarTypes='guitarTypes', GuitarStrings='guitarStrings', MinPrice='minPrice',MaxPrice='maxPrice'
 }
 
+export const ENTER_KEY = 'Enter';
+
 export interface QueryModel{
-  page: string;
-  sort: string;
+  page?: string;
+  sort?: string;
   guitarTypes?: string [];
   guitarStrings?: string [];
-  minPrice: string | number;
-  maxPrice: string | number;
+  minPrice?: string | number;
+  maxPrice?: string | number;
 }
 
-export const getGuitarsWithMinAndMaxFilter = (guitars: GuitarModel [], minPrice: number, maxPrice: number) => guitars.filter((guitar) => ((minPrice === MIN_PRICE_INICIAL_VALUE && maxPrice === MAX_PRICE_INICIAL_VALUE) || (minPrice === MIN_PRICE_INICIAL_VALUE && maxPrice !== MAX_PRICE_INICIAL_VALUE && guitar.price <= maxPrice) || (minPrice !== -1 && minPrice <= guitar.price && maxPrice !== MIN_PRICE_INICIAL_VALUE && guitar.price <= maxPrice) || (minPrice !== MIN_PRICE_INICIAL_VALUE && minPrice <= guitar.price && maxPrice === MAX_PRICE_INICIAL_VALUE)));
+export const getGuitarsWithMinAndMaxFilter = (guitars: GuitarModel [], minPrice: number, maxPrice: number) => guitars.filter((guitar) =>
+  ((minPrice === MIN_PRICE_INITIAL_VALUE && maxPrice === MAX_PRICE_INITIAL_VALUE)
+    || (minPrice === MIN_PRICE_INITIAL_VALUE && maxPrice !== MAX_PRICE_INITIAL_VALUE && guitar.price <= maxPrice)
+    || (minPrice !== MIN_PRICE_INITIAL_VALUE && minPrice <= guitar.price && maxPrice !== MIN_PRICE_INITIAL_VALUE && guitar.price <= maxPrice)
+    || (minPrice !== MIN_PRICE_INITIAL_VALUE && minPrice <= guitar.price && maxPrice === MAX_PRICE_INITIAL_VALUE)));
 
 export const getGuitarsWithTypeFilter =(guitars: GuitarModel[], guitarsTypes: GuitarType []) => guitars.filter((guitar) => (guitarsTypes.find((el) => el === guitar.type) || guitarsTypes.length === 0));
 

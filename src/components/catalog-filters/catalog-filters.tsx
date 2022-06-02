@@ -1,8 +1,9 @@
 import React, {useCallback, useEffect, useState} from 'react';
 import {
+  ENTER_KEY,
   getCyrillicTypeFiler,
-  getPriceWithSpaces, MAX_PRICE_INICIAL_VALUE,
-  MIN_PRICE_INICIAL_VALUE,
+  getPriceWithSpaces, MAX_PRICE_INITIAL_VALUE,
+  MIN_PRICE_INITIAL_VALUE,
   Query,
   QueryModel
 } from '../../utils/utils';
@@ -27,7 +28,6 @@ import {useQuery} from '../../hooks/use-query/use-query';
 
 import * as queryString from 'query-string';
 
-const ENTER_KEY = 'Enter';
 
 interface CatalogFilterProps {
   setMinPrice: (minPrice: number) => void,
@@ -41,6 +41,8 @@ interface CatalogFilterProps {
   selectedStrings: GuitarStringCount [];
   onInnerQuerySet: (newQuery: QueryModel) => void;
   innerQuery: QueryModel;
+  selectedMaxPrice: number;
+  selectedMinPrice: number;
 }
 
 
@@ -58,6 +60,8 @@ function CatalogFilters(props: CatalogFilterProps) {
     selectedStrings,
     setGuitarsTypes,
     setGuitarsStrings,
+    selectedMinPrice,
+    selectedMaxPrice,
   } = props;
 
   const [innerMinPrice, setInnerMinPrice] = useState('');
@@ -71,9 +75,7 @@ function CatalogFilters(props: CatalogFilterProps) {
   const guitarsTypesFromQuery = query.get(Query.GuitarTypes);
   const guitarStringsFromQuery = query.get(Query.GuitarStrings);
   useEffect(()=> {
-
     if(minPriceFromQuery){
-
       let newMinPrice = Number(minPriceFromQuery);
 
       if(newMinPrice < availableMinMaxPrices[0]){
@@ -82,59 +84,87 @@ function CatalogFilters(props: CatalogFilterProps) {
       if(newMinPrice > availableMinMaxPrices[1]){
         newMinPrice = availableMinMaxPrices[1];
       }
-      onInnerQuerySet({...innerQuery, minPrice:newMinPrice});
-      setInnerMinPrice(newMinPrice.toString());
       setMinPrice(newMinPrice);
     } else {
-      setInnerMinPrice('');
-      setMinPrice(MIN_PRICE_INICIAL_VALUE);
-      onInnerQuerySet({...innerQuery, minPrice:''});
+      setMinPrice(MIN_PRICE_INITIAL_VALUE);
     }
 
-  }, [minPriceFromQuery, setMinPrice, availableMinMaxPrices]);
+
+  }, [minPriceFromQuery, setMinPrice, availableMinMaxPrices, onInnerQuerySet]);
+
+
+  useEffect(() => {
+    if(Number(innerMaxPrice) !== selectedMaxPrice) {
+
+      onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? MAX_PRICE_INITIAL_VALUE : Number(selectedMaxPrice)});
+      setInnerMaxPrice(selectedMaxPrice.toString());
+    }
+  }, [selectedMaxPrice]);
+
+  useEffect(() => {
+    if(Number(innerMinPrice) !== selectedMinPrice) {
+      onInnerQuerySet({minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? MIN_PRICE_INITIAL_VALUE : Number(innerMinPrice)});
+      setInnerMinPrice(selectedMinPrice.toString());
+    }
+
+
+  }, [selectedMinPrice]);
 
   useEffect(()=> {
     if(maxPriceFromQuery){
       let newMaxPrice = Number(maxPriceFromQuery);
-      if(newMaxPrice > availableMinMaxPrices[1]){
-        newMaxPrice = availableMinMaxPrices[1];
+      if(newMaxPrice !== selectedMaxPrice){
+        if(newMaxPrice > availableMinMaxPrices[1]){
+          newMaxPrice = availableMinMaxPrices[1];
+        }
+        if(newMaxPrice < availableMinMaxPrices[0]){
+          newMaxPrice = availableMinMaxPrices[0];
+        }
+        setMaxPrice(newMaxPrice);
+      } else {
+        setMaxPrice(MAX_PRICE_INITIAL_VALUE);
       }
-      if(newMaxPrice < availableMinMaxPrices[0]){
-        newMaxPrice = availableMinMaxPrices[0];
-      }
-      onInnerQuerySet({...innerQuery, maxPrice:newMaxPrice});
-      setInnerMaxPrice(newMaxPrice.toString());
-      setMaxPrice(newMaxPrice);
-    } else {
-      setInnerMaxPrice('');
-      setMaxPrice(MAX_PRICE_INICIAL_VALUE);
-      onInnerQuerySet({...innerQuery, maxPrice:''});
+
     }
 
-  }, [maxPriceFromQuery, setMaxPrice, availableMinMaxPrices]);
+
+  }, [maxPriceFromQuery, setMaxPrice, availableMinMaxPrices, onInnerQuerySet]);
 
 
   useEffect(() => {
+
     if(guitarsTypesFromQuery){
       const newGuitarTypes = guitarsTypesFromQuery.split(',').map((el) => el  as GuitarType);
-      onInnerQuerySet({...innerQuery, guitarTypes: newGuitarTypes});
-      setGuitarsTypes(newGuitarTypes);
+
+      if(selectedTypes.length !== newGuitarTypes.length){
+
+        onInnerQuerySet({guitarTypes: newGuitarTypes});
+        setGuitarsTypes(newGuitarTypes);
+      }
+
     } else {
-      onInnerQuerySet({...innerQuery, guitarTypes: []});
-      setGuitarsTypes([]);
+      if(selectedTypes.length !== 0){
+        onInnerQuerySet({guitarTypes: []});
+        setGuitarsTypes([]);
+      }
     }
-  },[guitarsTypesFromQuery]);
+  },[selectedTypes, guitarsTypesFromQuery, onInnerQuerySet, setGuitarsTypes]);
 
   useEffect(() => {
     if(guitarStringsFromQuery){
       const newGuitarStrings = guitarStringsFromQuery.toString().split(',').map((el) => el  as GuitarStringCount);
-      setGuitarsStrings(newGuitarStrings);
-      onInnerQuerySet({...innerQuery, guitarStrings: newGuitarStrings});
+      if(selectedStrings.length !== newGuitarStrings.length){
+        setGuitarsStrings(newGuitarStrings);
+        onInnerQuerySet({ guitarStrings: newGuitarStrings});
+      }
+
     } else {
-      onInnerQuerySet({...innerQuery, guitarStrings: []});
-      setGuitarsStrings([]);
+      if(selectedStrings.length !== 0){
+        onInnerQuerySet({guitarStrings: []});
+        setGuitarsStrings([]);
+      }
     }
-  },[guitarStringsFromQuery]);
+  },[selectedStrings, guitarStringsFromQuery, setGuitarsStrings,onInnerQuerySet]);
 
   const enterFunction = useCallback((event) => {
 
@@ -145,16 +175,24 @@ function CatalogFilters(props: CatalogFilterProps) {
       if(innerMinPrice && Number(innerMinPrice) >= 0) {
         minPrice = innerMinPrice;
       }
-      if( innerMaxPrice){
+      if( innerMaxPrice && Number(innerMaxPrice) >= Number(innerMinPrice)){
         maxPrice = Number(innerMaxPrice) >= Number(innerMinPrice) ? innerMaxPrice :innerMinPrice;
+      } else {
+        setInnerMaxPrice('');
       }
-      if(minPrice || maxPrice){
+      if(selectedMinPrice !== Number(innerMinPrice)){
+        setMinPrice(MIN_PRICE_INITIAL_VALUE);
+      }
+      if(selectedMaxPrice !== Number(innerMaxPrice)){
+        setMaxPrice(MAX_PRICE_INITIAL_VALUE);
+      }
 
-        navigate(generateMinMaxPriceLink(minPrice, maxPrice));
-      }
+
+      navigate(generateMinMaxPriceLink(minPrice, maxPrice));
+
 
     }
-  }, [innerMinPrice, innerMaxPrice]);
+  }, [innerMinPrice, innerMaxPrice, navigate]);
 
 
   useEffect(() => {
@@ -166,7 +204,7 @@ function CatalogFilters(props: CatalogFilterProps) {
     };
   }, [enterFunction]);
 
-  const generateMinMaxPriceLink = (minPrice: string, maxPrice: string) => `?${queryString.stringify({...innerQuery, minPrice, maxPrice},  {skipEmptyString: true})}`;
+  const generateMinMaxPriceLink = (minPrice: string, maxPrice: string) => `?${queryString.stringify({...innerQuery, minPrice, maxPrice},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 
   const generateGuitarsTypeLink = (elements:GuitarType []) => `?${queryString.stringify({...innerQuery, guitarTypes: elements},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 
@@ -188,7 +226,7 @@ function CatalogFilters(props: CatalogFilterProps) {
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input value={Number(innerMaxPrice) <= -1 ? '' : innerMaxPrice} onChange={(evt) => {
+            <input value={Number(innerMaxPrice) <= -1  ? '' : innerMaxPrice} onChange={(evt) => {
               setInnerMaxPrice(evt.target.value);
             }}
             type="number" placeholder={`${availableMinMaxPrices.length > 1 ? getPriceWithSpaces(availableMinMaxPrices[1]) : ''}`} id="priceMax" name="до"
@@ -242,7 +280,8 @@ function CatalogFilters(props: CatalogFilterProps) {
 
       </fieldset>
       <button onClick={() => {
-        navigate(`?${queryString.stringify({...innerQuery, guitarStrings: [], guitarTypes: [], minPrice: '', maxPrice:''},  {skipEmptyString: true})}`);
+
+        navigate(`?${queryString.stringify({...innerQuery, guitarTypes: [], guitarStrings: [], maxPrice:'', minPrice:''},  {skipEmptyString: true})}`);
       }} className="catalog-filter__reset-btn button button--black-border button--medium"
       type="reset"
       >

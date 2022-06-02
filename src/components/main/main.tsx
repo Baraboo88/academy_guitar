@@ -32,8 +32,10 @@ import {
 } from '../../utils/utils';
 import {useQuery} from '../../hooks/use-query/use-query';
 import * as queryString from 'query-string';
+// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import CatalogFilter from '../catalog-filters/catalog-filters';
+import {TailSpin} from 'react-loader-spinner';
 
 const ITEMS_ON_THE_PAGE = 9;
 
@@ -83,9 +85,7 @@ function Main(props: MainProps) {
     if (isResponseReceived && errorMsg) {
       setError(errorMsg);
     }
-    if (!isResponseReceived && guitars.length === 0) {
-      onMount();
-    } else {
+    if (isResponseReceived) {
       setIsLoading(false);
       setInnerGuitars(guitars);
       if (isLoadingCommentsCount && guitars.length > 0) {
@@ -109,9 +109,13 @@ function Main(props: MainProps) {
     return allPages;
   }, [guitars]);
 
+  const handlerQuerySet = useCallback((newQuery: QueryModel) => {
+    setInnerQuery({...innerQuery,...newQuery});
+  }, [innerQuery]);
+
   useEffect(() => {
     if (pageNo) {
-      setInnerQuery({...innerQuery, page: pageNo});
+      handlerQuerySet({page: pageNo});
       setCurrentPage(Number(pageNo));
     } else {
       setCurrentPage(1);
@@ -121,39 +125,44 @@ function Main(props: MainProps) {
       navigate('/not-found');
     }
 
-  }, [pageNo, guitars, getAllPages, navigate]);
+  }, [pageNo, guitars, getAllPages, navigate, handlerQuerySet]);
 
   useEffect(() => {
     if (sort && guitars.length > 0) {
+      let sortTypeToSet = sortType;
+      let sortDirectionToSet = sortDirection;
+
       if (sort === SortTypeWithDirection.PopularityLowToHigh) {
-        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PopularityLowToHigh});
-        setSortType(SortType.Popularity);
-        setSortDirection(SortDirection.LowToHigh);
+        handlerQuerySet({sort:SortTypeWithDirection.PopularityLowToHigh});
+        sortTypeToSet = SortType.Popularity;
+        sortDirectionToSet = SortDirection.LowToHigh;
       }
       if (sort === SortTypeWithDirection.PopularityHighToLow) {
-        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PopularityHighToLow});
-        setSortType(SortType.Popularity);
-        setSortDirection(SortDirection.HighToLow);
+        handlerQuerySet({sort:SortTypeWithDirection.PopularityHighToLow});
+        sortTypeToSet = SortType.Popularity;
+        sortDirectionToSet = SortDirection.HighToLow;
+
       }
       if (sort === SortTypeWithDirection.PriceLowToHigh) {
-        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PriceLowToHigh});
-        setSortType(SortType.Price);
-        setSortDirection(SortDirection.LowToHigh);
+        handlerQuerySet({sort:SortTypeWithDirection.PriceLowToHigh});
+        sortTypeToSet = SortType.Price;
+        sortDirectionToSet = SortDirection.LowToHigh;
       }
       if (sort === SortTypeWithDirection.PriceHighToLow) {
-        setInnerQuery({...innerQuery, sort:SortTypeWithDirection.PriceHighToLow});
-
-        setSortType(SortType.Price);
-
-        setSortDirection(SortDirection.HighToLow);
+        handlerQuerySet({sort:SortTypeWithDirection.PriceHighToLow});
+        sortTypeToSet = SortType.Price;
+        sortDirectionToSet = SortDirection.HighToLow;
       }
+      if(sortType !== sortTypeToSet){
+        setSortType(sortTypeToSet);
+      }
+      if(sortDirection !== sortDirectionToSet){
+        setSortDirection(sortDirectionToSet);
+      }
+
     }
-  }, [sort, guitars, setSortDirection, setSortType]);
+  }, [sort, guitars, setSortDirection, setSortType, sortType, sortDirection]);
 
-
-  const handlerQuerySet = (newQuery: QueryModel) => {
-    setInnerQuery(newQuery);
-  };
 
   const renderPagination = () => {
     const allPages = getAllPages();
@@ -181,9 +190,9 @@ function Main(props: MainProps) {
   };
 
 
-  const generatePageLink = (page: number) => `?${queryString.stringify({...innerQuery, page},  {skipEmptyString: true})}`;
+  const generatePageLink = (page: number) => `?${queryString.stringify({...innerQuery, page},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 
-  const generateSortLink = (type: SortType, direction: SortDirection) => `?${queryString.stringify({...innerQuery, sort: getSortQuery(type, direction)},{skipEmptyString: true})}`;
+  const generateSortLink = (type: SortType, direction: SortDirection) => `?${queryString.stringify({...innerQuery, sort: getSortQuery(type, direction)},{skipEmptyString: true, arrayFormat: 'comma'})}`;
 
   return (
     <div className="wrapper">
@@ -234,9 +243,19 @@ function Main(props: MainProps) {
                 >
                 </button>
               </div>
+
             </div>
-            <div className="cards catalog__cards">
+
+
+            <div className="cards catalog__cards" >
               {error && <span style={{color: 'red', textAlign: 'center'}}>Something went wrong</span>}
+
+              {isLoading &&
+                  <div style={{gridColumn: 3, justifySelf: 'center'}}>
+                    <TailSpin  color="#000000" height={80} width={80} />
+                  </div>}
+
+
               {!isLoading && innerGuitars.slice((currentPage - 1) * ITEMS_ON_THE_PAGE, (currentPage - 1) * ITEMS_ON_THE_PAGE + ITEMS_ON_THE_PAGE).map((guitar) =>
                 <GuitarCard key={guitar.id} card={guitar}/>)}
             </div>
