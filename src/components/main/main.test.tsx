@@ -13,7 +13,6 @@ Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
 it('Main successfully rendered', () => {
 
-  const mockOnMount = jest.fn();
   const mockGetCommentsCount = jest.fn();
 
   const MOCK_ERROR = '';
@@ -24,7 +23,6 @@ it('Main successfully rendered', () => {
       <BrowserRouter>
         <Main
           guitars = {mockGuitars}
-          onMount={mockOnMount}
           getCommentsCount = {mockGetCommentsCount}
           isResponseReceived ={false}
           errorMsg={MOCK_ERROR}

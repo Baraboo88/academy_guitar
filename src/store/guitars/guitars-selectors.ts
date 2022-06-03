@@ -22,7 +22,7 @@ export const getGuitarsSelectedMaxPrice = (state: StateModel) => state.guitars.m
 export const getGuitarsSelectedStrings = (state: StateModel) => state.guitars.guitarsStrings;
 export const getGuitarsSelectedTypes = (state: StateModel) => state.guitars.guitarsTypes;
 
-export const getGuitarsWithNameFilter = createSelector([getSearchGuitarName, getGuitars], (filter, guitars) => guitars.filter((guitar) =>  guitar.name.toLocaleLowerCase().search(filter.toLocaleLowerCase()) >= 0)) ;
+export const getGuitarsWithNameFilter = createSelector([getSearchGuitarName, getGuitars], (filter, guitars) => guitars.filter((guitar) => filter ? guitar.name.toLocaleLowerCase().search(filter.toLocaleLowerCase()) >= 0 : true)) ;
 
 
 const getGuitarsForMinMaxPrice =  createSelector([getGuitarsSelectedStrings, getGuitarsSelectedTypes, getGuitars],(stringsNo, guitarsType, guitars) =>
@@ -72,16 +72,16 @@ export const getMinMaxPrice = createSelector(getGuitarsForMinMaxPrice,getGuitars
 
 
 export const getGuitarsStrings = createSelector([getGuitars, getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, getGuitarsSelectedTypes], (guitars, minPrice, maxPrice, guitarsTypes) => {
-  let  returnStrings: GuitarStringCount [] = [];
+  let  returnGuitarStrings: GuitarStringCount [] = [];
   const newGuitars = getGuitarsWithMinAndMaxFilter(getGuitarsWithTypeFilter(guitars, guitarsTypes), minPrice, maxPrice);
   if(newGuitars.length > 0){
-    const strings = new Set();
-    newGuitars.forEach((guitar) => strings.add(guitar.stringCount));
+    const newGuitarStrings = new Set();
+    newGuitars.forEach((guitar) => newGuitarStrings.add(guitar.stringCount));
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    returnStrings = [...strings];
+    returnGuitarStrings = [...newGuitarStrings];
   }
-  return returnStrings;
+  return returnGuitarStrings;
 });
 
 export const getGuitarsTypes = createSelector([getGuitars, getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice,getGuitarsSelectedStrings],

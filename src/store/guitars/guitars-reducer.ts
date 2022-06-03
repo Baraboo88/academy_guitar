@@ -128,7 +128,7 @@ export const guitarsReducer = (state: GuitarsStateModel = initialState, action:a
         errorMsg: '',
       });
     case GuitarsAction.SetNameSearch:
-      return Object.assign({}, state, {nameFilter: action.payload});
+      return Object.assign({}, state, {searchGuitarName: action.payload});
     case GuitarsAction.SetSortDirection:
       return Object.assign({}, state, {sortDirection: action.payload});
     case GuitarsAction.SetSortType:

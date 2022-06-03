@@ -28,7 +28,7 @@ it('Reducer Guitars setGuitars  success', () => {
     guitarsTypes: [],
     maxPrice: MAX_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -44,7 +44,7 @@ it('Reducer Guitars setError  success', () => {
     guitarsTypes: [],
     maxPrice: MAX_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -60,7 +60,7 @@ it('Reducer Guitars setIsResponseReceived success', () => {
     guitarsTypes: [],
     maxPrice: MAX_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -76,7 +76,7 @@ it('Reducer Guitars setGuitarsTypes success', () => {
     guitarsTypes: [GuitarType.Acoustic],
     maxPrice: MAX_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -91,7 +91,7 @@ it('Reducer Guitars setNoOfStrings success', () => {
     guitarsTypes: [],
     maxPrice: MAX_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -106,7 +106,7 @@ it('Reducer Guitars setMinPrice success', () => {
     guitarsTypes: [],
     maxPrice: MAX_PRICE_INITIAL_VALUE,
     minPrice: 5,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -121,7 +121,7 @@ it('Reducer Guitars setMaxPrice success', () => {
     guitarsTypes: [],
     maxPrice: 5,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -136,7 +136,7 @@ it('Reducer Guitars setNameFilter success', () => {
     guitarsTypes: [],
     maxPrice: MIN_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: 'mockText',
+    searchGuitarName: 'mockText',
     sortDirection: SortDirection.None,
     sortType: SortType.Price,
   });
@@ -151,7 +151,7 @@ it('Reducer Guitars setSortDirection success', () => {
     guitarsTypes: [],
     maxPrice: MIN_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.LowToHigh,
     sortType: SortType.Price,
   });
@@ -166,7 +166,7 @@ it('Reducer Guitars setSortType success', () => {
     guitarsTypes: [],
     maxPrice: MIN_PRICE_INITIAL_VALUE,
     minPrice: MIN_PRICE_INITIAL_VALUE,
-    nameFilter: '',
+    searchGuitarName: '',
     sortDirection: SortDirection.None,
     sortType: SortType.Popularity,
   });

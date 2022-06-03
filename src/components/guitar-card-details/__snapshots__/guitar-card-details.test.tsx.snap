@@ -92,11 +92,11 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
           <input
             autoComplete="off"
             className="form-search__input"
+            data-test="test-search-name"
             id="search"
             onChange={[Function]}
             placeholder="что вы ищите?"
             type="text"
-            value=""
           />
           <label
             className="visually-hidden"
@@ -107,7 +107,71 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
         </form>
         <ul
           className="form-search__select-list hidden"
-        />
+        >
+          <li
+            className="form-search__select-item"
+            key="1"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            Честер Bass
+          </li>
+          <li
+            className="form-search__select-item"
+            key="2"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            CURT Z300
+          </li>
+          <li
+            className="form-search__select-item"
+            key="3"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            Roman LX
+          </li>
+          <li
+            className="form-search__select-item"
+            key="4"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            CURT T300
+          </li>
+          <li
+            className="form-search__select-item"
+            key="5"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            Dania Super
+          </li>
+          <li
+            className="form-search__select-item"
+            key="6"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            Честер WX
+          </li>
+          <li
+            className="form-search__select-item"
+            key="7"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            tabIndex={0}
+          >
+            Dania VX
+          </li>
+        </ul>
         <button
           className="form-search__reset"
           form="form-search"

@@ -90,24 +90,22 @@ function CatalogFilters(props: CatalogFilterProps) {
     }
 
 
-  }, [minPriceFromQuery, setMinPrice, availableMinMaxPrices, onInnerQuerySet]);
+  }, [minPriceFromQuery, setMinPrice, availableMinMaxPrices]);
 
   useEffect(() => {
     if(Number(innerMinPrice) !== selectedMinPrice) {
-      onInnerQuerySet({minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? MIN_PRICE_INITIAL_VALUE : Number(innerMinPrice)});
+      onInnerQuerySet({minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? '' : Number(innerMinPrice)});
       setInnerMinPrice(selectedMinPrice.toString());
     }
 
-
-  }, [selectedMinPrice]);
+  }, [selectedMinPrice, onInnerQuerySet]);
 
   useEffect(() => {
     if(Number(innerMaxPrice) !== selectedMaxPrice) {
-
-      onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? MAX_PRICE_INITIAL_VALUE : Number(selectedMaxPrice)});
+      onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? '' : Number(innerMaxPrice)});
       setInnerMaxPrice(selectedMaxPrice.toString());
     }
-  }, [selectedMaxPrice]);
+  }, [selectedMaxPrice, onInnerQuerySet]);
 
 
   useEffect(()=> {
@@ -128,11 +126,10 @@ function CatalogFilters(props: CatalogFilterProps) {
     }
 
 
-  }, [maxPriceFromQuery, setMaxPrice, availableMinMaxPrices, onInnerQuerySet]);
+  }, [maxPriceFromQuery, setMaxPrice, availableMinMaxPrices]);
 
 
   useEffect(() => {
-
     if(guitarsTypesFromQuery){
       const newGuitarTypes = guitarsTypesFromQuery.split(',').map((el) => el  as GuitarType);
 
@@ -148,7 +145,7 @@ function CatalogFilters(props: CatalogFilterProps) {
         setGuitarsTypes([]);
       }
     }
-  },[selectedTypes, guitarsTypesFromQuery, onInnerQuerySet, setGuitarsTypes]);
+  },[selectedTypes, guitarsTypesFromQuery, setGuitarsTypes, onInnerQuerySet]);
 
   useEffect(() => {
     if(guitarStringsFromQuery){
@@ -164,7 +161,9 @@ function CatalogFilters(props: CatalogFilterProps) {
         setGuitarsStrings([]);
       }
     }
-  },[selectedStrings, guitarStringsFromQuery, setGuitarsStrings,onInnerQuerySet]);
+  },[selectedStrings, guitarStringsFromQuery, setGuitarsStrings, onInnerQuerySet]);
+
+  const generateMinMaxPriceLink = useCallback((minPrice: string, maxPrice: string) => `?${queryString.stringify({...innerQuery, minPrice, maxPrice},  {skipEmptyString: true, arrayFormat: 'comma'})}`, [innerQuery]);
 
   const enterFunction = useCallback((event) => {
 
@@ -175,6 +174,7 @@ function CatalogFilters(props: CatalogFilterProps) {
       if(innerMinPrice && Number(innerMinPrice) >= 0) {
         minPrice = innerMinPrice;
       }
+
       if( innerMaxPrice && Number(innerMaxPrice) >= Number(innerMinPrice)){
         maxPrice = Number(innerMaxPrice) >= Number(innerMinPrice) ? innerMaxPrice :innerMinPrice;
       } else {
@@ -187,12 +187,10 @@ function CatalogFilters(props: CatalogFilterProps) {
         setMaxPrice(MAX_PRICE_INITIAL_VALUE);
       }
 
-
       navigate(generateMinMaxPriceLink(minPrice, maxPrice));
 
-
     }
-  }, [innerMinPrice, innerMaxPrice, navigate]);
+  }, [innerMinPrice, innerMaxPrice, navigate, selectedMinPrice, selectedMaxPrice, generateMinMaxPriceLink, setMaxPrice, setMinPrice]);
 
 
   useEffect(() => {
@@ -204,7 +202,6 @@ function CatalogFilters(props: CatalogFilterProps) {
     };
   }, [enterFunction]);
 
-  const generateMinMaxPriceLink = (minPrice: string, maxPrice: string) => `?${queryString.stringify({...innerQuery, minPrice, maxPrice},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 
   const generateGuitarsTypeLink = (elements:GuitarType []) => `?${queryString.stringify({...innerQuery, guitarTypes: elements},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 

@@ -52,8 +52,6 @@ describe('GuitarCardDetails e2e', () => {
             resetIsResponseReceived={mockResetIsResponseReceived}
             error={ErrorMsg.NotFound}
           />
-
-
         </BrowserRouter>
       </Provider>,
     );

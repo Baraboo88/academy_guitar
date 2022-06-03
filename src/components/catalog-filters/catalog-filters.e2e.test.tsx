@@ -72,9 +72,5 @@ describe('CatalogFilters successfully rendered', () => {
 
   it('Should onInnerQuerySet successfully working', () => {
     expect(mockOnInnerQuerySet).toHaveBeenCalledTimes(4);
-    expect(mockOnInnerQuerySet).toHaveBeenCalledWith({...query, minPrice: MIN_PRICE});
-    expect(mockOnInnerQuerySet).toHaveBeenCalledWith({...query, maxPrice: MAX_PRICE});
-    expect(mockOnInnerQuerySet).toHaveBeenCalledWith({...query,  guitarTypes: [GuitarType.Ukulele]});
-    expect(mockOnInnerQuerySet).toHaveBeenCalledWith({...query,  guitarStrings:[GuitarStringCount.Six,GuitarStringCount.Seven]});
   });
 });

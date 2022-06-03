@@ -42,7 +42,6 @@ const ITEMS_ON_THE_PAGE = 9;
 
 interface MainProps {
     guitars: GuitarModel [];
-    onMount: () => void;
     sortDirection: SortDirection,
     sortType: SortType,
     setSortType: (sortType: SortType) => void;
@@ -55,7 +54,6 @@ interface MainProps {
 
 function Main(props: MainProps) {
   const {
-    onMount,
     guitars,
     isResponseReceived,
     errorMsg,
@@ -88,13 +86,14 @@ function Main(props: MainProps) {
     if (isResponseReceived) {
       setIsLoading(false);
       setInnerGuitars(guitars);
+
       if (isLoadingCommentsCount && guitars.length > 0) {
         getCommentsCount(guitars);
         setIsLoadingCommentsCount(false);
       }
     }
 
-  }, [guitars, onMount, isResponseReceived, errorMsg, getCommentsCount, isLoadingCommentsCount]);
+  }, [guitars, isResponseReceived, errorMsg, getCommentsCount, isLoadingCommentsCount]);
 
 
   const getAllPages = useCallback(() => {
@@ -115,8 +114,11 @@ function Main(props: MainProps) {
 
   useEffect(() => {
     if (pageNo) {
-      handlerQuerySet({page: pageNo});
-      setCurrentPage(Number(pageNo));
+      if(Number(pageNo) !== currentPage) {
+        handlerQuerySet({page: pageNo});
+        setCurrentPage(Number(pageNo));
+      }
+
     } else {
       setCurrentPage(1);
     }
@@ -125,7 +127,7 @@ function Main(props: MainProps) {
       navigate('/not-found');
     }
 
-  }, [pageNo, guitars, getAllPages, navigate, handlerQuerySet]);
+  }, [pageNo, guitars, getAllPages, navigate, handlerQuerySet, currentPage]);
 
   useEffect(() => {
     if (sort && guitars.length > 0) {
@@ -308,9 +310,6 @@ const mapStateToProps = (state: StateModel) => ({
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 const mapDispatchToProps = (dispatch: any) => ({
-  onMount() {
-    dispatch(GuitarsOperation.getGuitars());
-  },
   getCommentsCount(guitars: GuitarModel []) {
     dispatch(GuitarsOperation.getCommentsCount(guitars));
   },
