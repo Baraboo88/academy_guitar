@@ -23,6 +23,7 @@ describe('GuitarCardDetails e2e', () => {
       <Provider store={getTestStore()}>
         <BrowserRouter>
           <Main
+            guitarsWithoutSort = {mockGuitars}
             guitars={mockGuitars}
             sortDirection = {SortDirection.None}
             sortType={SortType.Price}
@@ -43,6 +44,7 @@ describe('GuitarCardDetails e2e', () => {
       <Provider store={getTestStore()}>
         <MemoryRouter initialEntries = {[`/?sort=${SortTypeWithDirection.PopularityHighToLow}`]}>
           <Main
+            guitarsWithoutSort = {mockGuitars}
             guitars={mockGuitars}
             sortDirection = {SortDirection.None}
             sortType={SortType.Price}
@@ -63,6 +65,7 @@ describe('GuitarCardDetails e2e', () => {
       <Provider store={getTestStore()}>
         <MemoryRouter initialEntries = {[`/?sort=${SortTypeWithDirection.PriceLowToHigh}`]}>
           <Main
+            guitarsWithoutSort = {mockGuitars}
             guitars={mockGuitars}
             sortDirection = {SortDirection.None}
             sortType={SortType.Price}

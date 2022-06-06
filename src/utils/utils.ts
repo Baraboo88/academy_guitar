@@ -60,7 +60,7 @@ export const getCyrillicTypeFiler = (type: GuitarType) => {
 };
 
 
-export const monthNames = ['января', 'февраля ', 'марта', 'апреля', 'майя', 'июня',
+export const MONTH_NAMES = ['января', 'февраля ', 'марта', 'апреля', 'майя', 'июня',
   'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
 ];
 

@@ -57,27 +57,22 @@ function AddCommentModal(props: AddCommentModalProps) {
   useModal(onCloseModal);
 
 
-  const starRefs = useRef([]);
+  const starRefs = useRef<HTMLInputElement []>([]);
   const focusedElement = useActiveElement();
 
 
   const renderStars = () => new Array(NUMBER_OF_START).fill(MOCK_FILL_VALUE).map((_,index) => {
     const starNo = NUMBER_OF_START - index;
     if(starNo === NUMBER_OF_START && focusedElement === starRefs.current[5]&& rating === 0){
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
+
       if(starRefs.current[1] ){
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
         starRefs.current[1].focus();
       }
 
     }
     return (
       <React.Fragment key={getCyrillicRating(starNo)}>
-        <input ref={(element) => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
+        <input ref={(element:HTMLInputElement) => {
           starRefs.current[starNo] = element;
 
         }}  checked={rating === starNo} onKeyDown={(evt) => {
@@ -89,36 +84,24 @@ function AddCommentModal(props: AddCommentModalProps) {
 
               if(rating !== NUMBER_OF_START){
                 onSetRating(Number(rating + 1));
-
                 if(starRefs.current[rating + 1]){
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
                   starRefs.current[rating + 1].focus();
                 }
 
               } else {
                 onSetRating(Number( 1));
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 starRefs.current[1].focus();
               }
             }
 
             if(Arrow.Left === evt.key){
-
               if(rating !== 1){
                 onSetRating(Number(rating - 1));
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 if(starRefs.current[rating - 1]){
-                  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                  // @ts-ignore
                   starRefs.current[rating - 1].focus();
                 }
               } else {
                 onSetRating(Number(NUMBER_OF_START));
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 starRefs.current[NUMBER_OF_START].focus();
               }
             }

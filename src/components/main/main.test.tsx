@@ -22,6 +22,7 @@ it('Main successfully rendered', () => {
     <Provider store={getTestStore()}>
       <BrowserRouter>
         <Main
+          guitarsWithoutSort = {mockGuitars}
           guitars = {mockGuitars}
           getCommentsCount = {mockGetCommentsCount}
           isResponseReceived ={false}

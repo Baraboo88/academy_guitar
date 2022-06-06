@@ -1,6 +1,6 @@
 import React from 'react';
 import {GuitarCommentModel} from '../../types/guitar-model';
-import {getCyrillicRating, monthNames} from '../../utils/utils';
+import {getCyrillicRating, MONTH_NAMES} from '../../utils/utils';
 import {renderStars, StarSize} from '../guitar-card/guitar-card';
 
 interface CommentCardProps{
@@ -19,7 +19,7 @@ function CommentCard(props: CommentCardProps) {
 
       <div className="review__wrapper">
         <h4 className="review__title review__title--author title title--lesser">{comment.userName}</h4>
-        <span className="review__date">{`${date.getUTCDate()} ${monthNames[date.getUTCMonth()]}`}</span>
+        <span className="review__date">{`${date.getUTCDate()} ${MONTH_NAMES[date.getUTCMonth()]}`}</span>
       </div>
       <div className="rate review__rating-panel">
         {renderStars(comment.rating, StarSize.Comments)}

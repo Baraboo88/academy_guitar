@@ -3,12 +3,7 @@ import {CurrentGuitarStateModel, StateModel} from '../../types/redux-models';
 import {AppDispatch} from '../../index';
 import { AxiosStatic} from 'axios';
 import {ErrorMsg, ResponseStatus} from '../../utils/utils';
-
-export enum CurrentGuitarAction {
-    SetCurrentGuitar = 'current-guitar/set-current-guitar',
-    SetError = 'current-guitar/set-error',
-    SetIsResponseReceived = 'current-guitar/set-is-response-received',
-}
+import {CurrentGuitarAction, CurrentGuitarActionCreator} from './current-guitar-actions';
 
 
 const initialState: CurrentGuitarStateModel = {
@@ -83,18 +78,6 @@ export const CurrentGuitarOperation = {
 
 };
 
-
-export const CurrentGuitarActionCreator = {
-  setCurrentGuitar(quests: GuitarModel | null) {
-    return {type: CurrentGuitarAction.SetCurrentGuitar, payload: quests};
-  },
-  setError(error: string) {
-    return {type: CurrentGuitarAction.SetError, payload: error};
-  },
-  setIsResponseReceived(isResponseReceived: boolean) {
-    return {type: CurrentGuitarAction.SetIsResponseReceived, payload: isResponseReceived};
-  },
-};
 
 /* eslint-disable  @typescript-eslint/no-explicit-any */
 export const currentGuitarReducer = (state: CurrentGuitarStateModel = initialState, action:any) => {

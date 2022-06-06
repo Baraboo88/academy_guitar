@@ -13,8 +13,9 @@ import AddCommentModal from '../add-comment-modal/add-comment-modal';
 import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-modal-success';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
 
-import {CurrentGuitarActionCreator, CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-reducer';
+import {CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-reducer';
 import {TailSpin} from 'react-loader-spinner';
+import {CurrentGuitarActionCreator} from '../../store/current-guitar/current-guitar-actions';
 
 
 const COMMENTS_TO_SKIP = 3;

@@ -1,7 +1,8 @@
 
 import {MOCK_ERROR, mockGuitars} from '../../utils/test-utils';
 import {CurrentGuitarStateModel} from '../../types/redux-models';
-import {CurrentGuitarAction, currentGuitarReducer} from './current-guitar-reducer';
+import {CurrentGuitarAction} from './current-guitar-actions';
+import {currentGuitarReducer} from './current-guitar-reducer';
 
 const initialState:CurrentGuitarStateModel = {
   currentGuitar: null,

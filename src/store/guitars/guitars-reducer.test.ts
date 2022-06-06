@@ -1,8 +1,9 @@
 import {GuitarsStateModel} from '../../types/redux-models';
-import {GuitarsAction, guitarsReducer} from './guitars-reducer';
+import {guitarsReducer} from './guitars-reducer';
 import {MOCK_ERROR, mockGuitars} from '../../utils/test-utils';
 import {MAX_PRICE_INITIAL_VALUE, MIN_PRICE_INITIAL_VALUE, SortDirection, SortType} from '../../utils/utils';
 import {GuitarStringCount, GuitarType} from '../../types/guitar-model';
+import {GuitarsAction} from './guitars-actions';
 
 
 const initialState:GuitarsStateModel = {

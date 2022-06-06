@@ -12,7 +12,8 @@ import {
   getGuitarsIsResponseReceived, getSearchGuitarName,
   getGuitarsWithNameFilter
 } from '../../store/guitars/guitars-selectors';
-import {GuitarsActionCreator, GuitarsOperation} from '../../store/guitars/guitars-reducer';
+import { GuitarsOperation} from '../../store/guitars/guitars-reducer';
+import {GuitarsActionCreator} from '../../store/guitars/guitars-actions';
 
 
 interface HeaderProps {

@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from 'react';
+import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
 import {
   ENTER_KEY,
   getCyrillicTypeFiler,
@@ -20,13 +20,14 @@ import {
   getMinMaxPrice
 
 } from '../../store/guitars/guitars-selectors';
-import {GuitarsActionCreator} from '../../store/guitars/guitars-reducer';
+
 import { GuitarStringCount, GuitarType} from '../../types/guitar-model';
 import {connect} from 'react-redux';
 import {useNavigate} from 'react-router-dom';
 import {useQuery} from '../../hooks/use-query/use-query';
 
 import * as queryString from 'query-string';
+import {GuitarsActionCreator} from '../../store/guitars/guitars-actions';
 
 
 interface CatalogFilterProps {
@@ -65,7 +66,9 @@ function CatalogFilters(props: CatalogFilterProps) {
   } = props;
 
   const [innerMinPrice, setInnerMinPrice] = useState('');
+  const [isSettingMinPrice, setIsSettingMinPrice] = useState(true);
   const [innerMaxPrice, setInnerMaxPrice] = useState('');
+  const [isSettingMaxPrice, setIsSettingMaxPrice] = useState(true);
 
   const navigate = useNavigate();
   const query = useQuery();
@@ -85,27 +88,29 @@ function CatalogFilters(props: CatalogFilterProps) {
         newMinPrice = availableMinMaxPrices[1];
       }
       setMinPrice(newMinPrice);
+
     } else {
       setMinPrice(MIN_PRICE_INITIAL_VALUE);
     }
-
+    setIsSettingMinPrice(true);
 
   }, [minPriceFromQuery, setMinPrice, availableMinMaxPrices]);
 
   useEffect(() => {
-    if(Number(innerMinPrice) !== selectedMinPrice) {
+
+    if(Number(innerMinPrice) !== selectedMinPrice && isSettingMinPrice) {
       onInnerQuerySet({minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? '' : Number(innerMinPrice)});
       setInnerMinPrice(selectedMinPrice.toString());
     }
 
-  }, [selectedMinPrice, onInnerQuerySet]);
+  }, [selectedMinPrice, onInnerQuerySet, isSettingMinPrice, innerMinPrice]);
 
   useEffect(() => {
-    if(Number(innerMaxPrice) !== selectedMaxPrice) {
+    if(Number(innerMaxPrice) !== selectedMaxPrice && isSettingMaxPrice) {
       onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? '' : Number(innerMaxPrice)});
       setInnerMaxPrice(selectedMaxPrice.toString());
     }
-  }, [selectedMaxPrice, onInnerQuerySet]);
+  }, [selectedMaxPrice, onInnerQuerySet, isSettingMaxPrice, innerMaxPrice]);
 
 
   useEffect(()=> {
@@ -124,7 +129,7 @@ function CatalogFilters(props: CatalogFilterProps) {
     } else {
       setMaxPrice(MAX_PRICE_INITIAL_VALUE);
     }
-
+    setIsSettingMaxPrice(true);
 
   }, [maxPriceFromQuery, setMaxPrice, availableMinMaxPrices]);
 
@@ -207,6 +212,42 @@ function CatalogFilters(props: CatalogFilterProps) {
 
   const generateGuitarsStringsLink = (elements:GuitarStringCount []) => `?${queryString.stringify({...innerQuery, guitarStrings: elements},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 
+  const handlerMinPriceChange = (evt: ChangeEvent<HTMLInputElement>) =>{
+    setIsSettingMinPrice(false);
+    setInnerMinPrice(evt.target.value);
+  };
+
+  const handlerMaxPriceChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setIsSettingMaxPrice(false);
+    setInnerMaxPrice(evt.target.value);
+  };
+
+  const handlerGuitarsTypeChange =  (guitarType: GuitarType) => {
+    const selectedIndex = selectedTypes.indexOf(guitarType);
+    const newSelectedGuitarsTypes = [...selectedTypes];
+    if(selectedIndex >= 0){
+      newSelectedGuitarsTypes.splice(selectedIndex, 1);
+    } else {
+      newSelectedGuitarsTypes.push(guitarType);
+    }
+    navigate(generateGuitarsTypeLink(newSelectedGuitarsTypes));
+  };
+
+  const handlerGuitarsStringsChange = (stringNo: GuitarStringCount) => {
+    const selectedIndex = selectedStrings.indexOf(stringNo);
+    const newSelectedGuitarsStrings = [...selectedStrings];
+    if(selectedIndex >= 0){
+      newSelectedGuitarsStrings.splice(selectedIndex, 1);
+    } else {
+      newSelectedGuitarsStrings.push(stringNo);
+    }
+    navigate(generateGuitarsStringsLink(newSelectedGuitarsStrings));
+  };
+
+  const handlerResetButtonClick = () => {
+
+    navigate(`?${queryString.stringify({...innerQuery, guitarTypes: [], guitarStrings: [], maxPrice:'', minPrice:''},  {skipEmptyString: true})}`);
+  };
 
   return (
     <form className="catalog-filter">
@@ -216,17 +257,12 @@ function CatalogFilters(props: CatalogFilterProps) {
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input value={Number(innerMinPrice) <= -1 ? '' : innerMinPrice} onChange={(evt) => {
-              setInnerMinPrice(evt.target.value);
-            }} type="number" placeholder={`${availableMinMaxPrices.length > 0 ? getPriceWithSpaces(availableMinMaxPrices[0]) : ''}`} id="priceMin" name="от"
-            />
+            <input value={Number(innerMinPrice) <= -1 ? '' : innerMinPrice} onChange={handlerMinPriceChange} type="number" placeholder={`${availableMinMaxPrices.length > 0 ? getPriceWithSpaces(availableMinMaxPrices[0]) : ''}`} id="priceMin" name="от"/>
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input value={Number(innerMaxPrice) <= -1  ? '' : innerMaxPrice} onChange={(evt) => {
-              setInnerMaxPrice(evt.target.value);
-            }}
-            type="number" placeholder={`${availableMinMaxPrices.length > 1 ? getPriceWithSpaces(availableMinMaxPrices[1]) : ''}`} id="priceMax" name="до"
+            <input value={Number(innerMaxPrice) <= -1  ? '' : innerMaxPrice} onChange={handlerMaxPriceChange}
+              type="number" placeholder={`${availableMinMaxPrices.length > 1 ? getPriceWithSpaces(availableMinMaxPrices[1]) : ''}`} id="priceMax" name="до"
             />
           </div>
         </div>
@@ -236,14 +272,7 @@ function CatalogFilters(props: CatalogFilterProps) {
         {Object.values(GuitarType).map((guitarType, index) =>(
           <div key={guitarType} className="form-checkbox catalog-filter__block-item">
             <input onChange={() => {
-              const selectedIndex = selectedTypes.indexOf(guitarType);
-              const newSelectedGuitarsTypes = [...selectedTypes];
-              if(selectedIndex >= 0){
-                newSelectedGuitarsTypes.splice(selectedIndex, 1);
-              } else {
-                newSelectedGuitarsTypes.push(guitarType);
-              }
-              navigate(generateGuitarsTypeLink(newSelectedGuitarsTypes));
+              handlerGuitarsTypeChange(guitarType);
             }} checked={selectedTypes.includes(guitarType)} className="visually-hidden" type="checkbox" id={guitarType} name={guitarType} disabled={!availableGuitarsTypes.includes(guitarType)}
             />
             <label htmlFor={guitarType}>{getCyrillicTypeFiler(guitarType)}</label>
@@ -258,16 +287,10 @@ function CatalogFilters(props: CatalogFilterProps) {
           (
             <div key={stringNo} className="form-checkbox catalog-filter__block-item">
               <input onChange={() => {
-                const selectedIndex = selectedStrings.indexOf(stringNo);
-                const newSelectedGuitarsStrings = [...selectedStrings];
-                if(selectedIndex >= 0){
-                  newSelectedGuitarsStrings.splice(selectedIndex, 1);
-                } else {
-                  newSelectedGuitarsStrings.push(stringNo);
-                }
-                navigate(generateGuitarsStringsLink(newSelectedGuitarsStrings));
+                handlerGuitarsStringsChange(stringNo);
               }} className="visually-hidden" type="checkbox"
               id={`${stringNo}-strings`} name={`${stringNo}-strings`}
+              checked={selectedStrings.includes(stringNo)}
               // eslint-disable-next-line @typescript-eslint/ban-ts-comment
               // @ts-ignore
               disabled={!availableGuitarsString.includes(Number(stringNo))}
@@ -276,11 +299,8 @@ function CatalogFilters(props: CatalogFilterProps) {
             </div>))}
 
       </fieldset>
-      <button onClick={() => {
-
-        navigate(`?${queryString.stringify({...innerQuery, guitarTypes: [], guitarStrings: [], maxPrice:'', minPrice:''},  {skipEmptyString: true})}`);
-      }} className="catalog-filter__reset-btn button button--black-border button--medium"
-      type="reset"
+      <button onClick={handlerResetButtonClick} className="catalog-filter__reset-btn button button--black-border button--medium"
+        type="reset"
       >
           Очистить
       </button>

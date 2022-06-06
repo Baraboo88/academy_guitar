@@ -9,6 +9,7 @@ import {Link, useNavigate} from 'react-router-dom';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {
+  getGuitars,
   getGuitarsError,
   getGuitarsIsResponseReceived, getGuitarsSelectedMaxPrice,
   getGuitarsSelectedMinPrice,
@@ -21,7 +22,7 @@ import {
   getMinMaxPrice,
   getSortedGuitars
 } from '../../store/guitars/guitars-selectors';
-import {GuitarsActionCreator, GuitarsOperation} from '../../store/guitars/guitars-reducer';
+import { GuitarsOperation} from '../../store/guitars/guitars-reducer';
 import {
   Page,
   Query,
@@ -32,15 +33,16 @@ import {
 } from '../../utils/utils';
 import {useQuery} from '../../hooks/use-query/use-query';
 import * as queryString from 'query-string';
-// import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
 import CatalogFilter from '../catalog-filters/catalog-filters';
 import {TailSpin} from 'react-loader-spinner';
+import {GuitarsActionCreator} from '../../store/guitars/guitars-actions';
 
 const ITEMS_ON_THE_PAGE = 9;
 
 
 interface MainProps {
+    guitarsWithoutSort: GuitarModel [],
     guitars: GuitarModel [];
     sortDirection: SortDirection,
     sortType: SortType,
@@ -62,6 +64,7 @@ function Main(props: MainProps) {
     sortType,
     setSortType,
     setSortDirection,
+    guitarsWithoutSort,
   } = props;
   const [error, setError] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -87,13 +90,13 @@ function Main(props: MainProps) {
       setIsLoading(false);
       setInnerGuitars(guitars);
 
-      if (isLoadingCommentsCount && guitars.length > 0) {
-        getCommentsCount(guitars);
+      if (isLoadingCommentsCount && guitarsWithoutSort.length > 0) {
+        getCommentsCount(guitarsWithoutSort);
         setIsLoadingCommentsCount(false);
       }
     }
 
-  }, [guitars, isResponseReceived, errorMsg, getCommentsCount, isLoadingCommentsCount]);
+  }, [guitars, isResponseReceived, errorMsg, getCommentsCount, isLoadingCommentsCount, guitarsWithoutSort]);
 
 
   const getAllPages = useCallback(() => {
@@ -131,39 +134,64 @@ function Main(props: MainProps) {
 
   useEffect(() => {
     if (sort && guitars.length > 0) {
-      let sortTypeToSet = sortType;
-      let sortDirectionToSet = sortDirection;
 
       if (sort === SortTypeWithDirection.PopularityLowToHigh) {
-        handlerQuerySet({sort:SortTypeWithDirection.PopularityLowToHigh});
-        sortTypeToSet = SortType.Popularity;
-        sortDirectionToSet = SortDirection.LowToHigh;
+
+        if(innerQuery.sort !== SortTypeWithDirection.PopularityLowToHigh){
+          handlerQuerySet({sort:SortTypeWithDirection.PopularityLowToHigh});
+        }
+        if(sortType !== SortType.Popularity){
+          setSortType(SortType.Popularity);
+        }
+        if(sortDirection !== SortDirection.LowToHigh){
+          setSortDirection(SortDirection.LowToHigh);
+        }
+        return;
       }
       if (sort === SortTypeWithDirection.PopularityHighToLow) {
-        handlerQuerySet({sort:SortTypeWithDirection.PopularityHighToLow});
-        sortTypeToSet = SortType.Popularity;
-        sortDirectionToSet = SortDirection.HighToLow;
+        if(innerQuery.sort !== SortTypeWithDirection.PopularityHighToLow){
+          handlerQuerySet({sort:SortTypeWithDirection.PopularityHighToLow});
+        }
 
+        if(sortType !== SortType.Popularity){
+          setSortType(SortType.Popularity);
+        }
+        if(sortDirection !== SortDirection.HighToLow){
+          setSortDirection(SortDirection.HighToLow);
+        }
+        return;
       }
       if (sort === SortTypeWithDirection.PriceLowToHigh) {
-        handlerQuerySet({sort:SortTypeWithDirection.PriceLowToHigh});
-        sortTypeToSet = SortType.Price;
-        sortDirectionToSet = SortDirection.LowToHigh;
+
+        if(innerQuery.sort !== SortTypeWithDirection.PriceLowToHigh){
+          handlerQuerySet({sort:SortTypeWithDirection.PriceLowToHigh});
+        }
+
+        if(sortType !== SortType.Price){
+          setSortType(SortType.Price);
+        }
+        if(sortDirection !==SortDirection.LowToHigh){
+          setSortDirection(SortDirection.LowToHigh);
+        }
+        return;
       }
       if (sort === SortTypeWithDirection.PriceHighToLow) {
-        handlerQuerySet({sort:SortTypeWithDirection.PriceHighToLow});
-        sortTypeToSet = SortType.Price;
-        sortDirectionToSet = SortDirection.HighToLow;
-      }
-      if(sortType !== sortTypeToSet){
-        setSortType(sortTypeToSet);
-      }
-      if(sortDirection !== sortDirectionToSet){
-        setSortDirection(sortDirectionToSet);
+
+        if(innerQuery.sort !== SortTypeWithDirection.PriceHighToLow){
+          handlerQuerySet({sort:SortTypeWithDirection.PriceHighToLow});
+        }
+
+        if(sortType !== SortType.Price){
+          setSortType(SortType.Price);
+        }
+        if(sortDirection !==SortDirection.HighToLow){
+          setSortDirection(SortDirection.HighToLow);
+        }
       }
 
+
     }
-  }, [sort, guitars, setSortDirection, setSortType, sortType, sortDirection]);
+  }, [sort, guitars, setSortDirection, setSortType, sortType, sortDirection, handlerQuerySet, innerQuery]);
 
 
   const renderPagination = () => {
@@ -191,10 +219,26 @@ function Main(props: MainProps) {
 
   };
 
-
   const generatePageLink = (page: number) => `?${queryString.stringify({...innerQuery, page},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 
   const generateSortLink = (type: SortType, direction: SortDirection) => `?${queryString.stringify({...innerQuery, sort: getSortQuery(type, direction)},{skipEmptyString: true, arrayFormat: 'comma'})}`;
+
+  const handlerPriceSortButtonClick = () => {
+    navigate(generateSortLink(SortType.Price, sortDirection));
+  };
+
+  const handlerPopularitySortButtonClick = () => {
+    navigate(generateSortLink(SortType.Popularity, sortDirection));
+  };
+
+  const handlerLowToHighSortButtonClick = () => {
+    navigate(generateSortLink(sortType === SortType.None || sortType === SortType.Price ? SortType.Price : SortType.Popularity, SortDirection.LowToHigh));
+  };
+
+  const handlerHighToLowSortButtonClick = () => {
+    navigate(generateSortLink(sortType === SortType.None || sortType === SortType.Price ? SortType.Price : SortType.Popularity, SortDirection.HighToLow));
+
+  };
 
   return (
     <div className="wrapper">
@@ -213,41 +257,31 @@ function Main(props: MainProps) {
             <div className="catalog-sort">
               <h2 className="catalog-sort__title">Сортировать:</h2>
               <div className="catalog-sort__type">
-                <button onClick={() => {
-                  navigate(generateSortLink(SortType.Price, sortDirection));
-                }}
-                className={`catalog-sort__type-button ${sortType === SortType.Price ? 'catalog-sort__type-button--active' : ''}`}
-                aria-label="по цене"
+                <button onClick={handlerPriceSortButtonClick}
+                  className={`catalog-sort__type-button ${sortType === SortType.Price ? 'catalog-sort__type-button--active' : ''}`}
+                  aria-label="по цене"
                 >по цене
                 </button>
-                <button onClick={() => {
-                  navigate(generateSortLink(SortType.Popularity, sortDirection));
-                }}
-                className={`catalog-sort__type-button ${sortType === SortType.Popularity ? 'catalog-sort__type-button--active' : ''}`}
-                aria-label="по популярности"
+                <button onClick={handlerPopularitySortButtonClick}
+                  className={`catalog-sort__type-button ${sortType === SortType.Popularity ? 'catalog-sort__type-button--active' : ''}`}
+                  aria-label="по популярности"
                 >по
                                     популярности
                 </button>
               </div>
               <div className="catalog-sort__order">
-                <button onClick={() => {
-                  navigate(generateSortLink(sortType === SortType.None || sortType === SortType.Price ? SortType.Price : SortType.Popularity, SortDirection.LowToHigh));
-                }}
-                className={`catalog-sort__order-button catalog-sort__order-button--up  ${sortDirection === SortDirection.LowToHigh ? 'catalog-sort__order-button--active' : ''}`}
-                aria-label="По возрастанию"
+                <button onClick={handlerLowToHighSortButtonClick}
+                  className={`catalog-sort__order-button catalog-sort__order-button--up  ${sortDirection === SortDirection.LowToHigh ? 'catalog-sort__order-button--active' : ''}`}
+                  aria-label="По возрастанию"
                 >
                 </button>
-                <button onClick={() => {
-                  navigate(generateSortLink(sortType === SortType.None || sortType === SortType.Price ? SortType.Price : SortType.Popularity, SortDirection.HighToLow));
-                }}
-                className={`catalog-sort__order-button ${sortDirection === SortDirection.HighToLow ? 'catalog-sort__order-button--active' : ''} catalog-sort__order-button--down`}
-                aria-label="По убыванию"
+                <button onClick={handlerHighToLowSortButtonClick}
+                  className={`catalog-sort__order-button ${sortDirection === SortDirection.HighToLow ? 'catalog-sort__order-button--active' : ''} catalog-sort__order-button--down`}
+                  aria-label="По убыванию"
                 >
                 </button>
               </div>
-
             </div>
-
 
             <div className="cards catalog__cards" >
               {error && <span style={{color: 'red', textAlign: 'center'}}>Something went wrong</span>}
@@ -294,6 +328,7 @@ function Main(props: MainProps) {
 
 
 const mapStateToProps = (state: StateModel) => ({
+  guitarsWithoutSort: getGuitars(state),
   guitars: getSortedGuitars(state),
   sortDirection: getGuitarsSortDirection(state),
   sortType: getGuitarsSortType(state),
