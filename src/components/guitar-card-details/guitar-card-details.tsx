@@ -16,6 +16,10 @@ import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
 import {CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-reducer';
 import {TailSpin} from 'react-loader-spinner';
 import {CurrentGuitarActionCreator} from '../../store/current-guitar/current-guitar-actions';
+import {ThunkDispatch} from 'redux-thunk';
+import {RootState} from '../../index';
+import {AxiosStatic} from 'axios';
+import {Action} from 'redux';
 
 
 const COMMENTS_TO_SKIP = 3;
@@ -350,8 +354,7 @@ const mapStateToProps = (state: StateModel) => ({
   error: getCurrentGuitarError(state),
 });
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-const mapDispatchToProps = (dispatch: any) => (
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => (
   {
     onMount(id: number) {
       dispatch(CurrentGuitarOperation.getGuitarById(id));

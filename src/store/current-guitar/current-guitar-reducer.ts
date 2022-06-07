@@ -1,9 +1,11 @@
 import {AddCommentModel, GuitarCommentModel, GuitarModel} from '../../types/guitar-model';
-import {CurrentGuitarStateModel, StateModel} from '../../types/redux-models';
-import {AppDispatch} from '../../index';
+import {CurrentGuitarStateModel} from '../../types/redux-models';
+import {AppDispatch, RootState} from '../../index';
 import { AxiosStatic} from 'axios';
 import {ErrorMsg, ResponseStatus} from '../../utils/utils';
 import {CurrentGuitarAction, CurrentGuitarActionCreator} from './current-guitar-actions';
+import {ThunkAction} from 'redux-thunk';
+import {AnyAction} from 'redux';
 
 
 const initialState: CurrentGuitarStateModel = {
@@ -20,8 +22,8 @@ const resetIsResponseReceivedAndError = (dispatch: AppDispatch) => {
 
 
 export const CurrentGuitarOperation = {
-  getGuitarById(id: number) {
-    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+  getGuitarById(id: number) : ThunkAction<void, RootState, AxiosStatic, AnyAction>  {
+    return (dispatch, state, api) => {
       resetIsResponseReceivedAndError(dispatch);
       api.get<GuitarModel>(`/guitars/${id}`)
         .then((response) => {
@@ -38,8 +40,8 @@ export const CurrentGuitarOperation = {
         });
     };
   },
-  getCurrentGuitarComments(guitar: GuitarModel) {
-    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+  getCurrentGuitarComments(guitar: GuitarModel): ThunkAction<void, RootState, AxiosStatic, AnyAction>  {
+    return (dispatch, state, api) => {
       resetIsResponseReceivedAndError(dispatch);
       api.get<GuitarCommentModel []>(`/guitars/${guitar.id}/comments`)
         .then((response) => {
@@ -55,8 +57,8 @@ export const CurrentGuitarOperation = {
         });
     };
   },
-  addComment(guitar: GuitarModel, comment: AddCommentModel) {
-    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+  addComment(guitar: GuitarModel, comment: AddCommentModel): ThunkAction<void, RootState, AxiosStatic, AnyAction>  {
+    return (dispatch, state, api) => {
       resetIsResponseReceivedAndError(dispatch);
       api.post<GuitarCommentModel>('/comments', comment)
         .then((response) => {

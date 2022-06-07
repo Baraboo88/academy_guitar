@@ -1,9 +1,11 @@
 import {GuitarModel} from '../../types/guitar-model';
-import {GuitarsStateModel, StateModel} from '../../types/redux-models';
-import {AppDispatch} from '../../index';
+import {GuitarsStateModel} from '../../types/redux-models';
+import {AppDispatch, RootState} from '../../index';
 import {AxiosStatic} from 'axios';
 import {ErrorMsg, ResponseStatus, SortDirection, SortType} from '../../utils/utils';
 import {GuitarsAction, GuitarsActionCreator} from './guitars-actions';
+import {ThunkAction} from 'redux-thunk';
+import {AnyAction} from 'redux';
 
 
 const initialState: GuitarsStateModel = {
@@ -27,8 +29,8 @@ const resetIsResponseReceivedAndError = (dispatch: AppDispatch) => {
 
 
 export const GuitarsOperation = {
-  getGuitars() {
-    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+  getGuitars(): ThunkAction<void, RootState, AxiosStatic, AnyAction> {
+    return (dispatch, state, api) => {
       resetIsResponseReceivedAndError(dispatch);
       api.get<GuitarModel []>('/guitars?_limit=27')
         .then((response) => {
@@ -42,8 +44,8 @@ export const GuitarsOperation = {
         });
     };
   },
-  getCommentsCount(guitars: GuitarModel []) {
-    return (dispatch: AppDispatch, state: StateModel, api: AxiosStatic) => {
+  getCommentsCount(guitars: GuitarModel []): ThunkAction<void, RootState, AxiosStatic, AnyAction> {
+    return (dispatch, state, api) => {
       Promise.all(guitars.map((el) => api.get((`/guitars/${el.id}/comments`))))
         .then((responses) =>{
           const guitarsWithComments: GuitarModel [] = [];

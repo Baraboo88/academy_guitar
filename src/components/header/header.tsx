@@ -13,7 +13,11 @@ import {
   getGuitarsWithNameFilter
 } from '../../store/guitars/guitars-selectors';
 import { GuitarsOperation} from '../../store/guitars/guitars-reducer';
-import {GuitarsActionCreator} from '../../store/guitars/guitars-actions';
+import { GuitarsActionCreator} from '../../store/guitars/guitars-actions';
+import { RootState} from '../../index';
+import {ThunkDispatch} from 'redux-thunk';
+import {Action} from 'redux';
+import {AxiosStatic} from 'axios';
 
 
 interface HeaderProps {
@@ -128,8 +132,8 @@ const mapStateToProps = (state: StateModel) => ({
   errorMsg: getGuitarsError(state),
 });
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-const mapDispatchToProps = (dispatch: any) => ({
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
   fetchGuitars() {
     dispatch(GuitarsOperation.getGuitars());
   },

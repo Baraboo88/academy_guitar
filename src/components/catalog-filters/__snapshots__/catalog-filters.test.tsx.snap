@@ -135,6 +135,7 @@ exports[`CatalogFilters successfully rendered 1`] = `
       key="4"
     >
       <input
+        checked={false}
         className="visually-hidden"
         disabled={true}
         id="4-strings"
@@ -153,6 +154,7 @@ exports[`CatalogFilters successfully rendered 1`] = `
       key="6"
     >
       <input
+        checked={false}
         className="visually-hidden"
         disabled={true}
         id="6-strings"
@@ -171,6 +173,7 @@ exports[`CatalogFilters successfully rendered 1`] = `
       key="7"
     >
       <input
+        checked={false}
         className="visually-hidden"
         disabled={true}
         id="7-strings"
@@ -189,6 +192,7 @@ exports[`CatalogFilters successfully rendered 1`] = `
       key="12"
     >
       <input
+        checked={false}
         className="visually-hidden"
         disabled={true}
         id="12-strings"

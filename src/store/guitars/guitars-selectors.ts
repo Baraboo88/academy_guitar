@@ -75,10 +75,8 @@ export const getGuitarsStrings = createSelector([getGuitars, getGuitarsSelectedM
   let  returnGuitarStrings: GuitarStringCount [] = [];
   const newGuitars = getGuitarsWithMinAndMaxFilter(getGuitarsWithTypeFilter(guitars, guitarsTypes), minPrice, maxPrice);
   if(newGuitars.length > 0){
-    const newGuitarStrings = new Set();
+    const newGuitarStrings  = new Set<GuitarStringCount>();
     newGuitars.forEach((guitar) => newGuitarStrings.add(guitar.stringCount));
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
     returnGuitarStrings = [...newGuitarStrings];
   }
   return returnGuitarStrings;
@@ -89,14 +87,12 @@ export const getGuitarsTypes = createSelector([getGuitars, getGuitarsSelectedMin
     let returnTypes: GuitarType [] = [];
     const newGuitars = getGuitarsWithMinAndMaxFilter(getGuitarsWithStringFilter(guitars, guitarsStrings), minPrice, maxPrice);
     if (newGuitars.length > 0) {
-      const types = new Set();
+      const types = new Set<GuitarType>();
       newGuitars.forEach((guitar) => {
 
         types.add(guitar.type);
       } );
 
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
       returnTypes = [...types];
 
     }

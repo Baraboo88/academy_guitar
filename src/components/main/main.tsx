@@ -37,6 +37,10 @@ import * as queryString from 'query-string';
 import CatalogFilter from '../catalog-filters/catalog-filters';
 import {TailSpin} from 'react-loader-spinner';
 import {GuitarsActionCreator} from '../../store/guitars/guitars-actions';
+import {ThunkDispatch} from 'redux-thunk';
+import {RootState} from '../../index';
+import {AxiosStatic} from 'axios';
+import {Action} from 'redux';
 
 const ITEMS_ON_THE_PAGE = 9;
 
@@ -71,8 +75,7 @@ function Main(props: MainProps) {
   const [innerGuitars, setInnerGuitars] = useState<GuitarModel []>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoadingCommentsCount, setIsLoadingCommentsCount] = useState<boolean>(true);
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
+
   const [innerQuery, setInnerQuery] = useState<QueryModel>({});
 
 
@@ -139,54 +142,57 @@ function Main(props: MainProps) {
 
         if(innerQuery.sort !== SortTypeWithDirection.PopularityLowToHigh){
           handlerQuerySet({sort:SortTypeWithDirection.PopularityLowToHigh});
+          if(sortType !== SortType.Popularity){
+            setSortType(SortType.Popularity);
+          }
+          if(sortDirection !== SortDirection.LowToHigh){
+            setSortDirection(SortDirection.LowToHigh);
+          }
         }
-        if(sortType !== SortType.Popularity){
-          setSortType(SortType.Popularity);
-        }
-        if(sortDirection !== SortDirection.LowToHigh){
-          setSortDirection(SortDirection.LowToHigh);
-        }
+
         return;
       }
       if (sort === SortTypeWithDirection.PopularityHighToLow) {
         if(innerQuery.sort !== SortTypeWithDirection.PopularityHighToLow){
           handlerQuerySet({sort:SortTypeWithDirection.PopularityHighToLow});
+          if(sortType !== SortType.Popularity){
+            setSortType(SortType.Popularity);
+          }
+          if(sortDirection !== SortDirection.HighToLow){
+            setSortDirection(SortDirection.HighToLow);
+          }
         }
 
-        if(sortType !== SortType.Popularity){
-          setSortType(SortType.Popularity);
-        }
-        if(sortDirection !== SortDirection.HighToLow){
-          setSortDirection(SortDirection.HighToLow);
-        }
         return;
       }
       if (sort === SortTypeWithDirection.PriceLowToHigh) {
 
         if(innerQuery.sort !== SortTypeWithDirection.PriceLowToHigh){
           handlerQuerySet({sort:SortTypeWithDirection.PriceLowToHigh});
+          if(sortType !== SortType.Price){
+            setSortType(SortType.Price);
+          }
+          if(sortDirection !==SortDirection.LowToHigh){
+            setSortDirection(SortDirection.LowToHigh);
+          }
         }
 
-        if(sortType !== SortType.Price){
-          setSortType(SortType.Price);
-        }
-        if(sortDirection !==SortDirection.LowToHigh){
-          setSortDirection(SortDirection.LowToHigh);
-        }
+
         return;
       }
       if (sort === SortTypeWithDirection.PriceHighToLow) {
 
         if(innerQuery.sort !== SortTypeWithDirection.PriceHighToLow){
           handlerQuerySet({sort:SortTypeWithDirection.PriceHighToLow});
+          if(sortType !== SortType.Price){
+            setSortType(SortType.Price);
+          }
+          if(sortDirection !==SortDirection.HighToLow){
+            setSortDirection(SortDirection.HighToLow);
+          }
         }
 
-        if(sortType !== SortType.Price){
-          setSortType(SortType.Price);
-        }
-        if(sortDirection !==SortDirection.HighToLow){
-          setSortDirection(SortDirection.HighToLow);
-        }
+
       }
 
 
@@ -343,8 +349,8 @@ const mapStateToProps = (state: StateModel) => ({
   selectedStrings: getGuitarsSelectedStrings(state),
 });
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-const mapDispatchToProps = (dispatch: any) => ({
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
   getCommentsCount(guitars: GuitarModel []) {
     dispatch(GuitarsOperation.getCommentsCount(guitars));
   },

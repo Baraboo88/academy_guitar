@@ -34,7 +34,6 @@ describe('GuitarCardDetails e2e', () => {
   const mockAddComment = jest.fn();
   const mockResetIsResponseReceived = jest.fn();
 
-  /* eslint-disable  @typescript-eslint/no-explicit-any */
 
   let app: ReactWrapper;
 

@@ -28,6 +28,7 @@ import {useQuery} from '../../hooks/use-query/use-query';
 
 import * as queryString from 'query-string';
 import {GuitarsActionCreator} from '../../store/guitars/guitars-actions';
+import {AppDispatch} from '../../index';
 
 
 interface CatalogFilterProps {
@@ -291,9 +292,8 @@ function CatalogFilters(props: CatalogFilterProps) {
               }} className="visually-hidden" type="checkbox"
               id={`${stringNo}-strings`} name={`${stringNo}-strings`}
               checked={selectedStrings.includes(stringNo)}
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore
-              disabled={!availableGuitarsString.includes(Number(stringNo))}
+
+              disabled={!availableGuitarsString.includes(Number(stringNo) as unknown  as GuitarStringCount)}
               />
               <label htmlFor={`${stringNo}-strings`}>{stringNo}</label>
             </div>))}
@@ -318,8 +318,8 @@ const mapStateToProps = (state: StateModel) => ({
   selectedStrings: getGuitarsSelectedStrings(state),
 });
 
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-const mapDispatchToProps = (dispatch: any) => ({
+
+const mapDispatchToProps = (dispatch: AppDispatch) => ({
   setMinPrice(minPrice: number) {
     dispatch(GuitarsActionCreator.setMinPrice(minPrice));
   },
