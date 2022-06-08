@@ -1,6 +1,5 @@
 import React, {ChangeEvent, useCallback, useEffect, useState} from 'react';
 import {
-  ENTER_KEY,
   getCyrillicTypeFiler,
   getPriceWithSpaces, MAX_PRICE_INITIAL_VALUE,
   MIN_PRICE_INITIAL_VALUE,
@@ -100,19 +99,22 @@ function CatalogFilters(props: CatalogFilterProps) {
   useEffect(() => {
 
     if(Number(innerMinPrice) !== selectedMinPrice && isSettingMinPrice) {
-      onInnerQuerySet({minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? '' : Number(innerMinPrice)});
+
+      onInnerQuerySet({minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? '' : selectedMinPrice, maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? '' : selectedMaxPrice});
       setInnerMinPrice(selectedMinPrice.toString());
     }
 
-  }, [selectedMinPrice, onInnerQuerySet, isSettingMinPrice, innerMinPrice]);
+  }, [selectedMinPrice, onInnerQuerySet, isSettingMinPrice, innerMinPrice, selectedMaxPrice]);
 
   useEffect(() => {
     if(Number(innerMaxPrice) !== selectedMaxPrice && isSettingMaxPrice) {
-      onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? '' : Number(innerMaxPrice)});
+
+      onInnerQuerySet({maxPrice:selectedMaxPrice=== MAX_PRICE_INITIAL_VALUE ? '' : selectedMaxPrice, minPrice:selectedMinPrice=== MIN_PRICE_INITIAL_VALUE ? '' : selectedMinPrice});
+
       setInnerMaxPrice(selectedMaxPrice.toString());
     }
-  }, [selectedMaxPrice, onInnerQuerySet, isSettingMaxPrice, innerMaxPrice]);
 
+  }, [selectedMaxPrice, onInnerQuerySet, isSettingMaxPrice, innerMaxPrice, selectedMinPrice]);
 
   useEffect(()=> {
     if(maxPriceFromQuery){
@@ -171,42 +173,47 @@ function CatalogFilters(props: CatalogFilterProps) {
 
   const generateMinMaxPriceLink = useCallback((minPrice: string, maxPrice: string) => `?${queryString.stringify({...innerQuery, minPrice, maxPrice},  {skipEmptyString: true, arrayFormat: 'comma'})}`, [innerQuery]);
 
-  const enterFunction = useCallback((event) => {
 
-    if (event.key === ENTER_KEY) {
-      let minPrice = '';
-      let maxPrice = '';
+  const handlerMinMaxPriceLeave = () => {
+    let minPrice = '';
+    let maxPrice = '';
 
-      if(innerMinPrice && Number(innerMinPrice) >= 0) {
-        minPrice = innerMinPrice;
-      }
-
-      if( innerMaxPrice && Number(innerMaxPrice) >= Number(innerMinPrice)){
-        maxPrice = Number(innerMaxPrice) >= Number(innerMinPrice) ? innerMaxPrice :innerMinPrice;
-      } else {
-        setInnerMaxPrice('');
-      }
-      if(selectedMinPrice !== Number(innerMinPrice)){
-        setMinPrice(MIN_PRICE_INITIAL_VALUE);
-      }
-      if(selectedMaxPrice !== Number(innerMaxPrice)){
-        setMaxPrice(MAX_PRICE_INITIAL_VALUE);
-      }
-
-      navigate(generateMinMaxPriceLink(minPrice, maxPrice));
-
+    if(innerMinPrice && Number(innerMinPrice) >= 0) {
+      minPrice = innerMinPrice;
     }
-  }, [innerMinPrice, innerMaxPrice, navigate, selectedMinPrice, selectedMaxPrice, generateMinMaxPriceLink, setMaxPrice, setMinPrice]);
 
+    if( innerMaxPrice && Number(innerMaxPrice) >= Number(innerMinPrice)){
+      maxPrice = Number(innerMaxPrice) >= Number(innerMinPrice) ? innerMaxPrice :innerMinPrice;
+    } else {
+      setInnerMaxPrice('');
+    }
+    if(selectedMinPrice !== Number(innerMinPrice)){
+      setMinPrice(MIN_PRICE_INITIAL_VALUE);
+    }
+    if(selectedMaxPrice !== Number(innerMaxPrice)){
+      setMaxPrice(MAX_PRICE_INITIAL_VALUE);
+    }
 
-  useEffect(() => {
-    document.addEventListener('keydown', enterFunction, false);
+    navigate(generateMinMaxPriceLink(minPrice, maxPrice));
+  };
 
-    return () => {
-      document.removeEventListener('keydown', enterFunction, false);
-
-    };
-  }, [enterFunction]);
+  // const enterFunction = useCallback((event) => {
+  //
+  //   if (event.key === ENTER_KEY) {
+  //
+  //
+  //   }
+  // }, [innerMinPrice, innerMaxPrice, navigate, selectedMinPrice, selectedMaxPrice, generateMinMaxPriceLink, setMaxPrice, setMinPrice]);
+  //
+  //
+  // useEffect(() => {
+  //   document.addEventListener('keydown', enterFunction, false);
+  //
+  //   return () => {
+  //     document.removeEventListener('keydown', enterFunction, false);
+  //
+  //   };
+  // }, [enterFunction]);
 
 
   const generateGuitarsTypeLink = (elements:GuitarType []) => `?${queryString.stringify({...innerQuery, guitarTypes: elements},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
@@ -231,6 +238,7 @@ function CatalogFilters(props: CatalogFilterProps) {
     } else {
       newSelectedGuitarsTypes.push(guitarType);
     }
+
     navigate(generateGuitarsTypeLink(newSelectedGuitarsTypes));
   };
 
@@ -258,11 +266,11 @@ function CatalogFilters(props: CatalogFilterProps) {
         <div className="catalog-filter__price-range">
           <div className="form-input">
             <label className="visually-hidden">Минимальная цена</label>
-            <input value={Number(innerMinPrice) <= -1 ? '' : innerMinPrice} onChange={handlerMinPriceChange} type="number" placeholder={`${availableMinMaxPrices.length > 0 ? getPriceWithSpaces(availableMinMaxPrices[0]) : ''}`} id="priceMin" name="от"/>
+            <input onBlur={handlerMinMaxPriceLeave} value={Number(innerMinPrice) <= -1 ? '' : innerMinPrice} onChange={handlerMinPriceChange} type="number" placeholder={`${availableMinMaxPrices.length > 0 ? getPriceWithSpaces(availableMinMaxPrices[0]) : ''}`} id="priceMin" name="от"/>
           </div>
           <div className="form-input">
             <label className="visually-hidden">Максимальная цена</label>
-            <input value={Number(innerMaxPrice) <= -1  ? '' : innerMaxPrice} onChange={handlerMaxPriceChange}
+            <input onBlur={handlerMinMaxPriceLeave} value={Number(innerMaxPrice) <= -1  ? '' : innerMaxPrice} onChange={handlerMaxPriceChange}
               type="number" placeholder={`${availableMinMaxPrices.length > 1 ? getPriceWithSpaces(availableMinMaxPrices[1]) : ''}`} id="priceMax" name="до"
             />
           </div>

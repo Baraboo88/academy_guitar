@@ -8,7 +8,7 @@ function Footer() {
           <img className="logo__img"
             width="70"
             height="70"
-            src="./img/svg/logo.svg"
+            src="/img/svg/logo.svg"
             alt="Логотип"
           />
         </a>

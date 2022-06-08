@@ -15,7 +15,7 @@ exports[`Footer successfully rendered 1`] = `
         alt="Логотип"
         className="logo__img"
         height="70"
-        src="./img/svg/logo.svg"
+        src="/img/svg/logo.svg"
         width="70"
       />
     </a>

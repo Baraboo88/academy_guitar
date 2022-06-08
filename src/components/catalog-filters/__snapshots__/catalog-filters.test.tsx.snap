@@ -31,6 +31,7 @@ exports[`CatalogFilters successfully rendered 1`] = `
         <input
           id="priceMin"
           name="от"
+          onBlur={[Function]}
           onChange={[Function]}
           placeholder="-1"
           type="number"
@@ -48,6 +49,7 @@ exports[`CatalogFilters successfully rendered 1`] = `
         <input
           id="priceMax"
           name="до"
+          onBlur={[Function]}
           onChange={[Function]}
           placeholder="-1"
           type="number"

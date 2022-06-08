@@ -289,6 +289,7 @@ exports[`App successfully rendered 1`] = `
                 <input
                   id="priceMin"
                   name="от"
+                  onBlur={[Function]}
                   onChange={[Function]}
                   placeholder="2 200"
                   type="number"
@@ -306,6 +307,7 @@ exports[`App successfully rendered 1`] = `
                 <input
                   id="priceMax"
                   name="до"
+                  onBlur={[Function]}
                   onChange={[Function]}
                   placeholder="30 000"
                   type="number"
@@ -645,7 +647,7 @@ exports[`App successfully rendered 1`] = `
           alt="Логотип"
           className="logo__img"
           height="70"
-          src="./img/svg/logo.svg"
+          src="/img/svg/logo.svg"
           width="70"
         />
       </a>

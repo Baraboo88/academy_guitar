@@ -137,9 +137,7 @@ function Main(props: MainProps) {
 
   useEffect(() => {
     if (sort && guitars.length > 0) {
-
       if (sort === SortTypeWithDirection.PopularityLowToHigh) {
-
         if(innerQuery.sort !== SortTypeWithDirection.PopularityLowToHigh){
           handlerQuerySet({sort:SortTypeWithDirection.PopularityLowToHigh});
           if(sortType !== SortType.Popularity){
@@ -149,7 +147,6 @@ function Main(props: MainProps) {
             setSortDirection(SortDirection.LowToHigh);
           }
         }
-
         return;
       }
       if (sort === SortTypeWithDirection.PopularityHighToLow) {
@@ -162,7 +159,6 @@ function Main(props: MainProps) {
             setSortDirection(SortDirection.HighToLow);
           }
         }
-
         return;
       }
       if (sort === SortTypeWithDirection.PriceLowToHigh) {
@@ -176,8 +172,6 @@ function Main(props: MainProps) {
             setSortDirection(SortDirection.LowToHigh);
           }
         }
-
-
         return;
       }
       if (sort === SortTypeWithDirection.PriceHighToLow) {
@@ -191,11 +185,7 @@ function Main(props: MainProps) {
             setSortDirection(SortDirection.HighToLow);
           }
         }
-
-
       }
-
-
     }
   }, [sort, guitars, setSortDirection, setSortType, sortType, sortDirection, handlerQuerySet, innerQuery]);
 

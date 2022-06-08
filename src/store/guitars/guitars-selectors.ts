@@ -24,13 +24,6 @@ export const getGuitarsSelectedTypes = (state: StateModel) => state.guitars.guit
 
 export const getGuitarsWithNameFilter = createSelector([getSearchGuitarName, getGuitars], (filter, guitars) => guitars.filter((guitar) => filter ? guitar.name.toLocaleLowerCase().search(filter.toLocaleLowerCase()) >= 0 : true)) ;
 
-
-const getGuitarsForMinMaxPrice =  createSelector([getGuitarsSelectedStrings, getGuitarsSelectedTypes, getGuitars],(stringsNo, guitarsType, guitars) =>
-
-  getGuitarsWithStringFilter(getGuitarsWithTypeFilter(guitars, guitarsType), stringsNo),
-
-);
-
 export const getFilteredGuitars = createSelector([getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, getGuitarsSelectedStrings, getGuitarsSelectedTypes, getGuitars],(minPrice, maxPrice,stringsNo, guitarsTypes, guitars) =>getGuitarsWithStringFilter(getGuitarsWithTypeFilter(getGuitarsWithMinAndMaxFilter(guitars, minPrice, maxPrice), guitarsTypes), stringsNo));
 
 
@@ -55,7 +48,7 @@ export const getSortedGuitars = createSelector([getGuitarsSortType, getGuitarsSo
 
 });
 
-export const getMinMaxPrice = createSelector(getGuitarsForMinMaxPrice,getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, (guitars, minCurrentPrice, maxCurrentPrice) => {
+export const getMinMaxPrice = createSelector(getGuitars ,getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, (guitars, minCurrentPrice, maxCurrentPrice) => {
 
   let minPrice = guitars.length > 0 ? Number.MAX_SAFE_INTEGER : 0;
   let maxPrice = 0;
