@@ -12,10 +12,10 @@ describe('AddCommentModalSuccess e2e', () => {
 
   const mockOnCloseModalHandler = jest.fn();
   let app: ReactWrapper;
-
+  //TODO
   beforeEach(() => {
     app = mount(
-      <AddToCartModal guitar={mockGuitars[0]}  onModalClose={mockOnCloseModalHandler}/>,
+      <AddToCartModal onAddToCard={jest.fn()} guitar={mockGuitars[0]}  onModalClose={mockOnCloseModalHandler}/>,
     );
   });
 

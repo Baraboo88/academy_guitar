@@ -36,7 +36,7 @@ describe('GuitarCardDetails e2e', () => {
 
 
   let app: ReactWrapper;
-
+  //TODO
   beforeEach(() => {
     app = mount(
       <Provider store={getTestStore()}>
@@ -50,6 +50,8 @@ describe('GuitarCardDetails e2e', () => {
             isResponseReceived ={false}
             resetIsResponseReceived={mockResetIsResponseReceived}
             error={ErrorMsg.NotFound}
+            cartItems={[]}
+            setCartItems={jest.fn()}
           />
         </BrowserRouter>
       </Provider>,

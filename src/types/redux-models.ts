@@ -1,4 +1,4 @@
-import {GuitarModel, GuitarStringCount, GuitarType} from './guitar-model';
+import {CartItemModel, GuitarModel, GuitarStringCount, GuitarType} from './guitar-model';
 import {SortDirection, SortType} from '../utils/utils';
 
 export interface GuitarsStateModel {
@@ -21,7 +21,13 @@ export interface CurrentGuitarStateModel {
 }
 
 
+export interface CartStateModel {
+  cartItems: CartItemModel [];
+}
+
+
 export interface StateModel {
     guitars: GuitarsStateModel,
     currentGuitar: CurrentGuitarStateModel
+    cart: CartStateModel
 }

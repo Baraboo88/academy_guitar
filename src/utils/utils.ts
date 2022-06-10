@@ -1,8 +1,9 @@
-import {GuitarModel, GuitarStringCount, GuitarType} from '../types/guitar-model';
+import {CartItemModel, GuitarModel, GuitarStringCount, GuitarType} from '../types/guitar-model';
 
 const STARTS_AMOUNT = 5;
 export const MIN_PRICE_INITIAL_VALUE = -1;
 export const MAX_PRICE_INITIAL_VALUE = -1;
+export const INITIAL_CART_ITEM_COUNT = 1;
 
 export const getAdapterImage = (img: string) => img.slice(img.length - 5, img.length - 4);
 
@@ -120,3 +121,26 @@ export const getGuitarsWithMinAndMaxFilter = (guitars: GuitarModel [], minPrice:
 export const getGuitarsWithTypeFilter =(guitars: GuitarModel[], guitarsTypes: GuitarType []) => guitars.filter((guitar) => (guitarsTypes.find((el) => el === guitar.type) || guitarsTypes.length === 0));
 
 export const getGuitarsWithStringFilter = (guitars: GuitarModel [], guitarStrings: GuitarStringCount []) =>guitars.filter((guitar) => guitarStrings.find((el) => el === guitar.stringCount.toString()) || guitarStrings.length === 0 );
+
+
+export const handlerCartItemIncrese = (cartItems: CartItemModel [], guitar: GuitarModel) => {
+  const newCartItems = [...cartItems];
+  if(newCartItems.length > 0){
+    const isExist = newCartItems.find((cartItem) => cartItem.guitar.id === guitar.id);
+    if(isExist){
+      return newCartItems.map((cartItem) => {
+        const newItem = {...cartItem};
+        if(cartItem.guitar.id === guitar.id){
+          newItem.count++;
+        }
+        return newItem;
+      });
+    } else {
+      newCartItems.push({guitar, count: INITIAL_CART_ITEM_COUNT});
+      return newCartItems;
+    }
+
+  } else {
+    return [{guitar: {...guitar}, count: 1}];
+  }
+};

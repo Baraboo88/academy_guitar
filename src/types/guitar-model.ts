@@ -44,3 +44,7 @@ export enum GuitarStringCount {
     'Twelve' = '12'
 }
 
+export interface CartItemModel {
+  guitar: GuitarModel,
+  count: number
+}

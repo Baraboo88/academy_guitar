@@ -5,10 +5,11 @@ import {getCyrillicType, getPriceWithSpaces, getAdapterImage} from '../../utils/
 
 export interface AddToCartModelProps{
     onModalClose: () => void;
+    onAddToCard: () => void;
     guitar: GuitarModel;
 }
 function AddToCartModal(props: AddToCartModelProps) {
-  const {onModalClose, guitar} = props;
+  const {onModalClose, guitar, onAddToCard} = props;
   useModal(onModalClose);
   return (
     <div className="modal is-active modal-for-ui-kit">
@@ -37,7 +38,7 @@ function AddToCartModal(props: AddToCartModelProps) {
             </div>
           </div>
           <div className="modal__button-container">
-            <button className="button button--red button--big modal__button modal__button--add">Добавить в
+            <button onClick={onAddToCard} className="button button--red button--big modal__button modal__button--add">Добавить в
                           корзину
             </button>
           </div>

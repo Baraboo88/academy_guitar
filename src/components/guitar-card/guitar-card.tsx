@@ -1,8 +1,24 @@
 import React, {useState} from 'react';
-import {GuitarModel} from '../../types/guitar-model';
-import {generateStars, getCyrillicRating, getPriceWithSpaces, getAdapterImage} from '../../utils/utils';
+import {CartItemModel, GuitarModel} from '../../types/guitar-model';
+import {
+  generateStars,
+  getCyrillicRating,
+  getPriceWithSpaces,
+  getAdapterImage,
+  handlerCartItemIncrese
+} from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
+import {StateModel} from '../../types/redux-models';
+import {getCartItems} from '../../store/cart/cart-selector';
+import {ThunkDispatch} from 'redux-thunk';
+import {RootState} from '../../index';
+import {AxiosStatic} from 'axios';
+import {Action} from 'redux';
+import {CartActionCreator} from '../../store/cart/cart-actions';
+import {connect} from 'react-redux';
+import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-modal-success';
+import AddToCartModalSuccess from "../add-to-cart-modal-success/add-to-cart-modal-success";
 
 export enum StarSize{
     Main, CardDetails, Comments
@@ -35,15 +51,26 @@ export const renderStars = (rating: number, size: StarSize) => generateStars().m
 });
 
 interface GuitarCardProps{
-  card: GuitarModel
+  card: GuitarModel;
+  cartItems: CartItemModel [];
+  setCartItems: (cartItems: CartItemModel []) => void;
 }
 
 function GuitarCard(props :GuitarCardProps) {
-  const {card} = props;
+  const {card, cartItems, setCartItems} = props;
   const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
-
-  const onCloseModalHandler = () => {
+  const [isAddToCardPopUpOpenedSuccess, setIsAddToCardPopUpOpenedSuccess] = useState(false);
+  const handlerIsAddToCardClose = () => {
     setIsAddToCardPopUpOpened(false);
+  };
+  const handlerIsAddToCardCloseSuccess = () => {
+    setIsAddToCardPopUpOpenedSuccess(false);
+  };
+
+  const handlerCartItemAdd = () => {
+    setIsAddToCardPopUpOpened(false);
+    setIsAddToCardPopUpOpenedSuccess(true);
+    setCartItems(handlerCartItemIncrese(cartItems, card));
   };
 
   return (
@@ -75,19 +102,37 @@ function GuitarCard(props :GuitarCardProps) {
 
           <Link to={`/product/${card.id}`} className="button button--mini">Подробнее
           </Link>
-          <button
-            onClick={() => {
-              setIsAddToCardPopUpOpened(true);
-            }}
-            className="button button--red button--mini button--add-to-cart"
-          >Купить
-          </button>
+
+          {cartItems.find((cartItem) => cartItem.guitar.id === card.id) === undefined ?
+            <button
+              onClick={() => {
+                setIsAddToCardPopUpOpened(true);
+              }}
+              className="button button--red button--mini button--add-to-cart"
+            >Купить
+            </button> :
+            <Link to={'/cart'} className="button button--red-border button--mini button--in-cart">В Корзине</Link>}
+
         </div>
 
       </div>
-      {isAddToCardPopUpOpened && <AddToCartModal onModalClose={onCloseModalHandler} guitar={card}/>}
+      {isAddToCardPopUpOpened && <AddToCartModal onAddToCard={handlerCartItemAdd} onModalClose={handlerIsAddToCardClose} guitar={card}/>}
+      {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess onModalClose={handlerIsAddToCardCloseSuccess}/>}
     </>
   );
 }
 
-export default GuitarCard;
+const mapStateToProps = (state: StateModel) => ({
+  cartItems: getCartItems(state),
+});
+
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
+  setCartItems(cartItems: CartItemModel []) {
+    dispatch(CartActionCreator.setCartItems(cartItems));
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(GuitarCard);
+
+export {GuitarCard};

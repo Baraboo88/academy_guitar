@@ -18,6 +18,7 @@ import { RootState} from '../../index';
 import {ThunkDispatch} from 'redux-thunk';
 import {Action} from 'redux';
 import {AxiosStatic} from 'axios';
+import {getCartItemsCount} from '../../store/cart/cart-selector';
 
 
 interface HeaderProps {
@@ -27,10 +28,11 @@ interface HeaderProps {
   searchGuitarName: string,
   fetchGuitars: () => void;
   setSearchGuitarName: (filterName: string) => void;
+  cartItemsCount: number;
 }
 
 function Header(props: HeaderProps) {
-  const {activePage, guitars, guitarsWithFilter, searchGuitarName, fetchGuitars, setSearchGuitarName} = props;
+  const {activePage, guitars, guitarsWithFilter, searchGuitarName, fetchGuitars, setSearchGuitarName, cartItemsCount} = props;
 
 
   useEffect(() => {
@@ -110,16 +112,16 @@ function Header(props: HeaderProps) {
             <span className="visually-hidden">Сбросить поиск</span>
           </button>
         </div>
-        <a className="header__cart-link" href="#" aria-label="Корзина">
+        <Link to={'/cart'} className="header__cart-link" aria-label="Корзина">
           <svg className="header__cart-icon" width="14" height="14" aria-hidden="true">
             <use xlinkHref="#icon-basket"></use>
           </svg>
           <span className="visually-hidden">Перейти в корзину</span>
           <span
             className="header__cart-count"
-          >2
+          >{cartItemsCount}
           </span>
-        </a>
+        </Link>
       </div>
     </header>
   );
@@ -130,6 +132,7 @@ const mapStateToProps = (state: StateModel) => ({
   searchGuitarName: getSearchGuitarName(state),
   isResponseReceived: getGuitarsIsResponseReceived(state),
   errorMsg: getGuitarsError(state),
+  cartItemsCount: getCartItemsCount(state),
 });
 
 
@@ -140,7 +143,6 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Acti
   setSearchGuitarName(filter: string){
     dispatch(GuitarsActionCreator.setSearchGuitarName(filter));
   },
-
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Header);

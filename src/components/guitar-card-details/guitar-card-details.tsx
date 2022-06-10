@@ -2,9 +2,16 @@ import React, {useCallback, useEffect, useState} from 'react';
 import {StateModel} from '../../types/redux-models';
 import {getCurrentGuitar, getCurrentGuitarError, getCurrentGuitarIsResponseReceived} from '../../store/current-guitar/current-guitar-selectors';
 import {connect} from 'react-redux';
-import {AddCommentModel, GuitarCommentModel, GuitarModel} from '../../types/guitar-model';
+import {AddCommentModel, CartItemModel, GuitarCommentModel, GuitarModel} from '../../types/guitar-model';
 import {Link, useNavigate, useParams} from 'react-router-dom';
-import {getCyrillicRating, getCyrillicType, getPriceWithSpaces, getAdapterImage, ErrorMsg} from '../../utils/utils';
+import {
+  getCyrillicRating,
+  getCyrillicType,
+  getPriceWithSpaces,
+  getAdapterImage,
+  ErrorMsg,
+  handlerCartItemIncrese
+} from '../../utils/utils';
 import {renderStars, StarSize} from '../guitar-card/guitar-card';
 import Header from '../header/header';
 import Footer from '../footer/footer';
@@ -20,6 +27,9 @@ import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../../index';
 import {AxiosStatic} from 'axios';
 import {Action} from 'redux';
+import {getCartItems} from '../../store/cart/cart-selector';
+import {CartActionCreator} from '../../store/cart/cart-actions';
+import AddToCartModalSuccess from '../add-to-cart-modal-success/add-to-cart-modal-success';
 
 
 const COMMENTS_TO_SKIP = 3;
@@ -33,6 +43,8 @@ interface GuitarCardDetailsProps {
     isResponseReceived: boolean;
     resetIsResponseReceived: () => void;
     error: string;
+    cartItems: CartItemModel [];
+    setCartItems: (cartItems: CartItemModel []) => void;
 }
 
 export enum ActiveTab{
@@ -42,7 +54,7 @@ export enum ActiveTab{
 
 function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
-  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived} = props;
+  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived, cartItems, setCartItems } = props;
   const [commentsToSkip, setCommentsToSkip] = useState(COMMENTS_TO_SKIP);
   const [isAddCommentOpened, setIsAddCommentOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -65,6 +77,20 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
   const [activeTab, setActiveTab] = useState<ActiveTab>();
   const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
+  const [isAddToCardPopUpOpenedSuccess, setIsAddToCardPopUpOpenedSuccess] = useState(false);
+
+  const handlerIsAddToCardCloseSuccess = () => {
+    setIsAddToCardPopUpOpenedSuccess(false);
+  };
+
+  const handlerCartItemAdd = () => {
+    setIsAddToCardPopUpOpened(false);
+    setIsAddToCardPopUpOpenedSuccess(true);
+    if(currentGuitar){
+      setCartItems(handlerCartItemIncrese(cartItems, currentGuitar));
+    }
+
+  };
 
   const navigate = useNavigate();
 
@@ -338,8 +364,8 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
                         isRatingValidationError={isRatingValidationError}
                       />)}
 
-                    {isAddToCardPopUpOpened && <AddToCartModal onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
-
+                    {isAddToCardPopUpOpened && <AddToCartModal onAddToCard={handlerCartItemAdd } onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
+                    {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess onModalClose={handlerIsAddToCardCloseSuccess}/>}
                   </>}
         </div>
       </main>
@@ -350,6 +376,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
 const mapStateToProps = (state: StateModel) => ({
   currentGuitar: getCurrentGuitar(state),
+  cartItems: getCartItems(state),
   isResponseReceived: getCurrentGuitarIsResponseReceived(state),
   error: getCurrentGuitarError(state),
 });
@@ -372,6 +399,9 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Acti
     },
     resetIsResponseReceived() {
       dispatch(CurrentGuitarActionCreator.setIsResponseReceived(false));
+    },
+    setCartItems(cartItems: CartItemModel []) {
+      dispatch(CartActionCreator.setCartItems(cartItems));
     },
   });
 

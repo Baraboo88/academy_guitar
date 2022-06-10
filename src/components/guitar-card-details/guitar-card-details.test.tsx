@@ -24,7 +24,7 @@ it('GuitarCardDetails successfully rendered', () => {
   const mockAddComment = jest.fn();
   const mockResetIsResponseReceived = jest.fn();
   const MOCK_ERROR = '';
-
+  //TODO
   const tree = mount(
     <Provider store={getTestStore()}>
       <BrowserRouter>
@@ -37,6 +37,8 @@ it('GuitarCardDetails successfully rendered', () => {
           isResponseReceived ={false}
           resetIsResponseReceived={mockResetIsResponseReceived}
           error={MOCK_ERROR}
+          cartItems={[]}
+          setCartItems={jest.fn()}
         />
       </BrowserRouter>
     </Provider>,

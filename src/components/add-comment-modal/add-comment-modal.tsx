@@ -68,7 +68,6 @@ function AddCommentModal(props: AddCommentModalProps) {
       if(starRefs.current[1] ){
         starRefs.current[1].focus();
       }
-
     }
     return (
       <React.Fragment key={getCyrillicRating(starNo)}>
@@ -81,19 +80,16 @@ function AddCommentModal(props: AddCommentModalProps) {
             evt.stopPropagation();
 
             if(Arrow.Right === evt.key){
-
               if(rating !== NUMBER_OF_START){
                 onSetRating(Number(rating + 1));
                 if(starRefs.current[rating + 1]){
                   starRefs.current[rating + 1].focus();
                 }
-
               } else {
                 onSetRating(Number( 1));
                 starRefs.current[1].focus();
               }
             }
-
             if(Arrow.Left === evt.key){
               if(rating !== 1){
                 onSetRating(Number(rating - 1));
@@ -105,10 +101,7 @@ function AddCommentModal(props: AddCommentModalProps) {
                 starRefs.current[NUMBER_OF_START].focus();
               }
             }
-
           }
-
-
         }} className="visually-hidden" id={`star-${starNo}`} name="rate" type="radio" value={starNo} onChange={(evt) => {
 
           onSetRating(Number(evt.target.value));
