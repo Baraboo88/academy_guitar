@@ -10,7 +10,7 @@ import {
   getPriceWithSpaces,
   getAdapterImage,
   ErrorMsg,
-  handlerCartItemIncrese
+  handlerCartItemIncrease
 } from '../../utils/utils';
 import {renderStars, StarSize} from '../guitar-card/guitar-card';
 import Header from '../header/header';
@@ -79,7 +79,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
   const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
   const [isAddToCardPopUpOpenedSuccess, setIsAddToCardPopUpOpenedSuccess] = useState(false);
 
-  const handlerIsAddToCardCloseSuccess = () => {
+  const handlerIsAddToCardClose = () => {
     setIsAddToCardPopUpOpenedSuccess(false);
   };
 
@@ -87,7 +87,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
     setIsAddToCardPopUpOpened(false);
     setIsAddToCardPopUpOpenedSuccess(true);
     if(currentGuitar){
-      setCartItems(handlerCartItemIncrese(cartItems, currentGuitar));
+      setCartItems(handlerCartItemIncrease(cartItems, currentGuitar));
     }
 
   };
@@ -365,7 +365,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
                       />)}
 
                     {isAddToCardPopUpOpened && <AddToCartModal onAddToCard={handlerCartItemAdd } onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
-                    {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess onModalClose={handlerIsAddToCardCloseSuccess}/>}
+                    {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess onModalClose={handlerIsAddToCardClose}/>}
                   </>}
         </div>
       </main>

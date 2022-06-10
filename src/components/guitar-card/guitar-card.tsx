@@ -5,7 +5,7 @@ import {
   getCyrillicRating,
   getPriceWithSpaces,
   getAdapterImage,
-  handlerCartItemIncrese
+  handlerCartItemIncrease
 } from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
@@ -17,8 +17,7 @@ import {AxiosStatic} from 'axios';
 import {Action} from 'redux';
 import {CartActionCreator} from '../../store/cart/cart-actions';
 import {connect} from 'react-redux';
-import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-modal-success';
-import AddToCartModalSuccess from "../add-to-cart-modal-success/add-to-cart-modal-success";
+import AddToCartModalSuccess from '../add-to-cart-modal-success/add-to-cart-modal-success';
 
 export enum StarSize{
     Main, CardDetails, Comments
@@ -70,7 +69,7 @@ function GuitarCard(props :GuitarCardProps) {
   const handlerCartItemAdd = () => {
     setIsAddToCardPopUpOpened(false);
     setIsAddToCardPopUpOpenedSuccess(true);
-    setCartItems(handlerCartItemIncrese(cartItems, card));
+    setCartItems(handlerCartItemIncrease(cartItems, card));
   };
 
   return (

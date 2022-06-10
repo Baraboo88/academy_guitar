@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {StateModel} from '../../types/redux-models';
@@ -10,29 +10,70 @@ import {Action} from 'redux';
 
 import {connect} from 'react-redux';
 
-import {CartItemModel} from '../../types/guitar-model';
-import {getAdapterImage, getCyrillicType, getPriceWithSpaces} from '../../utils/utils';
+import {CartItemModel, GuitarModel} from '../../types/guitar-model';
+import {
+  getAdapterImage,
+  getCyrillicType,
+  getPriceWithSpaces,
+  handlerCartItemIncrease,
+  INITIAL_CART_ITEM_COUNT
+} from '../../utils/utils';
 import {Link} from 'react-router-dom';
-import {getCartItems} from '../../store/cart/cart-selector';
+import {getCartItems, INITIAL_COUNT} from '../../store/cart/cart-selector';
+import {CartActionCreator} from '../../store/cart/cart-actions';
+import ConfirmCartItemDeleteModal from '../confirm-cart-item-delete-modal/confirm-cart-item-delete-modal';
 
 
 interface CartProps{
   cartItems: CartItemModel [];
-  //setCartItems: (cartItems: CartItemModel []) => void;
+  setCartItems: (cartItems: CartItemModel []) => void;
 }
 
 function Cart(props: CartProps) {
-  const {cartItems} = props;
+  const {cartItems, setCartItems} = props;
+
+  const[guitarToDelete, setGuitarToDelete] = useState<GuitarModel | null>(null);
+
+  const handlerCartItemDelete = () => {
+    if(guitarToDelete){
+      setCartItems(cartItems.filter((cartItem) => cartItem.guitar.id !== guitarToDelete.id));
+      setGuitarToDelete(null);
+    }
+  };
+
+  const handlerConfirmDeleteModalClose = () => {
+    setGuitarToDelete(null);
+  };
+
+  const handlerInnerCartItemIncrease = (guitar: GuitarModel) => {
+    setCartItems(handlerCartItemIncrease(cartItems, guitar));
+  };
 
 
-  // const handlerCartItemDelete = (guitar: GuitarModel) => {
-  //   setCartItems(cartItems.filter((cartItem) => cartItem.guitar.id !== guitar.id));
-  // };
+  const handlerCartItemDecrease = (guitar:GuitarModel) => {
+    const cartItemToDecrease = cartItems.find((cartItem) => cartItem.guitar.id === guitar.id);
+    if(cartItemToDecrease){
+      if(cartItemToDecrease.count === INITIAL_CART_ITEM_COUNT){
+        setGuitarToDelete(guitar);
+      } else {
+        setCartItems(cartItems.map((cartItem) =>{
+          const newItem = {...cartItem};
+          if(cartItem.guitar.id === guitar.id){
+            newItem.count--;
+          }
+          return newItem;
+        }));
+      }
+    }
+  };
 
 
   const renderCartItems  = () => cartItems.map((cartItem: CartItemModel) =>    (
     <div className="cart-item" key={cartItem.guitar.id}>
-      <button className="cart-item__close-button button-cross" type="button" aria-label="Удалить">
+      <button onClick={() => {
+        setGuitarToDelete(cartItem.guitar);
+      }} className="cart-item__close-button button-cross" type="button" aria-label="Удалить"
+      >
         <span
           className="button-cross__icon"
         >
@@ -51,13 +92,19 @@ function Cart(props: CartProps) {
       </div>
       <div className="cart-item__price">{getPriceWithSpaces(cartItem.guitar.price)} ₽</div>
       <div className="quantity cart-item__quantity">
-        <button className="quantity__button" aria-label="Уменьшить количество">
+        <button onClick={() => {
+          handlerCartItemDecrease(cartItem.guitar);
+        }} className="quantity__button" aria-label="Уменьшить количество"
+        >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-minus"></use>
           </svg>
         </button>
-        <input className="quantity__input" type="number" placeholder="1" id="2-count" name="2-count" max="99"/>
-        <button className="quantity__button" aria-label="Увеличить количество">
+        <input className="quantity__input" type="number" placeholder={cartItem.count.toString()} id="2-count" name="2-count" max="99"/>
+        <button onClick={() => {
+          handlerInnerCartItemIncrease(cartItem.guitar);
+        }}  className="quantity__button" aria-label="Увеличить количество"
+        >
           <svg width="8" height="8" aria-hidden="true">
             <use xlinkHref="#icon-plus"></use>
           </svg>
@@ -101,7 +148,7 @@ function Cart(props: CartProps) {
                   <span className="cart__total-value-name">Всего:</span>
                   <span
                     className="cart__total-value"
-                  >52 000 ₽
+                  >{getPriceWithSpaces(cartItems.reduce((count, cartItem) => count + cartItem.guitar.price * cartItem.count, INITIAL_COUNT))} ₽
                   </span>
                 </p>
                 <p className="cart__total-item">
@@ -122,7 +169,9 @@ function Cart(props: CartProps) {
               </div>
             </div>
           </div>
+          {guitarToDelete !== null && <ConfirmCartItemDeleteModal guitar={guitarToDelete} handlerCartItemDelete={handlerCartItemDelete} onModalClose={handlerConfirmDeleteModalClose}/>}
         </div>
+
       </main>
       <Footer/>
     </div>
@@ -136,9 +185,9 @@ const mapStateToProps = (state: StateModel) => ({
 
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
-  // setCartItems(cartItems: CartItemModel []) {
-  //   dispatch(CartActionCreator.setCartItems(cartItems));
-  // },
+  setCartItems(cartItems: CartItemModel []) {
+    dispatch(CartActionCreator.setCartItems(cartItems));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Cart);
