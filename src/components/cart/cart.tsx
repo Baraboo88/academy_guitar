@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import Header from '../header/header';
 import Footer from '../footer/footer';
 import {StateModel} from '../../types/redux-models';
@@ -16,13 +16,14 @@ import {
   getCyrillicType,
   getPriceWithSpaces,
   handlerCartItemIncrease,
-  INITIAL_CART_ITEM_COUNT
+  INITIAL_CART_ITEM_COUNT, PROMO_CODES
 } from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import {getCartItems, INITIAL_COUNT} from '../../store/cart/cart-selector';
 import {CartActionCreator} from '../../store/cart/cart-actions';
 import ConfirmCartItemDeleteModal from '../confirm-cart-item-delete-modal/confirm-cart-item-delete-modal';
 
+const DISCOUNT_AMOUNT = 3000;
 
 interface CartProps{
   cartItems: CartItemModel [];
@@ -33,6 +34,9 @@ function Cart(props: CartProps) {
   const {cartItems, setCartItems} = props;
 
   const[guitarToDelete, setGuitarToDelete] = useState<GuitarModel | null>(null);
+  const [promo, setPromo] = useState('');
+  const [isPromoInvalid, setIsPromoInvalid] = useState(false);
+  const [isPromoSuccess, setIsPromoSuccess] = useState(false);
 
   const handlerCartItemDelete = () => {
     if(guitarToDelete){
@@ -47,6 +51,24 @@ function Cart(props: CartProps) {
 
   const handlerInnerCartItemIncrease = (guitar: GuitarModel) => {
     setCartItems(handlerCartItemIncrease(cartItems, guitar));
+  };
+
+  const handlerChangeGuitarCount = (guitar: GuitarModel, count: number) => {
+    const cartItemToChange = cartItems.find((cartItem) => cartItem.guitar.id === guitar.id);
+    if(cartItemToChange){
+      setCartItems(cartItems.map((cartItem) =>{
+        const newItem = {...cartItem};
+        if(cartItem.guitar.id === guitar.id){
+          if(count < 0 ){
+            newItem.count = INITIAL_CART_ITEM_COUNT;
+          } else {
+            newItem.count = count;
+          }
+
+        }
+        return newItem;
+      }));
+    }
   };
 
 
@@ -67,6 +89,22 @@ function Cart(props: CartProps) {
     }
   };
 
+  const handlerPromoCodeCheck = (evt:React.SyntheticEvent) => {
+    evt.preventDefault();
+    const isValidCode = PROMO_CODES.includes(promo.trim());
+    if(isValidCode){
+      setIsPromoInvalid(false);
+      setIsPromoSuccess(true);
+    } else {
+      setIsPromoInvalid(true);
+      setIsPromoSuccess(false);
+    }
+  };
+
+  const handlerPromoChange = (evt: ChangeEvent<HTMLInputElement>) => {
+    setPromo(evt.target.value);
+    setIsPromoInvalid(false);
+  };
 
   const renderCartItems  = () => cartItems.map((cartItem: CartItemModel) =>    (
     <div className="cart-item" key={cartItem.guitar.id}>
@@ -100,7 +138,10 @@ function Cart(props: CartProps) {
             <use xlinkHref="#icon-minus"></use>
           </svg>
         </button>
-        <input className="quantity__input" type="number" placeholder={cartItem.count.toString()} id="2-count" name="2-count" max="99"/>
+        <input onChange={(evt) => {
+          handlerChangeGuitarCount(cartItem.guitar, Number(evt.target.value));
+        }} value={cartItem.count === 0 ? '' : cartItem.count} className="quantity__input" type="number" placeholder={cartItem.count.toString()} id="2-count" name="2-count" max="99"
+        />
         <button onClick={() => {
           handlerInnerCartItemIncrease(cartItem.guitar);
         }}  className="quantity__button" aria-label="Увеличить количество"
@@ -134,11 +175,13 @@ function Cart(props: CartProps) {
               <div className="cart__coupon coupon">
                 <h2 className="title title--little coupon__title">Промокод на скидку</h2>
                 <p className="coupon__info">Введите свой промокод, если он у вас есть.</p>
-                <form className="coupon__form" id="coupon-form" method="post" action="/">
+                <form className="coupon__form" id="coupon-form" method="post" action="/" onSubmit={handlerPromoCodeCheck}>
                   <div className="form-input coupon__input">
                     <label className="visually-hidden">Промокод</label>
-                    <input type="text" placeholder="Введите промокод" id="coupon" name="coupon"/>
-                    <p className="form-input__message form-input__message--success">Промокод принят</p>
+                    <input onChange={handlerPromoChange} type="text" placeholder="Введите промокод" id="coupon" name="coupon"/>
+                    {isPromoSuccess && <p className="form-input__message form-input__message--success">Промокод принят</p>}
+                    {isPromoInvalid &&
+                      <p className="form-input__message form-input__message--error">неверный промокод</p>}
                   </div>
                   <button className="button button--big coupon__button">Применить</button>
                 </form>
@@ -154,15 +197,15 @@ function Cart(props: CartProps) {
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">Скидка:</span>
                   <span
-                    className="cart__total-value cart__total-value--bonus"
-                  >- 3000 ₽
+                    className={`cart__total-value ${isPromoSuccess ? 'cart__total-value--bonus' : ''}`}
+                  >{isPromoSuccess ? `- ${DISCOUNT_AMOUNT}`: 0} ₽
                   </span>
                 </p>
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">К оплате:</span>
                   <span
                     className="cart__total-value cart__total-value--payment"
-                  >49 000 ₽
+                  >{getPriceWithSpaces(cartItems.reduce((count, cartItem) => count + cartItem.guitar.price * cartItem.count, INITIAL_COUNT) - (isPromoSuccess ? DISCOUNT_AMOUNT: 0))} ₽
                   </span>
                 </p>
                 <button className="button button--red button--big cart__order-button">Оформить заказ</button>

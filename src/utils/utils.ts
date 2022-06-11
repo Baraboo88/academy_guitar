@@ -66,6 +66,7 @@ export const MONTH_NAMES = ['января', 'февраля ', 'марта', 'а
   'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
 ];
 
+export const PROMO_CODES = ['light-333', 'medium-444', 'height-555'];
 
 export const getPriceWithSpaces = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
@@ -101,6 +102,7 @@ export enum SortTypeWithDirection{
 export enum Query{
   PageNo='page', Sort='sort', GuitarTypes='guitarTypes', GuitarStrings='guitarStrings', MinPrice='minPrice',MaxPrice='maxPrice'
 }
+
 
 export const ENTER_KEY = 'Enter';
 
