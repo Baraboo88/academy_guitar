@@ -72,6 +72,10 @@ function GuitarCard(props :GuitarCardProps) {
     setCartItems(handlerCartItemIncrease(cartItems, card));
   };
 
+  const handlerAddToCartClick = () => {
+    setIsAddToCardPopUpOpened(true);
+  };
+
   return (
     <>
       <div className="product-card">
@@ -104,9 +108,7 @@ function GuitarCard(props :GuitarCardProps) {
 
           {cartItems.find((cartItem) => cartItem.guitar.id === card.id) === undefined ?
             <button
-              onClick={() => {
-                setIsAddToCardPopUpOpened(true);
-              }}
+              onClick={handlerAddToCartClick}
               className="button button--red button--mini button--add-to-cart"
             >Купить
             </button> :
@@ -115,7 +117,7 @@ function GuitarCard(props :GuitarCardProps) {
         </div>
 
       </div>
-      {isAddToCardPopUpOpened && <AddToCartModal onAddToCard={handlerCartItemAdd} onModalClose={handlerIsAddToCardClose} guitar={card}/>}
+      {isAddToCardPopUpOpened && <AddToCartModal onAddToCart={handlerCartItemAdd} onModalClose={handlerIsAddToCardClose} guitar={card}/>}
       {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess onModalClose={handlerIsAddToCardCloseSuccess}/>}
     </>
   );

@@ -76,6 +76,8 @@ exports[`AddToCartModal successfully rendered 1`] = `
       >
         <button
           className="button button--red button--big modal__button modal__button--add"
+          data-test="test-add-to-cart"
+          onClick={[MockFunction]}
         >
           Добавить в корзину
         </button>

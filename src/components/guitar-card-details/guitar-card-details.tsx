@@ -364,7 +364,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
                         isRatingValidationError={isRatingValidationError}
                       />)}
 
-                    {isAddToCardPopUpOpened && <AddToCartModal onAddToCard={handlerCartItemAdd } onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
+                    {isAddToCardPopUpOpened && <AddToCartModal onAddToCart={handlerCartItemAdd } onModalClose={handlerAddToCartModalClose} guitar={currentGuitar}/>}
                     {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess onModalClose={handlerIsAddToCardClose}/>}
                   </>}
         </div>

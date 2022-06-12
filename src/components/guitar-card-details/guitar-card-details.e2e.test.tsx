@@ -1,6 +1,6 @@
 import {mount, ReactWrapper} from 'enzyme';
 
-import {getTestStore, mockGuitars} from '../../utils/test-utils';
+import {findByTestAtr, getTestStore, mockCartItems, mockGuitars} from '../../utils/test-utils';
 import { GuitarCardDetails} from './guitar-card-details';
 import {BrowserRouter} from 'react-router-dom';
 import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
@@ -33,10 +33,10 @@ describe('GuitarCardDetails e2e', () => {
   const mockGetComments = jest.fn();
   const mockAddComment = jest.fn();
   const mockResetIsResponseReceived = jest.fn();
-
+  const mockSetCartItems = jest.fn();
 
   let app: ReactWrapper;
-  //TODO
+
   beforeEach(() => {
     app = mount(
       <Provider store={getTestStore()}>
@@ -50,8 +50,8 @@ describe('GuitarCardDetails e2e', () => {
             isResponseReceived ={false}
             resetIsResponseReceived={mockResetIsResponseReceived}
             error={ErrorMsg.NotFound}
-            cartItems={[]}
-            setCartItems={jest.fn()}
+            cartItems={mockCartItems}
+            setCartItems={mockSetCartItems}
           />
         </BrowserRouter>
       </Provider>,
@@ -76,4 +76,5 @@ describe('GuitarCardDetails e2e', () => {
     expect(mockedNavigator).toHaveBeenCalledTimes(1);
     expect(mockedNavigator).toHaveBeenCalledWith('/not-found');
   });
+
 });

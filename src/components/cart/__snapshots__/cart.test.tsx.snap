@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App successfully rendered 1`] = `
+exports[`Cart successfully rendered 1`] = `
 <div
   className="wrapper"
 >
@@ -32,7 +32,7 @@ exports[`App successfully rendered 1`] = `
         >
           <li>
             <a
-              className="link main-nav__link link--current"
+              className="link main-nav__link "
               href="/"
               onClick={[Function]}
             >
@@ -231,12 +231,12 @@ exports[`App successfully rendered 1`] = `
       className="container"
     >
       <h1
-        className="page-content__title title title--bigger"
+        className="title title--bigger page-content__title"
       >
-        Каталог гитар
+        Корзина
       </h1>
       <ul
-        className="breadcrumbs page-content__breadcrumbs"
+        className="breadcrumbs page-content__breadcrumbs page-content__breadcrumbs--on-cart-page"
       >
         <li
           className="breadcrumbs__item"
@@ -252,384 +252,343 @@ exports[`App successfully rendered 1`] = `
         <li
           className="breadcrumbs__item"
         >
-          <span>
+          <a
+            className="link"
+            href="/"
+            onClick={[Function]}
+          >
             Каталог
+          </a>
+        </li>
+        <li
+          className="breadcrumbs__item"
+        >
+          <span
+            className="link"
+          >
+            Корзина
           </span>
         </li>
       </ul>
       <div
-        className="catalog"
+        className="cart"
       >
-        <form
-          className="catalog-filter"
+        <div
+          className="cart-item"
+          key="1"
         >
-          <h2
-            className="title title--bigger catalog-filter__title"
-          >
-            Фильтр
-          </h2>
-          <fieldset
-            className="catalog-filter__block"
-          >
-            <legend
-              className="catalog-filter__block-title"
-            >
-              Цена, ₽
-            </legend>
-            <div
-              className="catalog-filter__price-range"
-            >
-              <div
-                className="form-input"
-              >
-                <label
-                  className="visually-hidden"
-                >
-                  Минимальная цена
-                </label>
-                <input
-                  id="priceMin"
-                  name="от"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="2 200"
-                  type="number"
-                  value=""
-                />
-              </div>
-              <div
-                className="form-input"
-              >
-                <label
-                  className="visually-hidden"
-                >
-                  Максимальная цена
-                </label>
-                <input
-                  id="priceMax"
-                  name="до"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  placeholder="30 000"
-                  type="number"
-                  value=""
-                />
-              </div>
-            </div>
-          </fieldset>
-          <fieldset
-            className="catalog-filter__block"
-          >
-            <legend
-              className="catalog-filter__block-title"
-            >
-              Тип гитар
-            </legend>
-            <div
-              className="form-checkbox catalog-filter__block-item"
-              key="acoustic"
-            >
-              <input
-                checked={false}
-                className="visually-hidden"
-                disabled={false}
-                id="acoustic"
-                name="acoustic"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                htmlFor="acoustic"
-              >
-                Акустические гитары
-              </label>
-            </div>
-            <div
-              className="form-checkbox catalog-filter__block-item"
-              key="electric"
-            >
-              <input
-                checked={false}
-                className="visually-hidden"
-                disabled={false}
-                id="electric"
-                name="electric"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                htmlFor="electric"
-              >
-                Электрогитары
-              </label>
-            </div>
-            <div
-              className="form-checkbox catalog-filter__block-item"
-              key="ukulele"
-            >
-              <input
-                checked={false}
-                className="visually-hidden"
-                disabled={false}
-                id="ukulele"
-                name="ukulele"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                htmlFor="ukulele"
-              >
-                Укулеле
-              </label>
-            </div>
-          </fieldset>
-          <fieldset
-            className="catalog-filter__block"
-          >
-            <legend
-              className="catalog-filter__block-title"
-            >
-              Количество струн
-            </legend>
-            <div
-              className="form-checkbox catalog-filter__block-item"
-              key="4"
-            >
-              <input
-                checked={false}
-                className="visually-hidden"
-                disabled={true}
-                id="4-strings"
-                name="4-strings"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                htmlFor="4-strings"
-              >
-                4
-              </label>
-            </div>
-            <div
-              className="form-checkbox catalog-filter__block-item"
-              key="6"
-            >
-              <input
-                checked={false}
-                className="visually-hidden"
-                disabled={true}
-                id="6-strings"
-                name="6-strings"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                htmlFor="6-strings"
-              >
-                6
-              </label>
-            </div>
-            <div
-              className="form-checkbox catalog-filter__block-item"
-              key="7"
-            >
-              <input
-                checked={false}
-                className="visually-hidden"
-                disabled={true}
-                id="7-strings"
-                name="7-strings"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                htmlFor="7-strings"
-              >
-                7
-              </label>
-            </div>
-            <div
-              className="form-checkbox catalog-filter__block-item"
-              key="12"
-            >
-              <input
-                checked={false}
-                className="visually-hidden"
-                disabled={true}
-                id="12-strings"
-                name="12-strings"
-                onChange={[Function]}
-                type="checkbox"
-              />
-              <label
-                htmlFor="12-strings"
-              >
-                12
-              </label>
-            </div>
-          </fieldset>
           <button
-            className="catalog-filter__reset-btn button button--black-border button--medium"
+            aria-label="Удалить"
+            className="cart-item__close-button button-cross"
             onClick={[Function]}
-            type="reset"
+            type="button"
           >
-            Очистить
+            <span
+              className="button-cross__icon"
+            />
+            <span
+              className="cart-item__close-button-interactive-area"
+            />
           </button>
-        </form>
-        <div
-          className="catalog-sort"
-        >
-          <h2
-            className="catalog-sort__title"
-          >
-            Сортировать:
-          </h2>
           <div
-            className="catalog-sort__type"
+            className="cart-item__image"
           >
-            <button
-              aria-label="по цене"
-              className="catalog-sort__type-button "
-              onClick={[Function]}
-            >
-              по цене
-            </button>
-            <button
-              aria-label="по популярности"
-              className="catalog-sort__type-button "
-              onClick={[Function]}
-            >
-              по популярности
-            </button>
-          </div>
-          <div
-            className="catalog-sort__order"
-          >
-            <button
-              aria-label="По возрастанию"
-              className="catalog-sort__order-button catalog-sort__order-button--up  "
-              onClick={[Function]}
-            />
-            <button
-              aria-label="По убыванию"
-              className="catalog-sort__order-button  catalog-sort__order-button--down"
-              onClick={[Function]}
+            <img
+              alt="ЭлектроГитара Честер bass"
+              height="130"
+              src="/img/content/catalog-product-1.jpg"
+              srcSet="/img/content/catalog-product-1@2x.jpg 2x"
+              width="55"
             />
           </div>
-        </div>
-        <div
-          className="cards catalog__cards"
-        >
           <div
-            style={
-              Object {
-                "gridColumn": 3,
-                "justifySelf": "center",
-              }
-            }
+            className="product-info cart-item__info"
           >
-            <div
-              data-testid="tail-spin-loading"
-              style={
-                Object {
-                  "display": "flex",
-                }
-              }
+            <p
+              className="product-info__title"
+            >
+              Честер Bass
+            </p>
+            <p
+              className="product-info__info"
+            >
+              Артикул: 
+              SO757575
+            </p>
+            <p
+              className="product-info__info"
+            >
+              Электрогитара
+              , 
+              7
+               струнная
+            </p>
+          </div>
+          <div
+            className="cart-item__price"
+          >
+            17 500
+             ₽
+          </div>
+          <div
+            className="quantity cart-item__quantity"
+          >
+            <button
+              aria-label="Уменьшить количество"
+              className="quantity__button"
+              onClick={[Function]}
             >
               <svg
-                aria-label="tail-spin-loading"
-                data-testid="tail-spin-svg"
-                height={80}
-                viewBox="0 0 38 38"
-                width={80}
-                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                height="8"
+                width="8"
               >
-                <defs>
-                  <linearGradient
-                    id="a"
-                    x1="8.042%"
-                    x2="65.682%"
-                    y1="0%"
-                    y2="23.865%"
-                  >
-                    <stop
-                      offset="0%"
-                      stopColor="#000000"
-                      stopOpacity="0"
-                    />
-                    <stop
-                      offset="63.146%"
-                      stopColor="#000000"
-                      stopOpacity=".631"
-                    />
-                    <stop
-                      offset="100%"
-                      stopColor="#000000"
-                    />
-                  </linearGradient>
-                </defs>
-                <g
-                  fill="none"
-                  fillRule="evenodd"
-                >
-                  <g
-                    transform="translate(1 1)"
-                  >
-                    <path
-                      d="M36 18c0-9.94-8.06-18-18-18"
-                      id="Oval-2"
-                      stroke="#000000"
-                      strokeWidth="2"
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        dur="0.9s"
-                        from="0 18 18"
-                        repeatCount="indefinite"
-                        to="360 18 18"
-                        type="rotate"
-                      />
-                    </path>
-                    <circle
-                      cx="36"
-                      cy="18"
-                      fill="#fff"
-                      r={1}
-                    >
-                      <animateTransform
-                        attributeName="transform"
-                        dur="0.9s"
-                        from="0 18 18"
-                        repeatCount="indefinite"
-                        to="360 18 18"
-                        type="rotate"
-                      />
-                    </circle>
-                  </g>
-                </g>
+                <use
+                  xlinkHref="#icon-minus"
+                />
               </svg>
-            </div>
+            </button>
+            <input
+              className="quantity__input"
+              id="2-count"
+              max="99"
+              name="2-count"
+              onChange={[Function]}
+              placeholder="3"
+              type="number"
+              value={3}
+            />
+            <button
+              aria-label="Увеличить количество"
+              className="quantity__button"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                height="8"
+                width="8"
+              >
+                <use
+                  xlinkHref="#icon-plus"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            className="cart-item__price-total"
+          >
+            52 500
+             ₽
           </div>
         </div>
         <div
-          className="pagination page-content__pagination"
+          className="cart-item"
+          key="2"
         >
-          <ul
-            className="pagination__list"
+          <button
+            aria-label="Удалить"
+            className="cart-item__close-button button-cross"
+            onClick={[Function]}
+            type="button"
           >
-            <li
-              className="pagination__page pagination__page--active"
-              key="1"
+            <span
+              className="button-cross__icon"
+            />
+            <span
+              className="cart-item__close-button-interactive-area"
+            />
+          </button>
+          <div
+            className="cart-item__image"
+          >
+            <img
+              alt="ЭлектроГитара Честер bass"
+              height="130"
+              src="/img/content/catalog-product-8.jpg"
+              srcSet="/img/content/catalog-product-8@2x.jpg 2x"
+              width="55"
+            />
+          </div>
+          <div
+            className="product-info cart-item__info"
+          >
+            <p
+              className="product-info__title"
             >
-              <a
-                className="link pagination__page-link"
-                href="/?page=1"
-                onClick={[Function]}
+              CURT Z300
+            </p>
+            <p
+              className="product-info__info"
+            >
+              Артикул: 
+              TK129049
+            </p>
+            <p
+              className="product-info__info"
+            >
+              Электрогитара
+              , 
+              7
+               струнная
+            </p>
+          </div>
+          <div
+            className="cart-item__price"
+          >
+            29 500
+             ₽
+          </div>
+          <div
+            className="quantity cart-item__quantity"
+          >
+            <button
+              aria-label="Уменьшить количество"
+              className="quantity__button"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                height="8"
+                width="8"
               >
-                1
-              </a>
-            </li>
-          </ul>
+                <use
+                  xlinkHref="#icon-minus"
+                />
+              </svg>
+            </button>
+            <input
+              className="quantity__input"
+              id="2-count"
+              max="99"
+              name="2-count"
+              onChange={[Function]}
+              placeholder="1"
+              type="number"
+              value={1}
+            />
+            <button
+              aria-label="Увеличить количество"
+              className="quantity__button"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                height="8"
+                width="8"
+              >
+                <use
+                  xlinkHref="#icon-plus"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            className="cart-item__price-total"
+          >
+            29 500
+             ₽
+          </div>
+        </div>
+        <div
+          className="cart__footer"
+        >
+          <div
+            className="cart__coupon coupon"
+          >
+            <h2
+              className="title title--little coupon__title"
+            >
+              Промокод на скидку
+            </h2>
+            <p
+              className="coupon__info"
+            >
+              Введите свой промокод, если он у вас есть.
+            </p>
+            <form
+              action="/"
+              className="coupon__form"
+              id="coupon-form"
+              method="post"
+              onSubmit={[Function]}
+            >
+              <div
+                className="form-input coupon__input"
+              >
+                <label
+                  className="visually-hidden"
+                >
+                  Промокод
+                </label>
+                <input
+                  id="coupon"
+                  name="coupon"
+                  onChange={[Function]}
+                  placeholder="Введите промокод"
+                  type="text"
+                />
+              </div>
+              <button
+                className="button button--big coupon__button"
+              >
+                Применить
+              </button>
+            </form>
+          </div>
+          <div
+            className="cart__total-info"
+          >
+            <p
+              className="cart__total-item"
+            >
+              <span
+                className="cart__total-value-name"
+              >
+                Всего:
+              </span>
+              <span
+                className="cart__total-value"
+              >
+                82 000
+                 ₽
+              </span>
+            </p>
+            <p
+              className="cart__total-item"
+            >
+              <span
+                className="cart__total-value-name"
+              >
+                Скидка:
+              </span>
+              <span
+                className="cart__total-value "
+              >
+                0
+                 ₽
+              </span>
+            </p>
+            <p
+              className="cart__total-item"
+            >
+              <span
+                className="cart__total-value-name"
+              >
+                К оплате:
+              </span>
+              <span
+                className="cart__total-value cart__total-value--payment"
+              >
+                82 000
+                 ₽
+              </span>
+            </p>
+            <button
+              className="button button--red button--big cart__order-button"
+            >
+              Оформить заказ
+            </button>
+          </div>
         </div>
       </div>
     </div>

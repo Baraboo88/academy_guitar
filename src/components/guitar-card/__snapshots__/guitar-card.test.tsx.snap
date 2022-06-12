@@ -107,12 +107,13 @@ exports[`GuitarCard successfully rendered 1`] = `
     >
       Подробнее
     </a>
-    <button
-      className="button button--red button--mini button--add-to-cart"
+    <a
+      className="button button--red-border button--mini button--in-cart"
+      href="/cart"
       onClick={[Function]}
     >
-      Купить
-    </button>
+      В Корзине
+    </a>
   </div>
 </div>
 `;

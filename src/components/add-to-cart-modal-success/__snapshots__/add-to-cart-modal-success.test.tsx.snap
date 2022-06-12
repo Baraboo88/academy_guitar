@@ -1,0 +1,69 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AddToCartModalSuccess successfully rendered 1`] = `
+<div
+  className="modal is-active modal--success modal-for-ui-kit"
+>
+  <div
+    className="modal__wrapper"
+  >
+    <div
+      className="modal__overlay"
+      data-close-modal={true}
+      data-test="test-close-modal"
+      onClick={[MockFunction]}
+    />
+    <div
+      className="modal__content"
+    >
+      <svg
+        aria-hidden="true"
+        className="modal__icon"
+        height="20"
+        width="26"
+      >
+        <use
+          xlinkHref="#icon-success"
+        />
+      </svg>
+      <p
+        className="modal__message"
+      >
+        Товар успешно добавлен в корзину
+      </p>
+      <div
+        className="modal__button-container modal__button-container--add"
+      >
+        <a
+          className="button button--small modal__button"
+          href="/cart"
+          onClick={[Function]}
+        >
+          Перейти в корзину
+        </a>
+        <button
+          className="button button--black-border button--small modal__button modal__button--right"
+          data-test="test-close-modal"
+          onClick={[MockFunction]}
+        >
+          Продолжить покупки
+        </button>
+      </div>
+      <button
+        aria-label="Закрыть"
+        className="modal__close-btn button-cross"
+        data-test="test-close-modal"
+        onClick={[MockFunction]}
+        type="button"
+      >
+        <span
+          className="button-cross__icon"
+        />
+        <span
+          className="modal__close-btn-interactive-area"
+        />
+      </button>
+    </div>
+  </div>
+</div>
+`;

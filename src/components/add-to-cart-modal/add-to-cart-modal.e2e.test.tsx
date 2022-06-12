@@ -11,11 +11,12 @@ Enzyme.configure({adapter: new EnzymeReactAdapter()});
 describe('AddCommentModalSuccess e2e', () => {
 
   const mockOnCloseModalHandler = jest.fn();
+  const mockOnAddToCartHandler = jest.fn();
   let app: ReactWrapper;
-  //TODO
+
   beforeEach(() => {
     app = mount(
-      <AddToCartModal onAddToCard={jest.fn()} guitar={mockGuitars[0]}  onModalClose={mockOnCloseModalHandler}/>,
+      <AddToCartModal onAddToCart={mockOnAddToCartHandler} guitar={mockGuitars[0]}  onModalClose={mockOnCloseModalHandler}/>,
     );
   });
 
@@ -23,5 +24,11 @@ describe('AddCommentModalSuccess e2e', () => {
     const closeFields = await findByTestAtr(app, 'test-close-modal');
     closeFields.forEach((field) => field.simulate('click'));
     expect(mockOnCloseModalHandler).toHaveBeenCalledTimes(2);
+  });
+
+  it('Should add to cart executed', async () => {
+    const addToCartField = await findByTestAtr(app, 'test-add-to-cart');
+    addToCartField.simulate('click');
+    expect(mockOnAddToCartHandler).toHaveBeenCalledTimes(1);
   });
 });

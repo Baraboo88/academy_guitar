@@ -1,4 +1,11 @@
-import {AddCommentModel, GuitarCommentModel, GuitarModel, GuitarStringCount, GuitarType} from '../types/guitar-model';
+import {
+  AddCommentModel,
+  CartItemModel,
+  GuitarCommentModel,
+  GuitarModel,
+  GuitarStringCount,
+  GuitarType
+} from '../types/guitar-model';
 import {createApi} from '../api';
 import {applyMiddleware, createStore} from 'redux';
 import thunk from 'redux-thunk';
@@ -7,6 +14,7 @@ import {SortDirection, SortType} from './utils';
 
 
 export const MOCK_ERROR= 'Somme error';
+
 
 export const mockGuitars: GuitarModel[] = [
   {
@@ -87,6 +95,13 @@ export const mockGuitars: GuitarModel[] = [
     price: 2200,
   },
 ];
+
+export const mockCartItems: CartItemModel [] = [
+  {guitar: mockGuitars[0], count: 3},
+  {guitar: mockGuitars[1], count: 1},
+];
+
+
 export const testInitialState = {
   currentGuitar: {
     currentGuitar: mockGuitars,
@@ -102,6 +117,9 @@ export const testInitialState = {
     guitarsTypes: [],
     sortDirection: SortDirection.None,
     sortType: SortType.None,
+  },
+  cart:{
+    cartItems: mockCartItems,
   },
 };
 

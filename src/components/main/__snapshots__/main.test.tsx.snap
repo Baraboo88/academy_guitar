@@ -198,7 +198,8 @@ exports[`Main successfully rendered 1`] = `
       <a
         aria-label="Корзина"
         className="header__cart-link"
-        href="#"
+        href="/cart"
+        onClick={[Function]}
       >
         <svg
           aria-hidden="true"
@@ -218,7 +219,7 @@ exports[`Main successfully rendered 1`] = `
         <span
           className="header__cart-count"
         >
-          2
+          4
         </span>
       </a>
     </div>

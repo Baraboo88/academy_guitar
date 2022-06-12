@@ -7,7 +7,7 @@ import {mockGuitars} from '../../utils/test-utils';
 
 it('AddToCartModal successfully rendered', () => {
   const mockCloseHandler = jest.fn();
-  //TODO
-  const tree = renderer.create(<AddToCartModal onAddToCard={jest.fn} guitar={mockGuitars[0]} onModalClose={mockCloseHandler}/>);
+  const mockAddToCartHandler = jest.fn();
+  const tree = renderer.create(<AddToCartModal onAddToCart={mockAddToCartHandler} guitar={mockGuitars[0]} onModalClose={mockCloseHandler}/>);
   expect(tree).toMatchSnapshot();
 });
