@@ -26,15 +26,16 @@ it('Cart successfully rendered', () => {
       <BrowserRouter>
         <Cart
           cartItems={mockCartItems}
-          setAddOneToCartItems={mockSetAddOneToCartItems}
-          setAddCustomToCartItems={mockSetAddCustomToCartItems}
-          setDeleteOneFromCartItems={mockSetDeleteOneFromCartItems}
-          setDeleteFromCartItems={mockSetDeleteFromCartItems}
+          addOneToCartItems={mockSetAddOneToCartItems}
+          addCustomToCartItems={mockSetAddCustomToCartItems}
+          deleteOneFromCartItems={mockSetDeleteOneFromCartItems}
+          deleteFromCartItems={mockSetDeleteFromCartItems}
           totalAmount={2000}
           resetCartErrorMessage={mockResetErrorMessage}
           getPromoDiscount={mockGetPromoDiscount}
           errorMessage={''}
-          discount={15}
+          discountAmount={15}
+          isResponseReceived
         />
       </BrowserRouter>
     </Provider>,

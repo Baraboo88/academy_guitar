@@ -126,8 +126,8 @@ const mapStateToProps = (state: StateModel) => ({
 
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
-  setAddOneToCartItems(guitar: GuitarModel) {
-    dispatch(CartActionCreator.setAddOneToCartItems(guitar));
+  addOneToCartItems(guitar: GuitarModel) {
+    dispatch(CartActionCreator.addOneToCartItems(guitar));
   },
 });
 

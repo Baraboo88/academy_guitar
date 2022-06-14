@@ -105,7 +105,7 @@ export const mockGuitars: GuitarModel[] = [
 
 export const mockCartItems: CartItemModel [] = [
   {guitar: mockGuitars[0], count: 3},
-  {guitar: mockGuitars[1], count: 1},
+  {guitar: mockGuitars[1], count: 2},
 ];
 
 

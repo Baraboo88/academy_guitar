@@ -219,7 +219,7 @@ exports[`GuitarCardDetails successfully rendered 1`] = `
         <span
           className="header__cart-count"
         >
-          4
+          5
         </span>
       </a>
     </div>

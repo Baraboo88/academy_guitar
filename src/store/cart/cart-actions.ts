@@ -6,20 +6,21 @@ export enum CartAction {
   DeleteOneFromCartItems = 'cart/delete-one-from-cart-items',
   DeleteFromCartItems ='cart/delete-from-cart-items',
   SetDiscountPercent ='cart/set-discount-percent',
-  SetErrorMessage = 'cart/set-error-message'
+  SetErrorMessage = 'cart/set-error-message',
+  SetIsResponseReceived = 'cart/set-is-response-received'
 }
 
 export const CartActionCreator = {
-  setAddOneToCartItems(guitar: GuitarModel) {
+  addOneToCartItems(guitar: GuitarModel) {
     return {type: CartAction.AddOneToCartItems, payload: guitar};
   },
-  setAddCustomToCartItems(guitarWithCount: CartItemModel) {
+  addCustomToCartItems(guitarWithCount: CartItemModel) {
     return {type: CartAction.AddCustomToCartItems, payload: guitarWithCount};
   },
-  setDeleteOneFromCartItems(guitar: GuitarModel) {
+  deleteOneFromCartItems(guitar: GuitarModel) {
     return {type: CartAction.DeleteOneFromCartItems, payload: guitar};
   },
-  setDeleteFromCartItems(guitar: GuitarModel) {
+  deleteFromCartItems(guitar: GuitarModel) {
     return {type: CartAction.DeleteFromCartItems, payload: guitar};
   },
   setDiscountPercent(discount: number) {
@@ -27,5 +28,8 @@ export const CartActionCreator = {
   },
   setErrorMessage(error: string) {
     return {type: CartAction.SetErrorMessage, payload: error};
+  },
+  setIsResponseReceived(isResponseReceived: boolean) {
+    return {type: CartAction.SetIsResponseReceived, payload: isResponseReceived};
   },
 };

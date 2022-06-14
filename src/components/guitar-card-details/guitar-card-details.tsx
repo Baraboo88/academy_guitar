@@ -396,8 +396,8 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Acti
     resetIsResponseReceived() {
       dispatch(CurrentGuitarActionCreator.setIsResponseReceived(false));
     },
-    setAddOneToCartItems(guitar: GuitarModel ) {
-      dispatch(CartActionCreator.setAddOneToCartItems(guitar));
+    addOneToCartItems(guitar: GuitarModel ) {
+      dispatch(CartActionCreator.addOneToCartItems(guitar));
     },
   });
 

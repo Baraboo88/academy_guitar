@@ -18,24 +18,25 @@ import {
 } from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import {
-  getCartDiscount,
-  getCartErrorMessage,
-  getCartItems,
+  getCartErrorMessage, getCartIsResponseReceived,
+  getCartItems, getCartItemsDiscountAmount,
   getCartItemsTotalAmount
 } from '../../store/cart/cart-selector';
 import {CartActionCreator} from '../../store/cart/cart-actions';
 import ConfirmCartItemDeleteModal from '../confirm-cart-item-delete-modal/confirm-cart-item-delete-modal';
 import {CartOperation} from '../../store/cart/cart-reducer';
+import {TailSpin} from 'react-loader-spinner';
 
 
 interface CartProps{
   cartItems: CartItemModel [];
-  setAddOneToCartItems: (guitar: GuitarModel) => void;
-  setAddCustomToCartItems: (guitarWithCount: CartItemModel) => void;
-  setDeleteOneFromCartItems:(guitar: GuitarModel) => void;
-  setDeleteFromCartItems: (guitar: GuitarModel) => void;
-  discount: number;
+  addOneToCartItems: (guitar: GuitarModel) => void;
+  addCustomToCartItems: (guitarWithCount: CartItemModel) => void;
+  deleteOneFromCartItems:(guitar: GuitarModel) => void;
+  deleteFromCartItems: (guitar: GuitarModel) => void;
+  discountAmount: number;
   errorMessage: string;
+  isResponseReceived: boolean;
   getPromoDiscount: (promo: string) => void;
   resetCartErrorMessage: () => void;
   totalAmount: number
@@ -43,26 +44,33 @@ interface CartProps{
 
 function Cart(props: CartProps) {
   const {cartItems,
-    setAddOneToCartItems,
-    setAddCustomToCartItems,
-    setDeleteOneFromCartItems,
-    setDeleteFromCartItems,
-    discount,
+    addOneToCartItems,
+    addCustomToCartItems,
+    deleteOneFromCartItems,
+    deleteFromCartItems,
+    discountAmount,
     errorMessage,
     getPromoDiscount,
     resetCartErrorMessage,
     totalAmount,
+    isResponseReceived,
   } = props;
 
   const[guitarToDelete, setGuitarToDelete] = useState<GuitarModel | null>(null);
   const [promo, setPromo] = useState('');
   const [isPromoInvalid, setIsPromoInvalid] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
   const [innerCartItems, setInnerCartItems] = useState<CartItemModel []>([]);
 
   useEffect(() => {
     setInnerCartItems(cartItems);
   }, [cartItems]);
+
+  useEffect(() => {
+    if(isResponseReceived && isLoading){
+      setIsLoading(false);
+    }
+  }, [isResponseReceived, isLoading]);
 
   useEffect(() => {
     if(errorMessage){
@@ -75,7 +83,7 @@ function Cart(props: CartProps) {
 
   const handlerCartItemDelete = () => {
     if(guitarToDelete){
-      setDeleteFromCartItems(guitarToDelete);
+      deleteFromCartItems(guitarToDelete);
       setGuitarToDelete(null);
     }
   };
@@ -85,7 +93,7 @@ function Cart(props: CartProps) {
   };
 
   const handlerInnerCartItemIncrease = (guitar: GuitarModel) => {
-    setAddOneToCartItems(guitar);
+    addOneToCartItems(guitar);
   };
 
   const handlerGuitarCountChange = (guitar: GuitarModel, count: number) => {
@@ -102,8 +110,6 @@ function Cart(props: CartProps) {
     });
 
     setInnerCartItems(newInnerCartItems);
-
-
   };
 
   const handlerGuitarCountBlur = (guitar:GuitarModel) => {
@@ -115,7 +121,7 @@ function Cart(props: CartProps) {
       if(changedItem.count === 0 ){
         setGuitarToDelete(guitar);
       } else {
-        setAddCustomToCartItems({guitar, count: changedItem.count });
+        addCustomToCartItems({guitar, count: changedItem.count });
       }
     }
 
@@ -126,21 +132,15 @@ function Cart(props: CartProps) {
     if(cartItem.count === INITIAL_CART_ITEM_COUNT){
       setGuitarToDelete(cartItem.guitar);
     } else {
-      setDeleteOneFromCartItems(cartItem.guitar);
+      deleteOneFromCartItems(cartItem.guitar);
     }
 
   };
 
   const handlerPromoCodeSubmit = (evt:React.SyntheticEvent) => {
     evt.preventDefault();
+    setIsLoading(true);
     getPromoDiscount(promo.trim());
-    // if(isValidCode){
-    //   setIsPromoInvalid(false);
-    //   setIsPromoSuccess(true);
-    // } else {
-    //   setIsPromoInvalid(true);
-    //   setIsPromoSuccess(false);
-    // }
   };
 
   const handlerPromoChange = (evt: ChangeEvent<HTMLInputElement>) => {
@@ -181,7 +181,7 @@ function Cart(props: CartProps) {
       </div>
       <div className="cart-item__price">{getPriceWithSpaces(cartItem.guitar.price)} ₽</div>
       <div className="quantity cart-item__quantity">
-        <button onClick={() => {
+        <button data-test ='test-decrease-one' onClick={() => {
           handlerCartItemDecrease(cartItem);
         }} className="quantity__button" aria-label="Уменьшить количество"
         >
@@ -189,13 +189,13 @@ function Cart(props: CartProps) {
             <use xlinkHref="#icon-minus"></use>
           </svg>
         </button>
-        <input onBlur={() => {
+        <input  data-test ='test-custom-count' onBlur={() => {
           handlerGuitarCountBlur(cartItem.guitar);
         }} onChange={(evt) => {
           handlerGuitarCountChange(cartItem.guitar, Number(evt.target.value));
         }} value={cartItem.count === 0 ? '' : cartItem.count} className="quantity__input" type="number" placeholder={cartItem.count.toString()} id="2-count" name="2-count" max="99"
         />
-        <button onClick={() => {
+        <button data-test ='test-add-one' onClick={() => {
           handlerInnerCartItemIncrease(cartItem.guitar);
         }}  className="quantity__button" aria-label="Увеличить количество"
         >
@@ -228,13 +228,15 @@ function Cart(props: CartProps) {
               <div className="cart__coupon coupon">
                 <h2 className="title title--little coupon__title">Промокод на скидку</h2>
                 <p className="coupon__info">Введите свой промокод, если он у вас есть.</p>
-                <form className="coupon__form" id="coupon-form" method="post" action="/" onSubmit={handlerPromoCodeSubmit}>
+                <form  data-test='test-promo-submit' className="coupon__form" id="coupon-form" method="post" action="/" onSubmit={handlerPromoCodeSubmit}>
                   <div className="form-input coupon__input">
                     <label className="visually-hidden">Промокод</label>
-                    <input onChange={handlerPromoChange} type="text" placeholder="Введите промокод" id="coupon" name="coupon"/>
-                    {discount ? <p className="form-input__message form-input__message--success">Промокод принят</p> : ''}
+                    <input data-test ='test-change-promo' onChange={handlerPromoChange} type="text" placeholder="Введите промокод" id="coupon" name="coupon"/>
+                    {discountAmount ? <p className="form-input__message form-input__message--success">Промокод принят</p> : ''}
                     {isPromoInvalid &&
                       <p className="form-input__message form-input__message--error">неверный промокод</p>}
+                    {isLoading &&
+                        <TailSpin  color="#000000" height={80} width={80} />}
                   </div>
                   <button className="button button--big coupon__button">Применить</button>
                 </form>
@@ -250,15 +252,15 @@ function Cart(props: CartProps) {
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">Скидка:</span>
                   <span
-                    className={`cart__total-value ${discount ? 'cart__total-value--bonus' : ''}`}
-                  >{discount ? `- ${totalAmount * discount /100}`: 0} ₽
+                    className={`cart__total-value ${discountAmount > 0  ? 'cart__total-value--bonus' : ''}`}
+                  >{discountAmount > 0 ? `- ${getPriceWithSpaces(discountAmount)}`: 0} ₽
                   </span>
                 </p>
                 <p className="cart__total-item">
                   <span className="cart__total-value-name">К оплате:</span>
                   <span
                     className="cart__total-value cart__total-value--payment"
-                  >{getPriceWithSpaces(totalAmount - (discount ? totalAmount * discount /100: 0))} ₽
+                  >{getPriceWithSpaces(totalAmount - (discountAmount ? discountAmount: 0))} ₽
                   </span>
                 </p>
                 <button className="button button--red button--big cart__order-button">Оформить заказ</button>
@@ -278,23 +280,24 @@ function Cart(props: CartProps) {
 const mapStateToProps = (state: StateModel) => ({
   cartItems: getCartItems(state),
   totalAmount: getCartItemsTotalAmount(state),
-  discount: getCartDiscount(state),
+  discountAmount: getCartItemsDiscountAmount(state),
   errorMessage: getCartErrorMessage(state),
+  isResponseReceived: getCartIsResponseReceived(state),
 });
 
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
-  setAddOneToCartItems(guitar: GuitarModel) {
-    dispatch(CartActionCreator.setAddOneToCartItems(guitar));
+  addOneToCartItems(guitar: GuitarModel) {
+    dispatch(CartActionCreator.addOneToCartItems(guitar));
   },
-  setAddCustomToCartItems(guitarWithCount: CartItemModel){
-    dispatch(CartActionCreator.setAddCustomToCartItems(guitarWithCount));
+  addCustomToCartItems(guitarWithCount: CartItemModel){
+    dispatch(CartActionCreator.addCustomToCartItems(guitarWithCount));
   },
-  setDeleteOneFromCartItems(guitar: GuitarModel){
-    dispatch(CartActionCreator.setDeleteOneFromCartItems(guitar));
+  deleteOneFromCartItems(guitar: GuitarModel){
+    dispatch(CartActionCreator.deleteOneFromCartItems(guitar));
   },
-  setDeleteFromCartItems(guitar: GuitarModel){
-    dispatch(CartActionCreator.setDeleteFromCartItems(guitar));
+  deleteFromCartItems(guitar: GuitarModel){
+    dispatch(CartActionCreator.deleteFromCartItems(guitar));
   },
   getPromoDiscount(promoCode: string){
     dispatch(CartOperation.getPromoDiscount(promoCode));

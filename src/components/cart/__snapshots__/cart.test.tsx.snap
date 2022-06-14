@@ -219,7 +219,7 @@ exports[`Cart successfully rendered 1`] = `
         <span
           className="header__cart-count"
         >
-          4
+          5
         </span>
       </a>
     </div>
@@ -336,6 +336,7 @@ exports[`Cart successfully rendered 1`] = `
             <button
               aria-label="Уменьшить количество"
               className="quantity__button"
+              data-test="test-decrease-one"
               onClick={[Function]}
             >
               <svg
@@ -350,6 +351,7 @@ exports[`Cart successfully rendered 1`] = `
             </button>
             <input
               className="quantity__input"
+              data-test="test-custom-count"
               id="2-count"
               max="99"
               name="2-count"
@@ -362,6 +364,7 @@ exports[`Cart successfully rendered 1`] = `
             <button
               aria-label="Увеличить количество"
               className="quantity__button"
+              data-test="test-add-one"
               onClick={[Function]}
             >
               <svg
@@ -445,6 +448,7 @@ exports[`Cart successfully rendered 1`] = `
             <button
               aria-label="Уменьшить количество"
               className="quantity__button"
+              data-test="test-decrease-one"
               onClick={[Function]}
             >
               <svg
@@ -459,18 +463,20 @@ exports[`Cart successfully rendered 1`] = `
             </button>
             <input
               className="quantity__input"
+              data-test="test-custom-count"
               id="2-count"
               max="99"
               name="2-count"
               onBlur={[Function]}
               onChange={[Function]}
-              placeholder="1"
+              placeholder="2"
               type="number"
-              value={1}
+              value={2}
             />
             <button
               aria-label="Увеличить количество"
               className="quantity__button"
+              data-test="test-add-one"
               onClick={[Function]}
             >
               <svg
@@ -487,7 +493,7 @@ exports[`Cart successfully rendered 1`] = `
           <div
             className="cart-item__price-total"
           >
-            29 500
+            59 000
              ₽
           </div>
         </div>
@@ -510,6 +516,7 @@ exports[`Cart successfully rendered 1`] = `
             <form
               action="/"
               className="coupon__form"
+              data-test="test-promo-submit"
               id="coupon-form"
               method="post"
               onSubmit={[Function]}
@@ -523,6 +530,7 @@ exports[`Cart successfully rendered 1`] = `
                   Промокод
                 </label>
                 <input
+                  data-test="test-change-promo"
                   id="coupon"
                   name="coupon"
                   onChange={[Function]}
@@ -571,7 +579,7 @@ exports[`Cart successfully rendered 1`] = `
               <span
                 className="cart__total-value cart__total-value--bonus"
               >
-                - 300
+                - 15
                  ₽
               </span>
             </p>
@@ -586,7 +594,7 @@ exports[`Cart successfully rendered 1`] = `
               <span
                 className="cart__total-value cart__total-value--payment"
               >
-                1 700
+                1 985
                  ₽
               </span>
             </p>

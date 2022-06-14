@@ -9,17 +9,20 @@ import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../../index';
 import {AxiosStatic} from 'axios';
 import {AnyAction} from 'redux';
+import {CurrentGuitarActionCreator} from '../current-guitar/current-guitar-actions';
 
 
 const initialState: CartStateModel = {
   cartItems: [],
   discount: 0,
   errorMessage: '',
+  isResponseReceived: false,
 };
 
 export const CartOperation = {
   getPromoDiscount(promoCode: string): ThunkAction<void, RootState, AxiosStatic, AnyAction> {
     return (dispatch, state, api) => {
+      dispatch(CartActionCreator.setIsResponseReceived(false));
       api.post<number>('/coupons/', {coupon: promoCode})
         .then((response) => {
           dispatch(CartActionCreator.setDiscountPercent(response.data));
@@ -112,10 +115,15 @@ export const cartReducer = (state: CartStateModel = initialState, action:any) =>
     case CartAction.SetDiscountPercent:
       return Object.assign({}, state, {
         discount: action.payload,
+        isResponseReceived: true,
       });
     case CartAction.SetErrorMessage:
       return Object.assign({}, state, {
         errorMessage: action.payload,
+      });
+    case CartAction.SetIsResponseReceived:
+      return Object.assign({}, state, {
+        isResponseReceived: action.payload,
       });
 
   }

@@ -10,6 +10,7 @@ const initialState:CartStateModel = {
   cartItems: mockCartItems,
   discount: 0,
   errorMessage: '',
+  isResponseReceived: false,
 };
 
 
@@ -18,6 +19,7 @@ it('Reducer Add new OneToCartItems success', () => {
     cartItems: [...mockCartItems, {guitar: mockGuitars[3], count: INITIAL_CART_ITEM_COUNT}],
     discount: 0,
     errorMessage: '',
+    isResponseReceived: false,
   });
 });
 
@@ -26,6 +28,7 @@ it('Reducer Add existed OneToCartItems success', () => {
     cartItems: [{...mockCartItems[0], count: mockCartItems[0].count + INITIAL_CART_ITEM_COUNT}, mockCartItems[1]],
     discount: 0,
     errorMessage: '',
+    isResponseReceived: false,
   });
 });
 
@@ -34,6 +37,7 @@ it('Reducer AddCustomToCartItems success', () => {
     cartItems: [mockCartItems[0], {...mockCartItems[1], count: 10}],
     discount: 0,
     errorMessage: '',
+    isResponseReceived: false,
   });
 });
 
@@ -42,6 +46,7 @@ it('Reducer DeleteOneFromCartItems success', () => {
     cartItems: [{...mockCartItems[0], count: mockCartItems[0].count - INITIAL_CART_ITEM_COUNT }, mockCartItems[1]],
     discount: 0,
     errorMessage: '',
+    isResponseReceived: false,
   });
 });
 
@@ -50,6 +55,7 @@ it('Reducer DeleteFromCartItems success', () => {
     cartItems: [mockCartItems[1]],
     discount: 0,
     errorMessage: '',
+    isResponseReceived: false,
   });
 });
 
@@ -59,6 +65,7 @@ it('Reducer SetDiscount success', () => {
     cartItems: mockCartItems,
     discount: 15,
     errorMessage: '',
+    isResponseReceived: true,
   });
 });
 
@@ -68,6 +75,16 @@ it('Reducer SetErrorMessage success', () => {
     cartItems: mockCartItems,
     discount: 0,
     errorMessage: 'Mock error',
+    isResponseReceived: false,
+  });
+});
+
+it('Reducer SetIsResponseReceived success', () => {
+  expect(cartReducer(initialState, {type: CartAction.SetIsResponseReceived, payload:true})).toEqual({
+    cartItems: mockCartItems,
+    discount: 0,
+    errorMessage: '',
+    isResponseReceived: true,
   });
 });
 
