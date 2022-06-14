@@ -27,6 +27,7 @@ export const mockGuitars: GuitarModel[] = [
     stringCount: GuitarStringCount.Seven,
     rating: 4,
     price: 17500,
+    isInCart: true,
   },
   {
     id: 2,
@@ -38,6 +39,7 @@ export const mockGuitars: GuitarModel[] = [
     stringCount: GuitarStringCount.Seven,
     rating: 3.5,
     price: 29500,
+    isInCart: false,
   },
   {
     id: 3,
@@ -49,6 +51,7 @@ export const mockGuitars: GuitarModel[] = [
     stringCount: GuitarStringCount.Four,
     rating: 4,
     price: 6800,
+    isInCart: false,
   },
   {
     id: 4,
@@ -60,6 +63,7 @@ export const mockGuitars: GuitarModel[] = [
     stringCount: GuitarStringCount.Six,
     rating: 5,
     price: 30000,
+    isInCart: false,
   },
   {
     id: 5,
@@ -71,6 +75,7 @@ export const mockGuitars: GuitarModel[] = [
     stringCount: GuitarStringCount.Seven,
     rating: 4.5,
     price: 3500,
+    isInCart: false,
   },
   {
     id: 6,
@@ -82,6 +87,7 @@ export const mockGuitars: GuitarModel[] = [
     stringCount: GuitarStringCount.Six,
     rating: 3.5,
     price: 15300,
+    isInCart: false,
   },
   {
     id: 7,
@@ -93,6 +99,7 @@ export const mockGuitars: GuitarModel[] = [
     stringCount: GuitarStringCount.Four,
     rating: 2.5,
     price: 2200,
+    isInCart: false,
   },
 ];
 

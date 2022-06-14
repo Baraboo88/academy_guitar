@@ -23,6 +23,8 @@ export interface CurrentGuitarStateModel {
 
 export interface CartStateModel {
   cartItems: CartItemModel [];
+  discount: number;
+  errorMessage: string;
 }
 
 

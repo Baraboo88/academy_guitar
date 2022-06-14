@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
-import {CartItemModel, GuitarModel} from '../../types/guitar-model';
+import {GuitarModel} from '../../types/guitar-model';
 import {
   generateStars,
   getCyrillicRating,
   getPriceWithSpaces,
-  getAdapterImage,
-  handlerCartItemIncrease
+  getAdapterImage
 } from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
@@ -51,12 +50,11 @@ export const renderStars = (rating: number, size: StarSize) => generateStars().m
 
 interface GuitarCardProps{
   card: GuitarModel;
-  cartItems: CartItemModel [];
-  setCartItems: (cartItems: CartItemModel []) => void;
+  setAddOneToCartItems: (guitar: GuitarModel) => void;
 }
 
 function GuitarCard(props :GuitarCardProps) {
-  const {card, cartItems, setCartItems} = props;
+  const {card, setAddOneToCartItems} = props;
   const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
   const [isAddToCardPopUpOpenedSuccess, setIsAddToCardPopUpOpenedSuccess] = useState(false);
   const handlerIsAddToCardClose = () => {
@@ -69,7 +67,7 @@ function GuitarCard(props :GuitarCardProps) {
   const handlerCartItemAdd = () => {
     setIsAddToCardPopUpOpened(false);
     setIsAddToCardPopUpOpenedSuccess(true);
-    setCartItems(handlerCartItemIncrease(cartItems, card));
+    setAddOneToCartItems(card);
   };
 
   const handlerAddToCartClick = () => {
@@ -106,13 +104,12 @@ function GuitarCard(props :GuitarCardProps) {
           <Link to={`/product/${card.id}`} className="button button--mini">Подробнее
           </Link>
 
-          {cartItems.find((cartItem) => cartItem.guitar.id === card.id) === undefined ?
+          {card.isInCart ? <Link to={'/cart'} className="button button--red-border button--mini button--in-cart">В Корзине</Link> :
             <button
               onClick={handlerAddToCartClick}
               className="button button--red button--mini button--add-to-cart"
             >Купить
-            </button> :
-            <Link to={'/cart'} className="button button--red-border button--mini button--in-cart">В Корзине</Link>}
+            </button>}
 
         </div>
 
@@ -129,8 +126,8 @@ const mapStateToProps = (state: StateModel) => ({
 
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
-  setCartItems(cartItems: CartItemModel []) {
-    dispatch(CartActionCreator.setCartItems(cartItems));
+  setAddOneToCartItems(guitar: GuitarModel) {
+    dispatch(CartActionCreator.setAddOneToCartItems(guitar));
   },
 });
 

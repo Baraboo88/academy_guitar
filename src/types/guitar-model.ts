@@ -9,6 +9,7 @@ export interface GuitarModel {
     rating: number;
     price: number;
     comments?: GuitarCommentModel [];
+    isInCart: boolean;
 }
 
 export interface GuitarCommentModel{

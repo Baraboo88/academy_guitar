@@ -15,12 +15,27 @@ Enzyme.configure({adapter: new EnzymeReactAdapter()});
 
 
 it('Cart successfully rendered', () => {
-  const mockSetCartItems = jest.fn();
-
+  const mockSetAddOneToCartItems = jest.fn();
+  const mockSetAddCustomToCartItems = jest.fn();
+  const mockSetDeleteOneFromCartItems = jest.fn();
+  const mockSetDeleteFromCartItems = jest.fn();
+  const mockResetErrorMessage = jest.fn();
+  const mockGetPromoDiscount = jest.fn();
   const tree = mount(
     <Provider store={getTestStore()}>
       <BrowserRouter>
-        <Cart cartItems={mockCartItems} setCartItems ={mockSetCartItems}/>
+        <Cart
+          cartItems={mockCartItems}
+          setAddOneToCartItems={mockSetAddOneToCartItems}
+          setAddCustomToCartItems={mockSetAddCustomToCartItems}
+          setDeleteOneFromCartItems={mockSetDeleteOneFromCartItems}
+          setDeleteFromCartItems={mockSetDeleteFromCartItems}
+          totalAmount={2000}
+          resetCartErrorMessage={mockResetErrorMessage}
+          getPromoDiscount={mockGetPromoDiscount}
+          errorMessage={''}
+          discount={15}
+        />
       </BrowserRouter>
     </Provider>,
   );

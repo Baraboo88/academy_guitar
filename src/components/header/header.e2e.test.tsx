@@ -9,7 +9,7 @@ import {findByTestAtr, getTestStore} from '../../utils/test-utils';
 import {BrowserRouter} from 'react-router-dom';
 
 import {Header} from './header';
-import {INITIAL_COUNT} from "../../store/cart/cart-selector";
+import {INITIAL_COUNT} from '../../store/cart/cart-selector';
 
 
 Enzyme.configure({adapter: new EnzymeReactAdapter()});

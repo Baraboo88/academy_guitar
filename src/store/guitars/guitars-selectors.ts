@@ -8,6 +8,7 @@ import {
   SortDirection,
   SortType
 } from '../../utils/utils';
+import {getCartItems} from '../cart/cart-selector';
 
 export const getGuitars = (state: StateModel) => state.guitars.guitars;
 export const getGuitarsError = (state: StateModel) => state.guitars.errorMsg;
@@ -24,7 +25,12 @@ export const getGuitarsSelectedTypes = (state: StateModel) => state.guitars.guit
 
 export const getGuitarsWithNameFilter = createSelector([getSearchGuitarName, getGuitars], (filter, guitars) => guitars.filter((guitar) => filter ? guitar.name.toLocaleLowerCase().search(filter.toLocaleLowerCase()) >= 0 : true)) ;
 
-export const getFilteredGuitars = createSelector([getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, getGuitarsSelectedStrings, getGuitarsSelectedTypes, getGuitars],(minPrice, maxPrice,stringsNo, guitarsTypes, guitars) =>getGuitarsWithStringFilter(getGuitarsWithTypeFilter(getGuitarsWithMinAndMaxFilter(guitars, minPrice, maxPrice), guitarsTypes), stringsNo));
+export const getGuitarsWithCart = createSelector([getGuitars, getCartItems], (guitars, cartItems) => guitars.map((guitar) => {
+  guitar.isInCart = cartItems.find((cartItem) => cartItem.guitar.id === guitar.id) !== undefined;
+  return guitar;
+}));
+
+export const getFilteredGuitars = createSelector([getGuitarsSelectedMinPrice, getGuitarsSelectedMaxPrice, getGuitarsSelectedStrings, getGuitarsSelectedTypes, getGuitarsWithCart],(minPrice, maxPrice,stringsNo, guitarsTypes, guitars) =>getGuitarsWithStringFilter(getGuitarsWithTypeFilter(getGuitarsWithMinAndMaxFilter(guitars, minPrice, maxPrice), guitarsTypes), stringsNo));
 
 
 export const getSortedGuitars = createSelector([getGuitarsSortType, getGuitarsSortDirection, getFilteredGuitars], (sortType, sortDirection,guitars) => {

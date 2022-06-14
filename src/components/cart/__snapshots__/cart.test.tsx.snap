@@ -353,6 +353,7 @@ exports[`Cart successfully rendered 1`] = `
               id="2-count"
               max="99"
               name="2-count"
+              onBlur={[Function]}
               onChange={[Function]}
               placeholder="3"
               type="number"
@@ -461,6 +462,7 @@ exports[`Cart successfully rendered 1`] = `
               id="2-count"
               max="99"
               name="2-count"
+              onBlur={[Function]}
               onChange={[Function]}
               placeholder="1"
               type="number"
@@ -527,6 +529,11 @@ exports[`Cart successfully rendered 1`] = `
                   placeholder="Введите промокод"
                   type="text"
                 />
+                <p
+                  className="form-input__message form-input__message--success"
+                >
+                  Промокод принят
+                </p>
               </div>
               <button
                 className="button button--big coupon__button"
@@ -549,7 +556,7 @@ exports[`Cart successfully rendered 1`] = `
               <span
                 className="cart__total-value"
               >
-                82 000
+                2 000
                  ₽
               </span>
             </p>
@@ -562,9 +569,9 @@ exports[`Cart successfully rendered 1`] = `
                 Скидка:
               </span>
               <span
-                className="cart__total-value "
+                className="cart__total-value cart__total-value--bonus"
               >
-                0
+                - 300
                  ₽
               </span>
             </p>
@@ -579,7 +586,7 @@ exports[`Cart successfully rendered 1`] = `
               <span
                 className="cart__total-value cart__total-value--payment"
               >
-                82 000
+                1 700
                  ₽
               </span>
             </p>

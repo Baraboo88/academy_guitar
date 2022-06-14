@@ -7,18 +7,18 @@ import {getAdapterImage, getCyrillicType, getPriceWithSpaces} from '../../utils/
 interface ConfirmCartItemDeleteModalProps{
   guitar: GuitarModel;
   onModalClose: () => void;
-  handlerCartItemDelete: (guitar: GuitarModel) => void;
+  onCartItemDelete: (guitar: GuitarModel) => void;
 }
 
 function ConfirmCartItemDeleteModal(props: ConfirmCartItemDeleteModalProps) {
 
-  const {guitar, onModalClose, handlerCartItemDelete} = props;
+  const {guitar, onModalClose, onCartItemDelete} = props;
 
   useModal(onModalClose);
   return (
     <div className="modal is-active modal-for-ui-kit">
       <div className="modal__wrapper">
-        <div className="modal__overlay" data-close-modal></div>
+        <div className="modal__overlay" data-close-modal data-test="test-close-modal" onClick={onModalClose}></div>
         <div className="modal__content">
           <h2 className="modal__header title title--medium title--red">Удалить этот товар?</h2>
           <div className="modal__info">
@@ -41,15 +41,16 @@ function ConfirmCartItemDeleteModal(props: ConfirmCartItemDeleteModalProps) {
           </div>
           <div className="modal__button-container">
             <button onClick={() => {
-              handlerCartItemDelete(guitar);
+              onCartItemDelete(guitar);
             }} className="button button--small modal__button"
+            data-test="test-delete-from-cart"
             >Удалить товар
             </button>
-            <button onClick={onModalClose} className="button button--black-border button--small modal__button modal__button--right">Продолжить
+            <button onClick={onModalClose} className="button button--black-border button--small modal__button modal__button--right" data-test="test-close-modal">Продолжить
               покупки
             </button>
           </div>
-          <button onClick={onModalClose} className="modal__close-btn button-cross" type="button" aria-label="Закрыть">
+          <button onClick={onModalClose} className="modal__close-btn button-cross" type="button" aria-label="Закрыть" data-test="test-close-modal">
             <span
               className="button-cross__icon"
             >

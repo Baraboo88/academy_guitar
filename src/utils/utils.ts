@@ -66,8 +66,6 @@ export const MONTH_NAMES = ['января', 'февраля ', 'марта', 'а
   'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря',
 ];
 
-export const PROMO_CODES = ['light-333', 'medium-444', 'height-555'];
-
 export const getPriceWithSpaces = (price: number) => price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 
 export const MOCK_FILL_VALUE = 1;
@@ -133,7 +131,7 @@ export const handlerCartItemIncrease = (cartItems: CartItemModel [], guitar: Gui
     if(isExist){
       return newCartItems.map((cartItem) => {
         const newItem = {...cartItem};
-        if(cartItem.guitar.id === guitar.id && newItem.count <= MAX_CART_ITEM_COUNT){
+        if(cartItem.guitar.id === guitar.id && newItem.count < MAX_CART_ITEM_COUNT){
           newItem.count++;
         }
         return newItem;

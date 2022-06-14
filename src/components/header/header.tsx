@@ -117,10 +117,12 @@ function Header(props: HeaderProps) {
             <use xlinkHref="#icon-basket"></use>
           </svg>
           <span className="visually-hidden">Перейти в корзину</span>
-          <span
-            className="header__cart-count"
-          >{cartItemsCount}
-          </span>
+          {cartItemsCount > 0 &&
+            <span
+              className="header__cart-count"
+            >{cartItemsCount}
+            </span>}
+
         </Link>
       </div>
     </header>

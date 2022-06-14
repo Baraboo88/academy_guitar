@@ -7,7 +7,7 @@ import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
 import toJson from 'enzyme-to-json';
 import { Provider } from 'react-redux';
 
-import {getTestStore, mockCartItems, mockGuitars} from '../../utils/test-utils';
+import {getTestStore, mockGuitars} from '../../utils/test-utils';
 import { GuitarCardDetails} from './guitar-card-details';
 
 import 'intersection-observer';
@@ -23,7 +23,7 @@ it('GuitarCardDetails successfully rendered', () => {
   const mockGetComments = jest.fn();
   const mockAddComment = jest.fn();
   const mockResetIsResponseReceived = jest.fn();
-  const mockSetCartItems = jest.fn();
+  const mockAddItems = jest.fn();
   const MOCK_ERROR = '';
 
   const tree = mount(
@@ -38,8 +38,7 @@ it('GuitarCardDetails successfully rendered', () => {
           isResponseReceived ={false}
           resetIsResponseReceived={mockResetIsResponseReceived}
           error={MOCK_ERROR}
-          cartItems={mockCartItems}
-          setCartItems={mockSetCartItems}
+          setAddOneToCartItems={mockAddItems}
         />
       </BrowserRouter>
     </Provider>,
