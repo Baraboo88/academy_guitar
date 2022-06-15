@@ -38,7 +38,7 @@ it('GuitarCardDetails successfully rendered', () => {
           isResponseReceived ={false}
           resetIsResponseReceived={mockResetIsResponseReceived}
           error={MOCK_ERROR}
-          setAddOneToCartItems={mockAddItems}
+          addOneToCartItems={mockAddItems}
         />
       </BrowserRouter>
     </Provider>,

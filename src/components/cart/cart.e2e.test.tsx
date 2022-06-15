@@ -47,7 +47,6 @@ describe('ConfirmCartItemDeleteModal e2e', () => {
   it('Should AddCustomToCartItems executed', async () => {
     const fields = await findByTestAtr(app, 'test-custom-count');
     fields.forEach((field) => field.simulate('blur'));
-    fields.forEach((field) => field.simulate('change'));
     expect(mockAddCustomToCartItems).toHaveBeenCalledTimes(mockCartItems.length);
   });
 
@@ -70,7 +69,7 @@ describe('ConfirmCartItemDeleteModal e2e', () => {
     expect(mockGetPromoDiscount).toHaveBeenCalledTimes(1);
   });
 
-  it('Should delete from cart executed', async () => {
+  it('Should resetCartErrorMessage from cart executed', async () => {
     const field = await findByTestAtr(app, 'test-change-promo');
     field.simulate('change');
     expect(mockResetErrorMessage).toHaveBeenCalledTimes(1);

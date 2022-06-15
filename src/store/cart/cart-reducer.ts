@@ -9,8 +9,6 @@ import {ThunkAction} from 'redux-thunk';
 import {RootState} from '../../index';
 import {AxiosStatic} from 'axios';
 import {AnyAction} from 'redux';
-import {CurrentGuitarActionCreator} from '../current-guitar/current-guitar-actions';
-
 
 const initialState: CartStateModel = {
   cartItems: [],
@@ -63,11 +61,11 @@ export const cartReducer = (state: CartStateModel = initialState, action:any) =>
           cartItems: newCartItems,
         });
 
-      } else {
-        return Object.assign({}, state, {
-          cartItems: [{guitar: action.payload, count: 1}],
-        });
       }
+      return Object.assign({}, state, {
+        cartItems: [{guitar: action.payload, count: 1}],
+      });
+
     case CartAction.AddCustomToCartItems:
       if (state.cartItems.find((cartItem) => cartItem.guitar.id === action.payload.guitar.id)) {
         let newCartItems = [...state.cartItems];
@@ -75,39 +73,37 @@ export const cartReducer = (state: CartStateModel = initialState, action:any) =>
         newCartItems = newCartItems.map((cartItem) => {
           const newItem = {...cartItem};
           if (cartItem.guitar.id === guitarWithCount.guitar.id) {
-            if (action.payload.count <= 0) {
-              newItem.count = INITIAL_CART_ITEM_COUNT;
-            } else {
-              newItem.count = guitarWithCount.count > 99 ? 99 : guitarWithCount.count;
-            }
+            newItem.count = guitarWithCount.count > 99 ? 99 : guitarWithCount.count;
           }
           return newItem;
         });
         return Object.assign({}, state, {
           cartItems: newCartItems,
         });
-      } else {
-        return Object.assign({}, state, {
-          cartItems: [...state.cartItems],
-        });
       }
+
+      return Object.assign({}, state, {
+        cartItems: [...state.cartItems],
+      });
+
     case CartAction.DeleteOneFromCartItems:
-    {
-      const guitar = action.payload as GuitarModel;
-      let newCartItems = [...state.cartItems];
-      if(state.cartItems.find((cartItem) => cartItem.guitar.id === guitar.id)){
+      if(state.cartItems.find((cartItem) => cartItem.guitar.id === action.payload.id)){
+        let newCartItems = [...state.cartItems];
         newCartItems = newCartItems.map((cartItem) =>{
           const newItem = {...cartItem};
-          if(cartItem.guitar.id === guitar.id){
+          if(cartItem.guitar.id === action.payload.id){
             newItem.count--;
           }
           return newItem;
         });
+        return Object.assign({}, state, {
+          cartItems: newCartItems,
+        });
       }
       return Object.assign({}, state, {
-        cartItems: newCartItems,
+        cartItems: [...state.cartItems],
       });
-    }
+
     case CartAction.DeleteFromCartItems:
       return Object.assign({}, state, {
         cartItems: [...state.cartItems].filter((cartItem) => cartItem.guitar.id !== action.payload.id),

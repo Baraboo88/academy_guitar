@@ -41,7 +41,7 @@ interface GuitarCardDetailsProps {
     isResponseReceived: boolean;
     resetIsResponseReceived: () => void;
     error: string;
-    setAddOneToCartItems: (guitar: GuitarModel) => void;
+    addOneToCartItems: (guitar: GuitarModel) => void;
 }
 
 export enum ActiveTab{
@@ -51,7 +51,7 @@ export enum ActiveTab{
 
 function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
-  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived, setAddOneToCartItems } = props;
+  const {currentGuitar, resetCurrentGuitar, onMount, getComments, addComment, isResponseReceived, error, resetIsResponseReceived, addOneToCartItems } = props;
   const [commentsToSkip, setCommentsToSkip] = useState(COMMENTS_TO_SKIP);
   const [isAddCommentOpened, setIsAddCommentOpened] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -84,9 +84,8 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
     setIsAddToCardPopUpOpened(false);
     setIsAddToCardPopUpOpenedSuccess(true);
     if(currentGuitar){
-      setAddOneToCartItems( currentGuitar);
+      addOneToCartItems( currentGuitar);
     }
-
   };
 
   const navigate = useNavigate();
@@ -396,9 +395,10 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Acti
     resetIsResponseReceived() {
       dispatch(CurrentGuitarActionCreator.setIsResponseReceived(false));
     },
-    addOneToCartItems(guitar: GuitarModel ) {
-      dispatch(CartActionCreator.addOneToCartItems(guitar));
+    addOneToCartItems(newGuitar: GuitarModel ) {
+      dispatch(CartActionCreator.addOneToCartItems(newGuitar));
     },
+
   });
 
 export default connect(mapStateToProps, mapDispatchToProps)(GuitarCardDetails);

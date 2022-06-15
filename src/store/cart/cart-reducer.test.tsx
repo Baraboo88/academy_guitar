@@ -14,7 +14,7 @@ const initialState:CartStateModel = {
 };
 
 
-it('Reducer Add new OneToCartItems success', () => {
+it('Reducer AddOneToCartItems success', () => {
   expect(cartReducer(initialState, {type: CartAction.AddOneToCartItems, payload: mockGuitars[3]})).toEqual({
     cartItems: [...mockCartItems, {guitar: mockGuitars[3], count: INITIAL_CART_ITEM_COUNT}],
     discount: 0,

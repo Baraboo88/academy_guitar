@@ -197,25 +197,6 @@ function CatalogFilters(props: CatalogFilterProps) {
     navigate(generateMinMaxPriceLink(minPrice, maxPrice));
   };
 
-  // const enterFunction = useCallback((event) => {
-  //
-  //   if (event.key === ENTER_KEY) {
-  //
-  //
-  //   }
-  // }, [innerMinPrice, innerMaxPrice, navigate, selectedMinPrice, selectedMaxPrice, generateMinMaxPriceLink, setMaxPrice, setMinPrice]);
-  //
-  //
-  // useEffect(() => {
-  //   document.addEventListener('keydown', enterFunction, false);
-  //
-  //   return () => {
-  //     document.removeEventListener('keydown', enterFunction, false);
-  //
-  //   };
-  // }, [enterFunction]);
-
-
   const generateGuitarsTypeLink = (elements:GuitarType []) => `?${queryString.stringify({...innerQuery, guitarTypes: elements},  {skipEmptyString: true, arrayFormat: 'comma'})}`;
 
   const generateGuitarsStringsLink = (elements:GuitarStringCount []) => `?${queryString.stringify({...innerQuery, guitarStrings: elements},  {skipEmptyString: true, arrayFormat: 'comma'})}`;

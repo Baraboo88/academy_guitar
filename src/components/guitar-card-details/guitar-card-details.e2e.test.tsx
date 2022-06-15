@@ -50,7 +50,7 @@ describe('GuitarCardDetails e2e', () => {
             isResponseReceived ={false}
             resetIsResponseReceived={mockResetIsResponseReceived}
             error={ErrorMsg.NotFound}
-            setAddOneToCartItems={mockAddOneToCartItems}
+            addOneToCartItems={mockAddOneToCartItems}
           />
         </BrowserRouter>
       </Provider>,

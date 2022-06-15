@@ -104,9 +104,8 @@ function Cart(props: CartProps) {
         const newCartItem = {...cartItem};
         newCartItem.count = count;
         return newCartItem;
-      } else {
-        return cartItem;
       }
+      return cartItem;
     });
 
     setInnerCartItems(newInnerCartItems);
@@ -116,9 +115,8 @@ function Cart(props: CartProps) {
 
     const changedItem = innerCartItems.find((item) => item.guitar.id === guitar.id);
 
-
     if(changedItem){
-      if(changedItem.count === 0 ){
+      if(changedItem.count <= 0 ){
         setGuitarToDelete(guitar);
       } else {
         addCustomToCartItems({guitar, count: changedItem.count });
@@ -134,7 +132,6 @@ function Cart(props: CartProps) {
     } else {
       deleteOneFromCartItems(cartItem.guitar);
     }
-
   };
 
   const handlerPromoCodeSubmit = (evt:React.SyntheticEvent) => {
@@ -147,15 +144,6 @@ function Cart(props: CartProps) {
     setPromo(evt.target.value);
     resetCartErrorMessage();
   };
-
-
-  const renderGuitarPrice = (guitar: GuitarModel) => {
-    const cartItem = cartItems.find((item) => item.guitar.id === guitar.id);
-    if(cartItem){
-      return getPriceWithSpaces(cartItem.guitar.price * cartItem.count);
-    }
-  };
-
 
   const renderCartItems  = () => innerCartItems.map((cartItem: CartItemModel) =>    (
     <div className="cart-item" key={cartItem.guitar.id}>
@@ -171,7 +159,7 @@ function Cart(props: CartProps) {
       <div className="cart-item__image">
         <img  src={`/img/content/catalog-product-${getAdapterImage(cartItem.guitar.previewImg)}.jpg`}
           srcSet={`/img/content/catalog-product-${getAdapterImage(cartItem.guitar.previewImg)}@2x.jpg 2x`} width="55"
-          height="130" alt="ЭлектроГитара Честер bass"
+          height="130" alt={cartItem.guitar.name}
         />
       </div>
       <div className="product-info cart-item__info">
@@ -204,7 +192,7 @@ function Cart(props: CartProps) {
           </svg>
         </button>
       </div>
-      <div className="cart-item__price-total">{renderGuitarPrice(cartItem.guitar)} ₽</div>
+      <div className="cart-item__price-total">{getPriceWithSpaces(cartItem.guitar.price * cartItem.count)} ₽</div>
     </div>));
 
   return (

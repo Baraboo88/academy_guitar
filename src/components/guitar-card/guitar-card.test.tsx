@@ -8,6 +8,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 
 it('GuitarCard successfully rendered', () => {
-  const tree = renderer.create(  <BrowserRouter><GuitarCard card={mockGuitars[0]} setAddOneToCartItems={jest.fn()}/></BrowserRouter>);
+  const tree = renderer.create(  <BrowserRouter><GuitarCard card={mockGuitars[0]} addOneToCartItems={jest.fn()}/></BrowserRouter>);
   expect(tree).toMatchSnapshot();
 });

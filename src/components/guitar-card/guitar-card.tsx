@@ -8,8 +8,6 @@ import {
 } from '../../utils/utils';
 import {Link} from 'react-router-dom';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
-import {StateModel} from '../../types/redux-models';
-import {getCartItems} from '../../store/cart/cart-selector';
 import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../../index';
 import {AxiosStatic} from 'axios';
@@ -50,16 +48,17 @@ export const renderStars = (rating: number, size: StarSize) => generateStars().m
 
 interface GuitarCardProps{
   card: GuitarModel;
-  setAddOneToCartItems: (guitar: GuitarModel) => void;
+  addOneToCartItems: (guitar: GuitarModel) => void;
 }
 
 function GuitarCard(props :GuitarCardProps) {
-  const {card, setAddOneToCartItems} = props;
+  const {card, addOneToCartItems} = props;
   const [isAddToCardPopUpOpened, setIsAddToCardPopUpOpened] = useState(false);
   const [isAddToCardPopUpOpenedSuccess, setIsAddToCardPopUpOpenedSuccess] = useState(false);
   const handlerIsAddToCardClose = () => {
     setIsAddToCardPopUpOpened(false);
   };
+
   const handlerIsAddToCardCloseSuccess = () => {
     setIsAddToCardPopUpOpenedSuccess(false);
   };
@@ -67,7 +66,7 @@ function GuitarCard(props :GuitarCardProps) {
   const handlerCartItemAdd = () => {
     setIsAddToCardPopUpOpened(false);
     setIsAddToCardPopUpOpenedSuccess(true);
-    setAddOneToCartItems(card);
+    addOneToCartItems(card);
   };
 
   const handlerAddToCartClick = () => {
@@ -120,10 +119,6 @@ function GuitarCard(props :GuitarCardProps) {
   );
 }
 
-const mapStateToProps = (state: StateModel) => ({
-  cartItems: getCartItems(state),
-});
-
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Action>) => ({
   addOneToCartItems(guitar: GuitarModel) {
@@ -131,6 +126,6 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<RootState, AxiosStatic, Acti
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(GuitarCard);
+export default connect(null, mapDispatchToProps)(GuitarCard);
 
 export {GuitarCard};
