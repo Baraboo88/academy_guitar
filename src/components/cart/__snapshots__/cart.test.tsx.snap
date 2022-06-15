@@ -294,7 +294,7 @@ exports[`Cart successfully rendered 1`] = `
             className="cart-item__image"
           >
             <img
-              alt="ЭлектроГитара Честер bass"
+              alt="Честер Bass"
               height="130"
               src="/img/content/catalog-product-1.jpg"
               srcSet="/img/content/catalog-product-1@2x.jpg 2x"
@@ -406,7 +406,7 @@ exports[`Cart successfully rendered 1`] = `
             className="cart-item__image"
           >
             <img
-              alt="ЭлектроГитара Честер bass"
+              alt="CURT Z300"
               height="130"
               src="/img/content/catalog-product-8.jpg"
               srcSet="/img/content/catalog-product-8@2x.jpg 2x"

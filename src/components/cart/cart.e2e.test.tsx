@@ -2,7 +2,7 @@ import * as Enzyme from 'enzyme';
 import EnzymeReactAdapter from '@wojtekmaj/enzyme-adapter-react-17';
 import {mount, ReactWrapper} from 'enzyme';
 
-import {findByTestAtr, getTestStore, mockCartItems, mockGuitars} from '../../utils/test-utils';
+import {findByTestAtr, getTestStore, mockCartItems} from '../../utils/test-utils';
 import * as React from 'react';
 import {BrowserRouter} from 'react-router-dom';
 

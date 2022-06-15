@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AddToCartModalSuccess successfully rendered 1`] = `
+exports[`ConfirmCartItemDeleteModal successfully rendered 1`] = `
 <div
   className="modal is-active modal-for-ui-kit"
 >
