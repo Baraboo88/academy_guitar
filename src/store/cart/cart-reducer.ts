@@ -1,14 +1,10 @@
 
+import {CartReducerActionModel, CartStateModel} from '../../types/redux-models';
 
-import {CartStateModel} from '../../types/redux-models';
+import {CartAction} from './cart-actions';
+import { INITIAL_CART_ITEM_COUNT, MAX_CART_ITEM_COUNT} from '../../utils/utils';
+import {CartItemModel} from '../../types/guitar-model';
 
-import {CartAction, CartActionCreator} from './cart-actions';
-import {ErrorMsg, INITIAL_CART_ITEM_COUNT, MAX_CART_ITEM_COUNT, ResponseStatus} from '../../utils/utils';
-import {CartItemModel, GuitarModel} from '../../types/guitar-model';
-import {ThunkAction} from 'redux-thunk';
-import {RootState} from '../../index';
-import {AxiosStatic} from 'axios';
-import {AnyAction} from 'redux';
 
 const initialState: CartStateModel = {
   cartItems: [],
@@ -17,34 +13,13 @@ const initialState: CartStateModel = {
   isResponseReceived: false,
 };
 
-export const CartOperation = {
-  getPromoDiscount(promoCode: string): ThunkAction<void, RootState, AxiosStatic, AnyAction> {
-    return (dispatch, state, api) => {
-      dispatch(CartActionCreator.setIsResponseReceived(false));
-      api.post<number>('/coupons/', {coupon: promoCode})
-        .then((response) => {
-          dispatch(CartActionCreator.setDiscountPercent(response.data));
-        })
-        .catch((error) => {
-          if (error.response.status === ResponseStatus.BadRequest) {
-            dispatch(CartActionCreator.setErrorMessage(ErrorMsg.NotFound));
-          } else {
-            dispatch(CartActionCreator.setErrorMessage(error.message));
-          }
-          dispatch(CartActionCreator.setDiscountPercent(0));
-        });
-    };
-  },
-};
 
-
-/* eslint-disable  @typescript-eslint/no-explicit-any */
-export const cartReducer = (state: CartStateModel = initialState, action:any) => {
+export const cartReducer = (state: CartStateModel = initialState, action: CartReducerActionModel ) => {
   switch (action.type) {
     case CartAction.AddOneToCartItems:
       if (state.cartItems.length > 0) {
         let newCartItems = [...state.cartItems];
-        const guitar = action.payload as GuitarModel;
+        const guitar = action.payload;
         const isExists = newCartItems.find((cartItem) => cartItem.guitar.id === guitar.id);
         if (isExists) {
           newCartItems = newCartItems.map((cartItem) => {
@@ -68,8 +43,8 @@ export const cartReducer = (state: CartStateModel = initialState, action:any) =>
 
     case CartAction.AddCustomToCartItems:
       if (state.cartItems.find((cartItem) => cartItem.guitar.id === action.payload.guitar.id)) {
-        let newCartItems = [...state.cartItems];
         const guitarWithCount = action.payload as CartItemModel;
+        let newCartItems = [...state.cartItems];
         newCartItems = newCartItems.map((cartItem) => {
           const newItem = {...cartItem};
           if (cartItem.guitar.id === guitarWithCount.guitar.id) {

@@ -22,9 +22,8 @@ import {
   getCartItems, getCartItemsDiscountAmount,
   getCartItemsTotalAmount
 } from '../../store/cart/cart-selector';
-import {CartActionCreator} from '../../store/cart/cart-actions';
+import {CartActionCreator, CartOperation} from '../../store/cart/cart-actions';
 import ConfirmCartItemDeleteModal from '../confirm-cart-item-delete-modal/confirm-cart-item-delete-modal';
-import {CartOperation} from '../../store/cart/cart-reducer';
 import {TailSpin} from 'react-loader-spinner';
 
 

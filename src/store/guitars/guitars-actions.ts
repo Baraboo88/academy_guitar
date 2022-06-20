@@ -1,5 +1,9 @@
 import {GuitarModel, GuitarStringCount, GuitarType} from '../../types/guitar-model';
-import {SortDirection, SortType} from '../../utils/utils';
+import {ErrorMsg, ResponseStatus, SortDirection, SortType} from '../../utils/utils';
+import {AppDispatch, RootState} from '../../index';
+import {ThunkAction} from 'redux-thunk';
+import {AxiosStatic} from 'axios';
+import {GuitarReducerActionWithoutPayload} from '../../types/redux-models';
 
 export enum GuitarsAction {
   SetGuitars = 'guitars/set-guitars',
@@ -45,5 +49,59 @@ export const GuitarsActionCreator = {
   },
   setIsResponseReceived(isResponseReceived: boolean) {
     return {type: GuitarsAction.SetIsResponseReceived, payload: isResponseReceived};
+  },
+};
+
+
+const resetIsResponseReceivedAndError = (dispatch: AppDispatch) => {
+  dispatch(GuitarsActionCreator.setError(''));
+  dispatch(GuitarsActionCreator.setIsResponseReceived(false));
+};
+
+
+export const GuitarsOperation = {
+  getGuitars(): ThunkAction<void, RootState, AxiosStatic, GuitarReducerActionWithoutPayload> {
+    return (dispatch, state, api) => {
+      resetIsResponseReceivedAndError(dispatch);
+      api.get<GuitarModel []>('/guitars?_limit=27')
+        .then((response) => {
+          dispatch(GuitarsActionCreator.setGuitars(response.data));
+        })
+        .catch((error) => {
+          if (error.response.status === ResponseStatus.BadRequest) {
+            dispatch(GuitarsActionCreator.setError(ErrorMsg.Other));
+          }
+          dispatch(GuitarsActionCreator.setError(error.message));
+        });
+    };
+  },
+  getCommentsCount(guitars: GuitarModel []): ThunkAction<void, RootState, AxiosStatic, GuitarReducerActionWithoutPayload> {
+    return (dispatch, state, api) => {
+      Promise.all(guitars.map((el) => api.get((`/guitars/${el.id}/comments`))))
+        .then((responses) =>{
+          const guitarsWithComments: GuitarModel [] = [];
+          guitars.forEach((guitar, index) => {
+            let guitarWithComment: GuitarModel;
+            if(responses[index].data && responses[index].data.length > 0){
+              guitarWithComment = Object.assign({}, guitar, {
+                comments: responses[index].data,
+              });
+            } else {
+              guitarWithComment = Object.assign({}, guitar, {
+                comments: [],
+              });
+            }
+            guitarsWithComments.push(guitarWithComment);
+          });
+          dispatch(GuitarsActionCreator.setGuitars(guitarsWithComments));
+
+        })
+        .catch((error) => {
+          if (error.response.status === ResponseStatus.BadRequest) {
+            dispatch(GuitarsActionCreator.setError(ErrorMsg.Other));
+          }
+          dispatch(GuitarsActionCreator.setError(error.message));
+        });
+    };
   },
 };

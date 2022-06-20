@@ -10,7 +10,7 @@ function App() {
   return (
     <BrowserRouter >
       <Routes>
-        <Route path="/product/:id/:cat" element={<GuitarCardDetails/>}/>
+        <Route path="/product/:id/:tab" element={<GuitarCardDetails/>}/>
         <Route path="/product/:id" element={<GuitarCardDetails/>}/>
         <Route path="/cart/" element={<Cart/>}/>
         <Route path="/" element={<Main/>}/>

@@ -5,8 +5,10 @@ export const MIN_PRICE_INITIAL_VALUE = -1;
 export const MAX_PRICE_INITIAL_VALUE = -1;
 export const INITIAL_CART_ITEM_COUNT = 1;
 export const MAX_CART_ITEM_COUNT = 99;
+const INDEX_FROM_END_TO_START_SUB_STRING = 5;
+const INDEX_FROM_END_TO_END_SUB_STRING = INDEX_FROM_END_TO_START_SUB_STRING - 1;
 
-export const getAdapterImage = (img: string) => img.slice(img.length - 5, img.length - 4);
+export const getAdapterImage = (img: string) => img.slice(img.length - INDEX_FROM_END_TO_START_SUB_STRING, img.length - INDEX_FROM_END_TO_END_SUB_STRING);
 
 
 export const generateStars = () => {

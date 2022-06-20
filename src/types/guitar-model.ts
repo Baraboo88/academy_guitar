@@ -4,7 +4,7 @@ export interface GuitarModel {
     vendorCode: string;
     type: GuitarType;
     description: string;
-    previewImg: string;
+    previewImg: `img/guitar-${number}.jpg`;
     stringCount: GuitarStringCount,
     rating: number;
     price: number;

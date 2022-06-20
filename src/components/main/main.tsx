@@ -22,7 +22,7 @@ import {
   getMinMaxPrice,
   getSortedGuitars
 } from '../../store/guitars/guitars-selectors';
-import { GuitarsOperation} from '../../store/guitars/guitars-reducer';
+
 import {
   Page,
   Query,
@@ -36,7 +36,7 @@ import * as queryString from 'query-string';
 
 import CatalogFilter from '../catalog-filters/catalog-filters';
 import {TailSpin} from 'react-loader-spinner';
-import {GuitarsActionCreator} from '../../store/guitars/guitars-actions';
+import {GuitarsActionCreator, GuitarsOperation} from '../../store/guitars/guitars-actions';
 import {ThunkDispatch} from 'redux-thunk';
 import {RootState} from '../../index';
 import {AxiosStatic} from 'axios';
@@ -136,57 +136,46 @@ function Main(props: MainProps) {
   }, [pageNo, guitars, getAllPages, navigate, handlerQuerySet, currentPage]);
 
   useEffect(() => {
-    if (sort && guitars.length > 0) {
-      if (sort === SortTypeWithDirection.PopularityLowToHigh) {
-        if(innerQuery.sort !== SortTypeWithDirection.PopularityLowToHigh){
-          handlerQuerySet({sort:SortTypeWithDirection.PopularityLowToHigh});
-          if(sortType !== SortType.Popularity){
-            setSortType(SortType.Popularity);
-          }
-          if(sortDirection !== SortDirection.LowToHigh){
-            setSortDirection(SortDirection.LowToHigh);
-          }
-        }
-        return;
+    if (!sort || guitars.length === 0) {
+      return;
+    }
+    if (sort === SortTypeWithDirection.PopularityLowToHigh && innerQuery.sort !== SortTypeWithDirection.PopularityLowToHigh) {
+      handlerQuerySet({sort:SortTypeWithDirection.PopularityLowToHigh});
+      if(sortType !== SortType.Popularity){
+        setSortType(SortType.Popularity);
       }
-      if (sort === SortTypeWithDirection.PopularityHighToLow) {
-        if(innerQuery.sort !== SortTypeWithDirection.PopularityHighToLow){
-          handlerQuerySet({sort:SortTypeWithDirection.PopularityHighToLow});
-          if(sortType !== SortType.Popularity){
-            setSortType(SortType.Popularity);
-          }
-          if(sortDirection !== SortDirection.HighToLow){
-            setSortDirection(SortDirection.HighToLow);
-          }
-        }
-        return;
-      }
-      if (sort === SortTypeWithDirection.PriceLowToHigh) {
-
-        if(innerQuery.sort !== SortTypeWithDirection.PriceLowToHigh){
-          handlerQuerySet({sort:SortTypeWithDirection.PriceLowToHigh});
-          if(sortType !== SortType.Price){
-            setSortType(SortType.Price);
-          }
-          if(sortDirection !==SortDirection.LowToHigh){
-            setSortDirection(SortDirection.LowToHigh);
-          }
-        }
-        return;
-      }
-      if (sort === SortTypeWithDirection.PriceHighToLow) {
-
-        if(innerQuery.sort !== SortTypeWithDirection.PriceHighToLow){
-          handlerQuerySet({sort:SortTypeWithDirection.PriceHighToLow});
-          if(sortType !== SortType.Price){
-            setSortType(SortType.Price);
-          }
-          if(sortDirection !==SortDirection.HighToLow){
-            setSortDirection(SortDirection.HighToLow);
-          }
-        }
+      if(sortDirection !== SortDirection.LowToHigh){
+        setSortDirection(SortDirection.LowToHigh);
       }
     }
+    if (sort === SortTypeWithDirection.PopularityHighToLow && innerQuery.sort !== SortTypeWithDirection.PopularityHighToLow) {
+      handlerQuerySet({sort:SortTypeWithDirection.PopularityHighToLow});
+      if(sortType !== SortType.Popularity){
+        setSortType(SortType.Popularity);
+      }
+      if(sortDirection !== SortDirection.HighToLow){
+        setSortDirection(SortDirection.HighToLow);
+      }
+    }
+    if (sort === SortTypeWithDirection.PriceLowToHigh && innerQuery.sort !== SortTypeWithDirection.PriceLowToHigh) {
+      handlerQuerySet({sort:SortTypeWithDirection.PriceLowToHigh});
+      if(sortType !== SortType.Price){
+        setSortType(SortType.Price);
+      }
+      if(sortDirection !==SortDirection.LowToHigh){
+        setSortDirection(SortDirection.LowToHigh);
+      }
+    }
+    if (sort === SortTypeWithDirection.PriceHighToLow && innerQuery.sort !== SortTypeWithDirection.PriceHighToLow) {
+      handlerQuerySet({sort:SortTypeWithDirection.PriceHighToLow});
+      if(sortType !== SortType.Price){
+        setSortType(SortType.Price);
+      }
+      if(sortDirection !==SortDirection.HighToLow){
+        setSortDirection(SortDirection.HighToLow);
+      }
+    }
+
   }, [sort, guitars, setSortDirection, setSortType, sortType, sortDirection, handlerQuerySet, innerQuery]);
 
 
@@ -205,6 +194,9 @@ function Main(props: MainProps) {
         </Link>
       </li>));
   };
+
+  const renderGuitars = () => innerGuitars.slice((currentPage - 1) * ITEMS_ON_THE_PAGE, (currentPage - 1) * ITEMS_ON_THE_PAGE + ITEMS_ON_THE_PAGE).map((guitar) =>
+    <GuitarCard key={guitar.id} card={guitar}/>);
 
   const getSortQuery = (type: SortType, direction: SortDirection) => {
     if (type === SortType.Price) {
@@ -288,8 +280,7 @@ function Main(props: MainProps) {
                   </div>}
 
 
-              {!isLoading && innerGuitars.slice((currentPage - 1) * ITEMS_ON_THE_PAGE, (currentPage - 1) * ITEMS_ON_THE_PAGE + ITEMS_ON_THE_PAGE).map((guitar) =>
-                <GuitarCard key={guitar.id} card={guitar}/>)}
+              {!isLoading && renderGuitars()}
             </div>
             <div className="pagination page-content__pagination">
               <ul className="pagination__list">

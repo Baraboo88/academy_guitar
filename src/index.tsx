@@ -7,12 +7,14 @@ import {createApi} from './api';
 import App from './components/app/app';
 import rootReducer from './store/reducer';
 
+
 const api = createApi();
 
-const store = configureStore({
+const store = configureStore<unknown>({
   reducer: rootReducer,
   middleware: [thunk.withExtraArgument(api)],
 });
+
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
 

@@ -1,4 +1,11 @@
 import {CartItemModel, GuitarModel} from '../../types/guitar-model';
+import {ThunkAction} from 'redux-thunk';
+import {RootState} from '../../index';
+import {AxiosStatic} from 'axios';
+
+import {ErrorMsg, ResponseStatus} from '../../utils/utils';
+import {CartReducerActionWithoutPayload} from '../../types/redux-models';
+
 
 export enum CartAction {
   AddOneToCartItems = 'cart/add-one-to-cart-items',
@@ -9,6 +16,27 @@ export enum CartAction {
   SetErrorMessage = 'cart/set-error-message',
   SetIsResponseReceived = 'cart/set-is-response-received'
 }
+
+export const CartOperation = {
+  getPromoDiscount(promoCode: string): ThunkAction<void, RootState, AxiosStatic, CartReducerActionWithoutPayload> {
+    return (dispatch, state, api) => {
+      dispatch(CartActionCreator.setIsResponseReceived(false));
+      api.post<number>('/coupons/', {coupon: promoCode})
+        .then((response) => {
+          dispatch(CartActionCreator.setDiscountPercent(response.data));
+        })
+        .catch((error) => {
+          if (error.response.status === ResponseStatus.BadRequest) {
+            dispatch(CartActionCreator.setErrorMessage(ErrorMsg.NotFound));
+          } else {
+            dispatch(CartActionCreator.setErrorMessage(error.message));
+          }
+          dispatch(CartActionCreator.setDiscountPercent(0));
+        });
+    };
+  },
+};
+
 
 export const CartActionCreator = {
   addOneToCartItems(guitar: GuitarModel) {

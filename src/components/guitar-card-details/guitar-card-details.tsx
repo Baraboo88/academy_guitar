@@ -19,7 +19,7 @@ import AddCommentModal from '../add-comment-modal/add-comment-modal';
 import AddCommentModalSuccess from '../add-comment-modal-success/add-comment-modal-success';
 import AddToCartModal from '../add-to-cart-modal/add-to-cart-modal';
 
-import {CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-reducer';
+import {CurrentGuitarOperation} from '../../store/current-guitar/current-guitar-actions';
 import {TailSpin} from 'react-loader-spinner';
 import {CurrentGuitarActionCreator} from '../../store/current-guitar/current-guitar-actions';
 import {ThunkDispatch} from 'redux-thunk';
@@ -90,7 +90,7 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
   const navigate = useNavigate();
 
-  const {id, cat} = useParams();
+  const {id, tab} = useParams();
 
   const handlerCommentsShowMore = useCallback(() => {
 
@@ -121,18 +121,18 @@ function GuitarCardDetails(props: GuitarCardDetailsProps ) {
 
   useEffect(() => {
     if(currentGuitar) {
-      if( cat === ActiveTab.Characteristics){
+      if( tab === ActiveTab.Characteristics){
         setActiveTab(ActiveTab.Characteristics);
       }
 
-      if( cat === ActiveTab.Description){
+      if( tab === ActiveTab.Description){
         setActiveTab(ActiveTab.Description);
       }
     } else {
       setActiveTab(ActiveTab.Characteristics);
     }
 
-  }, [cat, currentGuitar]);
+  }, [tab, currentGuitar]);
 
   useEffect(() => {
     if(currentGuitar){

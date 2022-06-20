@@ -12,8 +12,8 @@ import {
   getGuitarsIsResponseReceived, getSearchGuitarName,
   getGuitarsWithNameFilter
 } from '../../store/guitars/guitars-selectors';
-import { GuitarsOperation} from '../../store/guitars/guitars-reducer';
-import { GuitarsActionCreator} from '../../store/guitars/guitars-actions';
+
+import { GuitarsActionCreator, GuitarsOperation} from '../../store/guitars/guitars-actions';
 import { RootState} from '../../index';
 import {ThunkDispatch} from 'redux-thunk';
 import {Action} from 'redux';
