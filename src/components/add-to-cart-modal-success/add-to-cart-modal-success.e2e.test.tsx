@@ -18,7 +18,7 @@ describe('AddToCartModalSuccess e2e', () => {
   beforeEach(() => {
     app = mount(
       <BrowserRouter>
-        <AddToCartModalSuccess onModalClose={mockOnCloseModalHandler}/>
+        <AddToCartModalSuccess isFromCatalog onModalClose={mockOnCloseModalHandler}/>
       </BrowserRouter>,
     );
   });

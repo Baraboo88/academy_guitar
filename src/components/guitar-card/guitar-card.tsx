@@ -21,7 +21,7 @@ export enum StarSize{
 }
 
 
-export const renderStars = (rating: number, size: StarSize) => generateStars().map((el, index) => {
+export const renderStars = (rating: number, size: StarSize) => generateStars().map((el) => {
 
   switch(size) {
     case StarSize.CardDetails:
@@ -114,7 +114,7 @@ function GuitarCard(props :GuitarCardProps) {
 
       </div>
       {isAddToCardPopUpOpened && <AddToCartModal onAddToCart={handlerCartItemAdd} onModalClose={handlerIsAddToCardClose} guitar={card}/>}
-      {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess onModalClose={handlerIsAddToCardCloseSuccess}/>}
+      {isAddToCardPopUpOpenedSuccess && <AddToCartModalSuccess isFromCatalog onModalClose={handlerIsAddToCardCloseSuccess}/>}
     </>
   );
 }

@@ -41,13 +41,13 @@ exports[`AddToCartModalSuccess successfully rendered 1`] = `
         >
           Перейти в корзину
         </a>
-        <button
+        <a
           className="button button--black-border button--small modal__button modal__button--right"
-          data-test="test-close-modal"
-          onClick={[MockFunction]}
+          href="/"
+          onClick={[Function]}
         >
           Продолжить покупки
-        </button>
+        </a>
       </div>
       <button
         aria-label="Закрыть"

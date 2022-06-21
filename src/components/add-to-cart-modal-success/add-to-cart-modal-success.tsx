@@ -6,9 +6,10 @@ import FocusTrap from 'focus-trap-react';
 
 export interface AddToCartModalSuccessProps{
   onModalClose: () => void;
+  isFromCatalog?: boolean;
 }
 function AddToCartModalSuccess(props: AddToCartModalSuccessProps) {
-  const {onModalClose} = props;
+  const {onModalClose, isFromCatalog} = props;
   useEffect(() => () => {
     onModalClose();
   }, [onModalClose]);
@@ -25,9 +26,14 @@ function AddToCartModalSuccess(props: AddToCartModalSuccessProps) {
             <p className="modal__message">Товар успешно добавлен в корзину</p>
             <div className="modal__button-container modal__button-container--add">
               <Link to={'/cart'} className="button button--small modal__button">Перейти в корзину</Link>
-              <button  onClick={onModalClose}  className="button button--black-border button--small modal__button modal__button--right" data-test="test-close-modal">Продолжить
-              покупки
-              </button>
+              {isFromCatalog ?
+                <button  onClick={onModalClose}  className="button button--black-border button--small modal__button modal__button--right" data-test="test-close-modal">Продолжить
+                покупки
+                </button> :
+                <Link to={'/'}  onClick={onModalClose}  className="button button--black-border button--small modal__button modal__button--right">Продолжить
+                  покупки
+                </Link>}
+
             </div>
             <button className="modal__close-btn button-cross" onClick={onModalClose} type="button" aria-label="Закрыть" data-test="test-close-modal">
               <span
