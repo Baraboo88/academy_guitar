@@ -147,6 +147,7 @@ function Main(props: MainProps) {
       if(sortDirection !== SortDirection.LowToHigh){
         setSortDirection(SortDirection.LowToHigh);
       }
+      return;
     }
     if (sort === SortTypeWithDirection.PopularityHighToLow && innerQuery.sort !== SortTypeWithDirection.PopularityHighToLow) {
       handlerQuerySet({sort:SortTypeWithDirection.PopularityHighToLow});
@@ -156,6 +157,7 @@ function Main(props: MainProps) {
       if(sortDirection !== SortDirection.HighToLow){
         setSortDirection(SortDirection.HighToLow);
       }
+      return;
     }
     if (sort === SortTypeWithDirection.PriceLowToHigh && innerQuery.sort !== SortTypeWithDirection.PriceLowToHigh) {
       handlerQuerySet({sort:SortTypeWithDirection.PriceLowToHigh});
@@ -165,6 +167,7 @@ function Main(props: MainProps) {
       if(sortDirection !==SortDirection.LowToHigh){
         setSortDirection(SortDirection.LowToHigh);
       }
+      return;
     }
     if (sort === SortTypeWithDirection.PriceHighToLow && innerQuery.sort !== SortTypeWithDirection.PriceHighToLow) {
       handlerQuerySet({sort:SortTypeWithDirection.PriceHighToLow});
